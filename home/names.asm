@@ -1,12 +1,12 @@
 NamesPointers::
 ; entries correspond to GetName constants (see constants/text_constants.asm); MON_NAME and MOVE_NAME are not handled by this table
 	dba ItemNames           ; ITEM_NAME
-	dbw 0, wPartyMonOT      ; PARTY_OT_NAME
-	dbw 0, wOTPartyMonOT    ; ENEMY_OT_NAME
+	dbw 0, wPartyMonOTs     ; PARTY_OT_NAME
+	dbw 0, wOTPartyMonOTs   ; ENEMY_OT_NAME
 	dba TrainerClassNames   ; TRAINER_NAME
 
 GetName::
-; Return name wCurSpecies from name list wNamedObjectTypeBuffer in wStringBuffer1.
+; Return name wCurSpecies from name list wNamedObjectType in wStringBuffer1.
 
 	ldh a, [hROMBank]
 	push af
@@ -15,9 +15,9 @@ GetName::
 	push de
 
 	ld a, [wCurSpecies]
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 
-	ld a, [wNamedObjectTypeBuffer]
+	ld a, [wNamedObjectType]
 	dec a ; MON_NAME
 	ld hl, GetPokemonName
 	jr z, .go
@@ -117,7 +117,7 @@ GetBasePokemonName::
 	ret
 
 GetPokemonName::
-; Get Pokemon name for wNamedObjectIndexBuffer.
+; Get Pokemon name for wNamedObjectIndex.
 
 	ldh a, [hROMBank]
 	push af
@@ -126,14 +126,14 @@ GetPokemonName::
 	rst Bankswitch
 
 ; Each name is ten characters
-	ld a, [wNamedObjectIndexBuffer]
+	ld a, [wNamedObjectIndex]
 	call GetPokemonIndexFromID
 	ld e, l
 	ld d, h
-	add hl, hl ; hl = hl * 4
-	add hl, hl ; hl = hl * 4
-	add hl, de ; hl = (hl*4) + de
-	add hl, hl ; hl = (5*hl) + (5*hl)
+	add hl, hl
+	add hl, hl
+	add hl, de
+	add hl, hl
 	ld de, PokemonNames - 10
 	add hl, de
 
@@ -152,18 +152,18 @@ GetPokemonName::
 	ret
 
 GetItemName::
-; Get item name for wNamedObjectIndexBuffer.
+; Get item name for wNamedObjectIndex.
 
 	push hl
 	push bc
-	ld a, [wNamedObjectIndexBuffer]
+	ld a, [wNamedObjectIndex]
 
 	cp TM01
 	jr nc, .TM
 
 	ld [wCurSpecies], a
 	ld a, ITEM_NAME
-	ld [wNamedObjectTypeBuffer], a
+	ld [wNamedObjectType], a
 	call GetName
 	jr .Copied
 .TM:
@@ -175,12 +175,12 @@ GetItemName::
 	ret
 
 GetTMHMName::
-; Get TM/HM name for item wNamedObjectIndexBuffer.
+; Get TM/HM name for item wNamedObjectIndex.
 
 	push hl
 	push de
 	push bc
-	ld a, [wNamedObjectIndexBuffer]
+	ld a, [wNamedObjectIndex]
 	push af
 
 ; TM/HM prefix
@@ -190,19 +190,19 @@ GetTMHMName::
 
 	ld hl, .HMText
 	ld bc, .HMTextEnd - .HMText
-	jr .asm_34a1
+	jr .copy
 
 .TM:
 	ld hl, .TMText
 	ld bc, .TMTextEnd - .TMText
 
-.asm_34a1
+.copy
 	ld de, wStringBuffer1
 	call CopyBytes
 
 ; TM/HM number
 	push de
-	ld a, [wNamedObjectIndexBuffer]
+	ld a, [wNamedObjectIndex]
 	ld c, a
 	callfar GetTMHMNumber
 	pop de
@@ -210,20 +210,20 @@ GetTMHMName::
 ; HM numbers start from 51, not 1
 	pop af
 	ld a, c
-	jr c, .asm_34b9
+	jr c, .not_hm
 	sub NUM_TMS
-.asm_34b9
+.not_hm
 
 ; Divide and mod by 10 to get the top and bottom digits respectively
 	ld b, "0"
 .mod10
 	sub 10
-	jr c, .asm_34c2
+	jr c, .done_mod
 	inc b
 	jr .mod10
-.asm_34c2
-	add 10
 
+.done_mod
+	add 10
 	push af
 	ld a, b
 	ld [de], a
@@ -240,7 +240,7 @@ GetTMHMName::
 	ld [de], a
 
 	pop af
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	pop bc
 	pop de
 	pop hl
@@ -265,7 +265,7 @@ GetMoveName::
 	push af
 	ld a, BANK(MoveNames)
 	rst Bankswitch
-	ld a, [wNamedObjectIndexBuffer]
+	ld a, [wNamedObjectIndex]
 	call GetMoveIndexFromID
 	dec hl
 	ld b, h

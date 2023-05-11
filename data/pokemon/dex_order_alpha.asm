@@ -1,6 +1,7 @@
 ; Every Pokémon sorted alphabetically by name.
 
 AlphabeticalPokedexOrder:
+	table_width 2, AlphabeticalPokedexOrder
 	dw ABRA
 	dw AERODACTYL
 	dw AIPOM
@@ -252,3 +253,4 @@ AlphabeticalPokedexOrder:
 	dw YANMA
 	dw ZAPDOS
 	dw ZUBAT
+	assert_table_length NUM_POKEMON

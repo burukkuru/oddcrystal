@@ -1,6 +1,4 @@
 BattleCommand_Conversion:
-; conversion
-
 	ld hl, wBattleMonMoves
 	ld de, wBattleMonType1
 	ldh a, [hBattleTurn]
@@ -46,7 +44,7 @@ BattleCommand_Conversion:
 	ld a, [hl]
 	cp -1
 	jr z, .fail
-	cp CURSE_T
+	cp CURSE_TYPE
 	jr z, .next
 	ld a, [de]
 	cp [hl]
@@ -75,7 +73,7 @@ BattleCommand_Conversion:
 	ld a, [hl]
 	cp -1
 	jr z, .loop3
-	cp CURSE_T
+	cp CURSE_TYPE
 	jr z, .loop3
 	ld a, [de]
 	cp [hl]
@@ -89,7 +87,7 @@ BattleCommand_Conversion:
 	ld [de], a
 	inc de
 	ld [de], a
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	farcall GetTypeName
 	call AnimateCurrentMove
 	ld hl, TransformedTypeText

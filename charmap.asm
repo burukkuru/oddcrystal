@@ -84,7 +84,7 @@
 
 ; Actual characters (from other graphics files)
 
-	; needed for _LoadFontsExtra1 (see engine/load_font.asm)
+	; needed for _LoadFontsExtra1 (see engine/gfx/load_font.asm)
 	charmap "■",         $60 ; gfx/font/black.2bpp
 	charmap "▲",         $61 ; gfx/font/up_arrow.png
 	charmap "☎",         $62 ; gfx/font/phone_icon.2bpp
@@ -211,7 +211,7 @@
 
 ; Japanese control characters (see home/text.asm)
 
-	charmap "<JP_18>",   $18 ; "ノ゛"? (ungrammatical)
+	charmap "<JP_18>",   $18 ; "ノ゛" (ungrammatical)
 	charmap "<NI>",      $1d ; "に　"
 	charmap "<TTE>",     $1e ; "って"
 	charmap "<WO>",      $1f ; "を　"
@@ -282,6 +282,7 @@
 	charmap "「", $70
 	charmap "」", $71
 	charmap "』", $73
+	charmap "・", $74
 	charmap "⋯", $75
 
 	charmap "　", $7f
@@ -418,6 +419,13 @@
 	charmap "９", $ff
 
 ; ASCII charmap, for mobile functions
-	pushc
+pushc
 	newcharmap ascii
-	popc
+	DEF PRINTABLE_ASCII EQUS " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz\{|}~"
+	for i, STRLEN("{PRINTABLE_ASCII}")
+		charmap STRSUB("{PRINTABLE_ASCII}", i + 1, 1), i + $20
+	endr
+	charmap "\t", $09
+	charmap "\n", $0a
+	charmap "\r", $0d
+popc

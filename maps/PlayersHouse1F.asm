@@ -1,4 +1,4 @@
-	object_const_def ; object_event constants
+	object_const_def
 	const PLAYERSHOUSE1F_MOM1
 	const PLAYERSHOUSE1F_MOM2
 	const PLAYERSHOUSE1F_MOM3
@@ -6,16 +6,16 @@
 	const PLAYERSHOUSE1F_POKEFAN_F
 
 PlayersHouse1F_MapScripts:
-	db 2 ; scene scripts
-	scene_script .DummyScene0 ; SCENE_DEFAULT
-	scene_script .DummyScene1 ; SCENE_FINISHED
+	def_scene_scripts
+	scene_script PlayersHouse1FNoop1Scene, SCENE_PLAYERSHOUSE1F_MEET_MOM
+	scene_script PlayersHouse1FNoop2Scene, SCENE_PLAYERSHOUSE1F_NOOP
 
-	db 0 ; callbacks
+	def_callbacks
 
-.DummyScene0:
+PlayersHouse1FNoop1Scene:
 	end
 
-.DummyScene1:
+PlayersHouse1FNoop2Scene:
 	end
 
 MeetMomLeftScript:
@@ -35,17 +35,17 @@ MeetMomRightScript:
 MeetMomScript:
 	opentext
 	writetext ElmsLookingForYouText
-	buttonsound
-	getstring STRING_BUFFER_4, GearName
+	promptbutton
+	getstring STRING_BUFFER_4, PokegearName
 	scall PlayersHouse1FReceiveItemStd
 	setflag ENGINE_POKEGEAR
 	setflag ENGINE_PHONE_CARD
 	addcellnum PHONE_MOM
-	setscene SCENE_FINISHED
+	setscene SCENE_PLAYERSHOUSE1F_NOOP
 	setevent EVENT_PLAYERS_HOUSE_MOM_1
 	clearevent EVENT_PLAYERS_HOUSE_MOM_2
 	writetext MomGivesPokegearText
-	buttonsound
+	promptbutton
 	special SetDayOfWeek
 .SetDayOfWeek:
 	writetext IsItDSTText
@@ -68,12 +68,12 @@ MeetMomScript:
 
 .KnowPhone:
 	writetext KnowTheInstructionsText
-	buttonsound
+	promptbutton
 	sjump .FinishPhone
 
 .ExplainPhone:
 	writetext DontKnowTheInstructionsText
-	buttonsound
+	promptbutton
 	sjump .FinishPhone
 
 .FinishPhone:
@@ -103,18 +103,18 @@ MeetMomTalkedScript:
 	playmusic MUSIC_MOM
 	sjump MeetMomScript
 
-GearName:
+PokegearName:
 	db "#GEAR@"
 
 PlayersHouse1FReceiveItemStd:
-	jumpstd receiveitem
+	jumpstd ReceiveItemScript
 	end
 
 MomScript:
 	faceplayer
 	setevent EVENT_TEMPORARY_UNTIL_MAP_RELOAD_2
 	checkscene
-	iffalse MeetMomTalkedScript ; SCENE_DEFAULT
+	iffalse MeetMomTalkedScript ; SCENE_PLAYERSHOUSE1F_MEET_MOM
 	opentext
 	checkevent EVENT_FIRST_TIME_BANKING_WITH_MOM
 	iftrue .FirstTimeBanking
@@ -162,17 +162,17 @@ NeighborScript:
 
 .MornScript:
 	writetext NeighborMornIntroText
-	buttonsound
+	promptbutton
 	sjump .Main
 
 .DayScript:
 	writetext NeighborDayIntroText
-	buttonsound
+	promptbutton
 	sjump .Main
 
 .NiteScript:
 	writetext NeighborNiteIntroText
-	buttonsound
+	promptbutton
 	sjump .Main
 
 .Main:
@@ -182,17 +182,17 @@ NeighborScript:
 	turnobject PLAYERSHOUSE1F_POKEFAN_F, RIGHT
 	end
 
-TVScript:
-	jumptext TVText
+PlayersHouse1FTVScript:
+	jumptext PlayersHouse1FTVText
 
-StoveScript:
-	jumptext StoveText
+PlayersHouse1FStoveScript:
+	jumptext PlayersHouse1FStoveText
 
-SinkScript:
-	jumptext SinkText
+PlayersHouse1FSinkScript:
+	jumptext PlayersHouse1FSinkText
 
-FridgeScript:
-	jumptext FridgeText
+PlayersHouse1FFridgeScript:
+	jumptext PlayersHouse1FFridgeText
 
 MomTurnsTowardPlayerMovement:
 	turn_head RIGHT
@@ -351,20 +351,20 @@ NeighborText:
 	line "#MON!"
 	done
 
-StoveText:
+PlayersHouse1FStoveText:
 	text "Mom's specialty!"
 
 	para "CINNABAR VOLCANO"
 	line "BURGER!"
 	done
 
-SinkText:
+PlayersHouse1FSinkText:
 	text "The sink is spot-"
 	line "less. Mom likes it"
 	cont "clean."
 	done
 
-FridgeText:
+PlayersHouse1FFridgeText:
 	text "Let's see what's"
 	line "in the fridge…"
 
@@ -372,7 +372,7 @@ FridgeText:
 	line "tasty LEMONADE!"
 	done
 
-TVText:
+PlayersHouse1FTVText:
 	text "There's a movie on"
 	line "TV: Stars dot the"
 
@@ -386,22 +386,22 @@ TVText:
 PlayersHouse1F_MapEvents:
 	db 0, 0 ; filler
 
-	db 3 ; warp events
+	def_warp_events
 	warp_event  6,  7, NEW_BARK_TOWN, 2
 	warp_event  7,  7, NEW_BARK_TOWN, 2
 	warp_event  9,  0, PLAYERS_HOUSE_2F, 1
 
-	db 2 ; coord events
-	coord_event  8,  4, SCENE_DEFAULT, MeetMomLeftScript
-	coord_event  9,  4, SCENE_DEFAULT, MeetMomRightScript
+	def_coord_events
+	coord_event  8,  4, SCENE_PLAYERSHOUSE1F_MEET_MOM, MeetMomLeftScript
+	coord_event  9,  4, SCENE_PLAYERSHOUSE1F_MEET_MOM, MeetMomRightScript
 
-	db 4 ; bg events
-	bg_event  0,  1, BGEVENT_READ, StoveScript
-	bg_event  1,  1, BGEVENT_READ, SinkScript
-	bg_event  2,  1, BGEVENT_READ, FridgeScript
-	bg_event  4,  1, BGEVENT_READ, TVScript
+	def_bg_events
+	bg_event  0,  1, BGEVENT_READ, PlayersHouse1FStoveScript
+	bg_event  1,  1, BGEVENT_READ, PlayersHouse1FSinkScript
+	bg_event  2,  1, BGEVENT_READ, PlayersHouse1FFridgeScript
+	bg_event  4,  1, BGEVENT_READ, PlayersHouse1FTVScript
 
-	db 5 ; object events
+	def_object_events
 	object_event  7,  4, SPRITE_MOM, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, MomScript, EVENT_PLAYERS_HOUSE_MOM_1
 	object_event  2,  2, SPRITE_MOM, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, MORN, 0, OBJECTTYPE_SCRIPT, 0, MomScript, EVENT_PLAYERS_HOUSE_MOM_2
 	object_event  7,  4, SPRITE_MOM, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, DAY, 0, OBJECTTYPE_SCRIPT, 0, MomScript, EVENT_PLAYERS_HOUSE_MOM_2

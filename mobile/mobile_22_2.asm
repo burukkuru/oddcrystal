@@ -32,7 +32,7 @@ Function8b342::
 .two
 	ret
 
-Function8b35d:
+Function8b35d: ; unreferenced
 	ld a, h
 	cp d
 	ret nz
@@ -40,7 +40,7 @@ Function8b35d:
 	cp e
 	ret
 
-Function8b363:
+Function8b363: ; unreferenced
 	push bc
 	farcall Mobile_AlwaysReturnNotCarry
 	pop bc
@@ -118,8 +118,8 @@ Function8b3a4:
 	ret
 
 Function8b3b0:
-	ld bc, $a037 ; 4:a037
-	ld a, [$a60b]
+	ld bc, s4_a037
+	ld a, [s4_a60b]
 	and a
 	jr z, .asm_8b3c2
 	cp $3
@@ -129,9 +129,9 @@ Function8b3b0:
 .asm_8b3c2
 	call Function8b36c
 	xor a
-	ld [$a60b], a
+	ld [s4_a60b], a
 .asm_8b3c9
-	ld a, [$a60b]
+	ld a, [s4_a60b]
 	ret
 
 Function8b3cd:
@@ -406,7 +406,7 @@ Function8b539:
 
 Function8b555:
 .loop
-	ld hl, UnknownText_0x8b5ce
+	ld hl, EnterNewPasscodeText
 	call PrintText
 	ld bc, wd017
 	call Function8b45c
@@ -417,12 +417,12 @@ Function8b555:
 	ld bc, wd017
 	call Function8b664
 	jr nz, .asm_8b57c
-	ld hl, UnknownText_0x8b5e2
+	ld hl, FourZerosInvalidText
 	call PrintText
 	jr .loop
 
 .asm_8b57c
-	ld hl, UnknownText_0x8b5d3
+	ld hl, ConfirmPasscodeText
 	call PrintText
 	ld bc, wd013
 	call Function8b45c
@@ -434,21 +434,21 @@ Function8b555:
 	call Function89448
 	ld bc, wd013
 	call Function8b493
-	ld hl, UnknownText_0x8b5d8
+	ld hl, PasscodesNotSameText
 	call PrintText
 	jr .asm_8b57c
 
 .strings_equal
 	call OpenSRAMBank4
 	ld hl, wd013
-	ld de, $a037 ; 4:a037
+	ld de, s4_a037
 	ld bc, $4
 	call CopyBytes
 	call CloseSRAM
 	call Function89448
 	ld bc, wd013
 	call Function8b493
-	ld hl, UnknownText_0x8b5dd
+	ld hl, PasscodeSetText
 	call PrintText
 	and a
 .asm_8b5c8
@@ -457,28 +457,23 @@ Function8b555:
 	pop af
 	ret
 
-UnknownText_0x8b5ce:
-	; Please enter any four-digit number.
+EnterNewPasscodeText:
 	text_far _EnterNewPasscodeText
 	text_end
 
-UnknownText_0x8b5d3:
-	; Enter the same number to confirm.
+ConfirmPasscodeText:
 	text_far _ConfirmPasscodeText
 	text_end
 
-UnknownText_0x8b5d8:
-	; That's not the same number.
+PasscodesNotSameText:
 	text_far _PasscodesNotSameText
 	text_end
 
-UnknownText_0x8b5dd:
-	; Your PASSCODE has been set. Enter this number next time to open the CARD FOLDER.
+PasscodeSetText:
 	text_far _PasscodeSetText
 	text_end
 
-UnknownText_0x8b5e2:
-	; 0000 is invalid!
+FourZerosInvalidText:
 	text_far _FourZerosInvalidText
 	text_end
 
@@ -494,7 +489,7 @@ Function8b5e7:
 	ld e, $0
 	call Function89c44
 .asm_8b602
-	ld hl, UnknownText_0x8b642
+	ld hl, EnterPasscodeText
 	call PrintText
 	ld bc, wd013
 	call Function8b45c
@@ -503,11 +498,11 @@ Function8b5e7:
 	ld bc, wd013
 	call Function8b493
 	call OpenSRAMBank4
-	ld hl, $a037 ; 4:a037
+	ld hl, s4_a037
 	call Function8b3a4
 	call CloseSRAM
 	jr z, .asm_8b635
-	ld hl, UnknownText_0x8b647
+	ld hl, IncorrectPasscodeText
 	call PrintText
 	ld bc, wd013
 	call Function8b36c
@@ -522,13 +517,11 @@ Function8b5e7:
 	pop af
 	ret
 
-UnknownText_0x8b642:
-	; Enter the CARD FOLDER PASSCODE.
+EnterPasscodeText:
 	text_far _EnterPasscodeText
 	text_end
 
-UnknownText_0x8b647:
-	; Incorrect PASSCODE!
+IncorrectPasscodeText:
 	text_far _IncorrectPasscodeText
 	text_end
 
@@ -576,20 +569,20 @@ Function8b677:
 	ret
 
 Function8b690:
-	ld hl, GFX_17afa5 + $514
+	ld hl, MobileCardListGFX
 	ld de, vTiles2
-	ld bc, $160
-	ld a, BANK(GFX_17afa5)
+	ld bc, $16 tiles
+	ld a, BANK(MobileCardListGFX)
 	call FarCopyBytes
-	ld hl, GFX_17afa5 + $514 + $160 - $10
+	ld hl, MobileCardListGFX tile $15
 	ld de, vTiles2 tile $61
-	ld bc, $10
-	ld a, BANK(GFX_17afa5)
+	ld bc, 1 tiles
+	ld a, BANK(MobileCardListGFX)
 	call FarCopyBytes
-	ld hl, GFX_17afa5 + $514 + $160
+	ld hl, MobileCardListGFX tile $16
 	ld de, vTiles0 tile $ee
-	ld bc, $10
-	ld a, BANK(GFX_17afa5)
+	ld bc, 1 tiles
+	ld a, BANK(MobileCardListGFX)
 	call FarCopyBytes
 	ret
 
@@ -622,11 +615,11 @@ Palette_8b6d5:
 	RGB 00, 00, 00
 
 Function8b6ed:
-	hlcoord 0, 0, wAttrMap
+	hlcoord 0, 0, wAttrmap
 	ld bc, $012c
 	xor a
 	call ByteFill
-	hlcoord 0, 14, wAttrMap
+	hlcoord 0, 14, wAttrmap
 	ld bc, $0050
 	ld a, $7
 	call ByteFill
@@ -682,7 +675,7 @@ Function8b73e:
 	ret
 
 Function8b744:
-	ld de, wAttrMap - wTileMap
+	ld de, wAttrmap - wTilemap
 	add hl, de
 	inc b
 	inc b
@@ -726,7 +719,7 @@ Function8b75d:
 	jr nz, .asm_8b780
 	jr Function8b79e
 
-Function8b787:
+Function8b787: ; unreferenced
 	ret
 
 Function8b788:
@@ -750,10 +743,10 @@ Function8b788:
 	ret
 
 Function8b79e:
-	hlcoord 0, 1, wAttrMap
+	hlcoord 0, 1, wAttrmap
 	ld a, $1
 	ld [hli], a
-	hlcoord 9, 1, wAttrMap
+	hlcoord 9, 1, wAttrmap
 	ld e, $b
 .asm_8b7a9
 	ld a, $2
@@ -779,7 +772,7 @@ Function8b7bd:
 	ld hl, MenuHeader_0x8b867
 	call CopyMenuHeader
 	ld a, [wd030]
-	ld [wMenuCursorBuffer], a
+	ld [wMenuCursorPosition], a
 	ld a, [wd031]
 	ld [wMenuScrollPosition], a
 	ld a, [wd032]
@@ -803,19 +796,19 @@ Function8b7bd:
 	call Function8b703
 	call Function8b75d
 	call UpdateSprites
-	call Function89209
+	call Mobile_EnableSpriteUpdates
 	call ScrollingMenu
-	call Function8920f
+	call Mobile_DisableSpriteUpdates
 	ld a, [wMenuJoypad]
-	cp $2
+	cp B_BUTTON
 	jr z, .asm_8b823
-	cp $20
+	cp D_LEFT
 	jr nz, .asm_8b813
 	call Function8b832
 	jr .asm_8b7ea
 
 .asm_8b813
-	cp $10
+	cp D_RIGHT
 	jr nz, .asm_8b81c
 	call Function8b83e
 	jr .asm_8b7ea
@@ -855,7 +848,7 @@ Function8b83e:
 Function8b84b:
 	ld [wMenuScrollPosition], a
 	ld a, [wMenuCursorY]
-	ld [wMenuCursorBuffer], a
+	ld [wMenuCursorPosition], a
 	ret
 
 Function8b855:
@@ -1026,7 +1019,7 @@ Function8b99f:
 	ld hl, wd002
 	dec a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hl]
 	cp $ff

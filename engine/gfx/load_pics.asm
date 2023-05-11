@@ -81,7 +81,7 @@ GetAnimatedFrontpic:
 
 _GetFrontpic:
 	ld a, BANK(sEnemyFrontPicTileCount)
-	call GetSRAMBank
+	call OpenSRAM
 	push de
 	call GetBaseData
 	ld a, [wBasePicSize]
@@ -157,7 +157,7 @@ GetFrontpicPointer:
 	push af
 	inc hl
 	ld a, d
-	call GetFarHalfword
+	call GetFarWord
 	pop bc
 	ret
 
@@ -269,7 +269,7 @@ GetMonBackpic:
 	push af
 	inc hl
 	ld a, d
-	call GetFarHalfword
+	call GetFarWord
 	ld de, wDecompressScratch
 	pop af
 	call FarDecompress
@@ -289,7 +289,7 @@ GetTrainerPic:
 	ld a, [wTrainerClass]
 	and a
 	ret z
-	cp NUM_TRAINER_CLASSES
+	cp NUM_TRAINER_CLASSES + 1
 	ret nc
 	call WaitBGMap
 	xor a
@@ -309,7 +309,7 @@ GetTrainerPic:
 	push af
 	inc hl
 	ld a, BANK(TrainerPicPointers)
-	call GetFarHalfword
+	call GetFarWord
 	pop af
 	ld de, wDecompressScratch
 	call FarDecompress
@@ -322,12 +322,12 @@ GetTrainerPic:
 	pop af
 	ldh [rSVBK], a
 	call WaitBGMap
-	ld a, $1
+	ld a, 1
 	ldh [hBGMapMode], a
 	ret
 
 DecompressGet2bpp:
-; Decompress lz data from b:hl to scratch space at 6:d000, then copy it to address de.
+; Decompress lz data from b:hl to wDecompressScratch, then copy it to address de.
 
 	ldh a, [rSVBK]
 	push af

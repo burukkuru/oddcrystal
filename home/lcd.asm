@@ -6,7 +6,7 @@ LCD::
 	and a
 	jr z, .done
 
-; At this point it's assumed we're in WRAM bank 5!
+; At this point it's assumed we're in BANK(wLYOverrides)!
 	push bc
 	ldh a, [rLY]
 	ld c, a
@@ -47,7 +47,7 @@ DisableLCD::
 	jr nz, .wait
 
 	ldh a, [rLCDC]
-	and $ff ^ (1 << rLCDC_ENABLE)
+	and ~(1 << rLCDC_ENABLE)
 	ldh [rLCDC], a
 
 	xor a

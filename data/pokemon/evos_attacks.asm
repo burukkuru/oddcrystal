@@ -1,5 +1,3 @@
-INCLUDE "constants.asm"
-
 ; Evolutions and attacks are grouped together since they're both checked at level-up.
 
 SECTION "Evolutions and Attacks Pointers", ROMX
@@ -18,7 +16,7 @@ SECTION "Evolutions and Attacks Pointers", ROMX
 
 EvosAttacksPointers::
 	indirect_table 2, 1
-	indirect_entries MEW, EvosAttacksPointers1
+	indirect_entries JOHTO_POKEMON - 1, EvosAttacksPointers1
 	indirect_entries NUM_POKEMON, EvosAttacksPointers2
 	indirect_table_end
 

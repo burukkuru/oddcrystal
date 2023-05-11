@@ -4,10 +4,10 @@ CanObjectMoveInDirection:
 	bit SWIMMING_F, [hl]
 	jr z, .not_swimming
 
+; BUG: Swimming NPCs aren't limited by their movement radius (see docs/bugs_and_glitches.md)
 	ld hl, OBJECT_FLAGS1
 	add hl, bc
-	bit NOCLIP_TILES_F, [hl] ; lost, uncomment next line to fix
-	; jr nz, .noclip_tiles
+	bit NOCLIP_TILES_F, [hl]
 	push hl
 	push bc
 	call WillObjectBumpIntoLand
@@ -58,54 +58,54 @@ CanObjectMoveInDirection:
 	ret
 
 WillObjectBumpIntoWater:
-	call Function6f5f
+	call CanObjectLeaveTile
 	ret c
-	ld hl, OBJECT_NEXT_MAP_X
+	ld hl, OBJECT_MAP_X
 	add hl, bc
 	ld d, [hl]
-	ld hl, OBJECT_NEXT_MAP_Y
+	ld hl, OBJECT_MAP_Y
 	add hl, bc
 	ld e, [hl]
 	ld hl, OBJECT_PALETTE
 	add hl, bc
 	bit OAM_PRIORITY, [hl]
-	jp nz, Function6fa1
-	ld hl, OBJECT_NEXT_TILE
+	jp nz, WillObjectRemainOnWater
+	ld hl, OBJECT_TILE
 	add hl, bc
 	ld a, [hl]
 	ld d, a
 	call GetTileCollision
-	and a ; LANDTILE
+	and a ; LAND_TILE
 	jr z, WillObjectBumpIntoTile
 	scf
 	ret
 
 WillObjectBumpIntoLand:
-	call Function6f5f
+	call CanObjectLeaveTile
 	ret c
-	ld hl, OBJECT_NEXT_TILE
+	ld hl, OBJECT_TILE
 	add hl, bc
 	ld a, [hl]
 	call GetTileCollision
-	cp WATERTILE
+	cp WATER_TILE
 	jr z, WillObjectBumpIntoTile
 	scf
 	ret
 
 WillObjectBumpIntoTile:
-	ld hl, OBJECT_NEXT_TILE
+	ld hl, OBJECT_TILE
 	add hl, bc
 	ld a, [hl]
-	call Function6f7f
+	call GetSideWallDirectionMask
 	ret nc
 	push af
-	ld hl, OBJECT_DIRECTION_WALKING
+	ld hl, OBJECT_WALKING
 	add hl, bc
 	ld a, [hl]
 	maskbits NUM_DIRECTIONS
 	ld e, a
 	ld d, 0
-	ld hl, .data_6f5b
+	ld hl, .dir_masks
 	add hl, de
 	pop af
 	and [hl]
@@ -113,25 +113,25 @@ WillObjectBumpIntoTile:
 	scf
 	ret
 
-.data_6f5b
+.dir_masks
 	db DOWN_MASK  ; DOWN
 	db UP_MASK    ; UP
 	db RIGHT_MASK ; LEFT
 	db LEFT_MASK  ; RIGHT
 
-Function6f5f:
-	ld hl, OBJECT_STANDING_TILE
+CanObjectLeaveTile:
+	ld hl, OBJECT_LAST_TILE
 	add hl, bc
 	ld a, [hl]
-	call Function6f7f
+	call GetSideWallDirectionMask
 	ret nc
 	push af
-	ld hl, OBJECT_DIRECTION_WALKING
+	ld hl, OBJECT_WALKING
 	add hl, bc
 	maskbits NUM_DIRECTIONS
 	ld e, a
 	ld d, 0
-	ld hl, .data_6f7b
+	ld hl, .dir_masks
 	add hl, de
 	pop af
 	and [hl]
@@ -139,13 +139,13 @@ Function6f5f:
 	scf
 	ret
 
-.data_6f7b
+.dir_masks
 	db UP_MASK    ; DOWN
 	db DOWN_MASK  ; UP
 	db LEFT_MASK  ; LEFT
 	db RIGHT_MASK ; RIGHT
 
-Function6f7f:
+GetSideWallDirectionMask:
 	ld d, a
 	and $f0
 	cp HI_NYBBLE_SIDE_WALLS
@@ -157,16 +157,16 @@ Function6f7f:
 
 .continue
 	ld a, d
-	and 7
+	and $7
 	ld e, a
 	ld d, 0
-	ld hl, .data_6f99
+	ld hl, .side_wall_masks
 	add hl, de
 	ld a, [hl]
 	scf
 	ret
 
-.data_6f99
+.side_wall_masks
 	db RIGHT_MASK             ; COLL_RIGHT_WALL/BUOY
 	db LEFT_MASK              ; COLL_LEFT_WALL/BUOY
 	db DOWN_MASK              ; COLL_UP_WALL/BUOY
@@ -176,8 +176,8 @@ Function6f7f:
 	db DOWN_MASK | RIGHT_MASK ; COLL_UP_RIGHT_WALL/BUOY
 	db DOWN_MASK | LEFT_MASK  ; COLL_UP_LEFT_WALL/BUOY
 
-Function6fa1:
-	ld hl, OBJECT_DIRECTION_WALKING
+WillObjectRemainOnWater:
+	ld hl, OBJECT_WALKING
 	add hl, bc
 	ld a, [hl]
 	maskbits NUM_DIRECTIONS
@@ -213,11 +213,11 @@ Function6fa1:
 	call GetCoordTile
 	call GetTileCollision
 	pop de
-	and a ; LANDTILE
+	and a ; LAND_TILE
 	jr nz, .not_land
 	call GetCoordTile
 	call GetTileCollision
-	and a ; LANDTILE
+	and a ; LAND_TILE
 	jr nz, .not_land
 	xor a
 	ret
@@ -231,29 +231,29 @@ CheckFacingObject::
 
 ; Double the distance for counter tiles.
 	call CheckCounterTile
-	jr nz, .asm_6ff1
+	jr nz, .not_counter
 
-	ld a, [wPlayerStandingMapX]
+	ld a, [wPlayerMapX]
 	sub d
 	cpl
 	inc a
 	add d
 	ld d, a
 
-	ld a, [wPlayerStandingMapY]
+	ld a, [wPlayerMapY]
 	sub e
 	cpl
 	inc a
 	add e
 	ld e, a
 
-.asm_6ff1
+.not_counter
 	ld bc, wObjectStructs ; redundant
 	ld a, 0
-	ldh [hMapObjectIndexBuffer], a
+	ldh [hMapObjectIndex], a
 	call IsNPCAtCoord
 	ret nc
-	ld hl, OBJECT_DIRECTION_WALKING
+	ld hl, OBJECT_WALKING
 	add hl, bc
 	ld a, [hl]
 	cp STANDING
@@ -266,35 +266,36 @@ CheckFacingObject::
 	ret
 
 WillObjectBumpIntoSomeoneElse:
-	ld hl, OBJECT_NEXT_MAP_X
+	ld hl, OBJECT_MAP_X
 	add hl, bc
 	ld d, [hl]
-	ld hl, OBJECT_NEXT_MAP_Y
+	ld hl, OBJECT_MAP_Y
 	add hl, bc
 	ld e, [hl]
 	jr IsNPCAtCoord
 
-Unreferenced_Function7015:
-	ldh a, [hMapObjectIndexBuffer]
+IsObjectFacingSomeoneElse: ; unreferenced
+	ldh a, [hMapObjectIndex]
 	call GetObjectStruct
-	call .CheckWillBeFacingNPC
+	call .GetFacingCoords
 	call IsNPCAtCoord
 	ret
 
-.CheckWillBeFacingNPC:
-	ld hl, OBJECT_NEXT_MAP_X
+.GetFacingCoords:
+	ld hl, OBJECT_MAP_X
 	add hl, bc
 	ld d, [hl]
-	ld hl, OBJECT_NEXT_MAP_Y
+	ld hl, OBJECT_MAP_Y
 	add hl, bc
 	ld e, [hl]
 	call GetSpriteDirection
-	and a
+	and a ; OW_DOWN?
 	jr z, .down
 	cp OW_UP
 	jr z, .up
 	cp OW_LEFT
 	jr z, .left
+	; OW_RIGHT
 	inc d
 	ret
 
@@ -314,7 +315,7 @@ IsNPCAtCoord:
 	ld bc, wObjectStructs
 	xor a
 .loop
-	ldh [hObjectStructIndexBuffer], a
+	ldh [hObjectStructIndex], a
 	call DoesObjectHaveASprite
 	jr z, .next
 
@@ -326,61 +327,60 @@ IsNPCAtCoord:
 	ld hl, OBJECT_PALETTE
 	add hl, bc
 	bit BIG_OBJECT_F, [hl]
-	jr z, .got
+	jr z, .not_big
+	call WillObjectIntersectBigObject
+	jr nc, .check_current_coords
+	jr .continue
 
-	call Function7171
-	jr nc, .ok
-	jr .ok2
-
-.got
-	ld hl, OBJECT_NEXT_MAP_X
-	add hl, bc
-	ld a, [hl]
-	cp d
-	jr nz, .ok
-	ld hl, OBJECT_NEXT_MAP_Y
-	add hl, bc
-	ld a, [hl]
-	cp e
-	jr nz, .ok
-
-.ok2
-	ldh a, [hMapObjectIndexBuffer]
-	ld l, a
-	ldh a, [hObjectStructIndexBuffer]
-	cp l
-	jr nz, .setcarry
-
-.ok
+.not_big
 	ld hl, OBJECT_MAP_X
 	add hl, bc
 	ld a, [hl]
 	cp d
-	jr nz, .next
+	jr nz, .check_current_coords
 	ld hl, OBJECT_MAP_Y
 	add hl, bc
 	ld a, [hl]
 	cp e
-	jr nz, .next
-	ldh a, [hMapObjectIndexBuffer]
+	jr nz, .check_current_coords
+
+.continue
+	ldh a, [hMapObjectIndex]
 	ld l, a
-	ldh a, [hObjectStructIndexBuffer]
+	ldh a, [hObjectStructIndex]
 	cp l
-	jr nz, .setcarry
+	jr nz, .yes
+
+.check_current_coords
+	ld hl, OBJECT_LAST_MAP_X
+	add hl, bc
+	ld a, [hl]
+	cp d
+	jr nz, .next
+	ld hl, OBJECT_LAST_MAP_Y
+	add hl, bc
+	ld a, [hl]
+	cp e
+	jr nz, .next
+	ldh a, [hMapObjectIndex]
+	ld l, a
+	ldh a, [hObjectStructIndex]
+	cp l
+	jr nz, .yes
 
 .next
-	ld hl, OBJECT_STRUCT_LENGTH
+	ld hl, OBJECT_LENGTH
 	add hl, bc
 	ld b, h
 	ld c, l
-	ldh a, [hObjectStructIndexBuffer]
+	ldh a, [hObjectStructIndex]
 	inc a
 	cp NUM_OBJECT_STRUCTS
 	jr nz, .loop
 	and a
 	ret
 
-.setcarry
+.yes
 	scf
 	ret
 
@@ -402,7 +402,7 @@ HasObjectReachedMovementLimit:
 	ld a, [hl]
 	add e
 	ld e, a
-	ld hl, OBJECT_NEXT_MAP_X
+	ld hl, OBJECT_MAP_X
 	add hl, bc
 	ld a, [hl]
 	cp d
@@ -427,7 +427,7 @@ HasObjectReachedMovementLimit:
 	ld a, [hl]
 	add e
 	ld e, a
-	ld hl, OBJECT_NEXT_MAP_Y
+	ld hl, OBJECT_MAP_Y
 	add hl, bc
 	ld a, [hl]
 	cp d
@@ -444,7 +444,7 @@ HasObjectReachedMovementLimit:
 	ret
 
 IsObjectMovingOffEdgeOfScreen:
-	ld hl, OBJECT_NEXT_MAP_X
+	ld hl, OBJECT_MAP_X
 	add hl, bc
 	ld a, [wXCoord]
 	cp [hl]
@@ -455,7 +455,7 @@ IsObjectMovingOffEdgeOfScreen:
 	jr c, .yes
 
 .check_y
-	ld hl, OBJECT_NEXT_MAP_Y
+	ld hl, OBJECT_MAP_Y
 	add hl, bc
 	ld a, [wYCoord]
 	cp [hl]
@@ -473,49 +473,50 @@ IsObjectMovingOffEdgeOfScreen:
 	scf
 	ret
 
-Unreferenced_Function7113:
-	ld a, [wPlayerStandingMapX]
+IsNPCAtPlayerCoord: ; unreferenced
+	ld a, [wPlayerMapX]
 	ld d, a
-	ld a, [wPlayerStandingMapY]
+	ld a, [wPlayerMapY]
 	ld e, a
 	ld bc, wObjectStructs
 	xor a
 .loop
-	ldh [hObjectStructIndexBuffer], a
+	ldh [hObjectStructIndex], a
 	call DoesObjectHaveASprite
 	jr z, .next
-	ld hl, OBJECT_MOVEMENTTYPE
+
+	ld hl, OBJECT_MOVEMENT_TYPE
 	add hl, bc
 	ld a, [hl]
 	cp SPRITEMOVEDATA_BIGDOLLSYM
-	jr nz, .not_snorlax
-	call Function7171
+	jr nz, .not_big
+	call WillObjectIntersectBigObject
 	jr c, .yes
 	jr .next
 
-.not_snorlax
-	ld hl, OBJECT_NEXT_MAP_Y
+.not_big
+	ld hl, OBJECT_MAP_Y
 	add hl, bc
 	ld a, [hl]
 	cp e
 	jr nz, .check_current_coords
-	ld hl, OBJECT_NEXT_MAP_X
+	ld hl, OBJECT_MAP_X
 	add hl, bc
 	ld a, [hl]
 	cp d
 	jr nz, .check_current_coords
-	ldh a, [hObjectStructIndexBuffer]
+	ldh a, [hObjectStructIndex]
 	cp PLAYER_OBJECT
 	jr z, .next
 	jr .yes
 
 .check_current_coords
-	ld hl, OBJECT_MAP_Y
+	ld hl, OBJECT_LAST_MAP_Y
 	add hl, bc
 	ld a, [hl]
 	cp e
 	jr nz, .next
-	ld hl, OBJECT_MAP_X
+	ld hl, OBJECT_LAST_MAP_X
 	add hl, bc
 	ld a, [hl]
 	cp d
@@ -523,11 +524,11 @@ Unreferenced_Function7113:
 	jr .yes
 
 .next
-	ld hl, OBJECT_STRUCT_LENGTH
+	ld hl, OBJECT_LENGTH
 	add hl, bc
 	ld b, h
 	ld c, l
-	ldh a, [hObjectStructIndexBuffer]
+	ldh a, [hObjectStructIndex]
 	inc a
 	cp NUM_OBJECT_STRUCTS
 	jr nz, .loop
@@ -538,20 +539,20 @@ Unreferenced_Function7113:
 	scf
 	ret
 
-Function7171:
-	ld hl, OBJECT_NEXT_MAP_X
+WillObjectIntersectBigObject:
+	ld hl, OBJECT_MAP_X
 	add hl, bc
 	ld a, d
 	sub [hl]
 	jr c, .nope
-	cp $2
+	cp 2 ; big doll width
 	jr nc, .nope
-	ld hl, OBJECT_NEXT_MAP_Y
+	ld hl, OBJECT_MAP_Y
 	add hl, bc
 	ld a, e
 	sub [hl]
 	jr c, .nope
-	cp $2
+	cp 2 ; big doll height
 	jr nc, .nope
 	scf
 	ret

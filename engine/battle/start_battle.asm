@@ -8,7 +8,7 @@ ShowLinkBattleParticipants:
 	farcall _ShowLinkBattleParticipants
 	ld c, 150
 	call DelayFrames
-	call ClearTileMap
+	call ClearTilemap
 	call ClearSprites
 	ret
 
@@ -38,7 +38,7 @@ FindFirstAliveMonAndStartBattle:
 	ld a, 1
 	ldh [hBGMapMode], a
 	call ClearSprites
-	call ClearTileMap
+	call ClearTilemap
 	xor a
 	ldh [hBGMapMode], a
 	ldh [hWY], a
@@ -93,7 +93,7 @@ PlayBattleMusic:
 	cp RED
 	jr z, .done
 
-	; They should have included EXECUTIVEM, EXECUTIVEF, and SCIENTIST too...
+; BUG: Team Rocket battle music is not used for Executives or Scientists (see docs/bugs_and_glitches.md)
 	ld de, MUSIC_ROCKET_BATTLE
 	cp GRUNTM
 	jr z, .done

@@ -6,9 +6,9 @@ MoveTutor:
 	ld b, SCGB_PACKPALS
 	call GetSGBLayout
 	xor a
-	ld [wItemAttributeParamBuffer], a
+	ld [wItemAttributeValue], a
 	call .GetMoveTutorMove
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	ld [wPutativeTMHMMove], a
 	call GetMoveName
 	call CopyName1
@@ -55,7 +55,7 @@ CheckCanLearnMoveTutorMove:
 	push bc
 	ld a, [wCurPartyMon]
 	ld hl, wPartyMonNicknames
-	call GetNick
+	call GetNickname
 	pop bc
 
 	ld a, c
@@ -65,8 +65,8 @@ CheckCanLearnMoveTutorMove:
 	ld de, SFX_WRONG
 	call PlaySFX
 	pop de
-	ld a, BANK(Text_TMHMNotCompatible)
-	ld hl, Text_TMHMNotCompatible
+	ld a, BANK(TMHMNotCompatibleText)
+	ld hl, TMHMNotCompatibleText
 	call FarPrintText
 	jr .didnt_learn
 

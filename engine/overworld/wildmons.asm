@@ -28,12 +28,12 @@ LoadWildMonData:
 FindNest:
 ; Parameters:
 ; e: 0 = Johto, 1 = Kanto
-; wNamedObjectIndexBuffer: species
+; wNamedObjectIndex: species
 	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	xor a
 	call ByteFill
-	ld a, [wNamedObjectIndexBuffer]
+	ld a, [wNamedObjectIndex]
 	call GetPokemonIndexFromID
 	ld b, h
 	ld c, l
@@ -160,7 +160,7 @@ FindNest:
 .RoamMon1:
 	ld a, [wRoamMon1Species]
 	ld b, a
-	ld a, [wNamedObjectIndexBuffer]
+	ld a, [wNamedObjectIndex]
 	cp b
 	ret nz
 	ld a, [wRoamMon1MapGroup]
@@ -176,7 +176,7 @@ FindNest:
 .RoamMon2:
 	ld a, [wRoamMon2Species]
 	ld b, a
-	ld a, [wNamedObjectIndexBuffer]
+	ld a, [wNamedObjectIndex]
 	cp b
 	ret nz
 	ld a, [wRoamMon2MapGroup]
@@ -735,11 +735,14 @@ JumpRoamMons:
 JumpRoamMon:
 .loop
 	ld hl, RoamMaps
-.innerloop1                   ; This loop happens to be unnecessary.
-	call Random               ; Choose a random number.
-	maskbits NUM_ROAMMON_MAPS ; Mask the number to limit it between 0 and 15.
-	cp NUM_ROAMMON_MAPS       ; If the number is not less than 16, try again.
-	jr nc, .innerloop1        ; I'm sure you can guess why this check is bogus.
+.innerloop1
+	; 0-15 are all valid indexes into RoamMaps,
+	; so this retry loop is unnecessary
+	; since NUM_ROAMMON_MAPS happens to be 16
+	call Random
+	maskbits NUM_ROAMMON_MAPS
+	cp NUM_ROAMMON_MAPS
+	jr nc, .innerloop1
 	inc a
 	ld b, a
 .innerloop2 ; Loop to get hl to the address of the chosen roam map.
@@ -864,9 +867,9 @@ RandomUnseenWildMon:
 	ld h, b
 	ld l, c
 	call GetPokemonIDFromIndex
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	call GetPokemonName
-	ld hl, .SawRareMonText
+	ld hl, .JustSawSomeRareMonText
 	call PrintText
 	xor a
 	ld [wScriptVar], a
@@ -877,8 +880,7 @@ RandomUnseenWildMon:
 	ld [wScriptVar], a
 	ret
 
-.SawRareMonText:
-	; I just saw some rare @  in @ . I'll call you if I see another rare #MON, OK?
+.JustSawSomeRareMonText:
 	text_far _JustSawSomeRareMonText
 	text_end
 
@@ -896,7 +898,7 @@ RandomPhoneWildMon:
 	ld h, [hl]
 	ld l, a
 	call GetPokemonIDFromIndex
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	ld hl, wStringBuffer1
 	ld de, wStringBuffer4
@@ -919,7 +921,7 @@ RandomPhoneMon:
 	ld [wTrainerGroupBank], a
 	inc hl
 	ld a, BANK(TrainerGroups)
-	call GetFarHalfword
+	call GetFarWord
 
 .skip_trainer
 	dec e
@@ -985,9 +987,9 @@ RandomPhoneMon:
 
 	inc hl ; species
 	ld a, [wTrainerGroupBank]
-	call GetFarHalfword
+	call GetFarWord
 	call GetPokemonIDFromIndex
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	ld hl, wStringBuffer1
 	ld de, wStringBuffer4

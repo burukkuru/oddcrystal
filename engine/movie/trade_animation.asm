@@ -1,5 +1,5 @@
-TRADEANIM_RIGHT_ARROW EQU "▶" ; $ed
-TRADEANIM_LEFT_ARROW  EQU "▼" ; $ee
+DEF TRADEANIM_RIGHT_ARROW EQU "▶" ; $ed
+DEF TRADEANIM_LEFT_ARROW  EQU "▼" ; $ee
 
 ; TradeAnim_TubeAnimJumptable.Jumptable indexes
 	const_def
@@ -7,11 +7,20 @@ TRADEANIM_LEFT_ARROW  EQU "▼" ; $ee
 	const TRADEANIMSTATE_1 ; 1
 	const TRADEANIMSTATE_2 ; 2
 	const TRADEANIMSTATE_3 ; 3
-TRADEANIMJUMPTABLE_LENGTH EQU const_value
+DEF TRADEANIMJUMPTABLE_LENGTH EQU const_value
+
+MACRO add_tradeanim
+\1_TradeCmd:
+	dw \1
+ENDM
+
+MACRO tradeanim
+	db (\1_TradeCmd - DoTradeAnimation.Jumptable) / 2
+ENDM
 
 TradeAnimation:
 	xor a
-	ld [wcf66], a
+	ld [wUnusedTradeAnimPlayEvolutionMusic], a
 	ld hl, wPlayerTrademonSenderName
 	ld de, wOTTrademonSenderName
 	call LinkTradeAnim_LoadTradePlayerNames
@@ -22,47 +31,47 @@ TradeAnimation:
 	jr RunTradeAnimScript
 
 .script
-	tradeanim_setup_givemon_scroll
-	tradeanim_show_givemon_data
-	tradeanim_do_givemon_scroll
-	tradeanim_wait_80
-	tradeanim_wait_96
-	tradeanim_poof
-	tradeanim_rocking_ball
-	tradeanim_enter_link_tube
-	tradeanim_wait_anim
-	tradeanim_bulge_through_tube
-	tradeanim_wait_anim
-	tradeanim_textbox_scroll
-	tradeanim_give_trademon_sfx
-	tradeanim_tube_to_ot
-	tradeanim_sent_to_ot_text
-	tradeanim_scroll_out_right
+	tradeanim TradeAnim_SetupGivemonScroll
+	tradeanim TradeAnim_ShowGivemonData
+	tradeanim TradeAnim_DoGivemonScroll
+	tradeanim TradeAnim_Wait80
+	tradeanim TradeAnim_Wait96
+	tradeanim TradeAnim_Poof
+	tradeanim TradeAnim_RockingBall
+	tradeanim TradeAnim_EnterLinkTube1
+	tradeanim TradeAnim_WaitAnim
+	tradeanim TradeAnim_BulgeThroughTube
+	tradeanim TradeAnim_WaitAnim
+	tradeanim TradeAnim_TextboxScrollStart
+	tradeanim TradeAnim_GiveTrademonSFX
+	tradeanim TradeAnim_TubeToOT1
+	tradeanim TradeAnim_SentToOTText
+	tradeanim TradeAnim_ScrollOutRight
 
-	tradeanim_ot_sends_text_1
-	tradeanim_ot_bids_farewell
-	tradeanim_wait_40
-	tradeanim_scroll_out_right
-	tradeanim_get_trademon_sfx
-	tradeanim_tube_to_player
-	tradeanim_enter_link_tube
-	tradeanim_drop_ball
-	tradeanim_exit_link_tube
-	tradeanim_wait_anim
-	tradeanim_show_getmon_data
-	tradeanim_poof
-	tradeanim_wait_anim
-	tradeanim_frontpic_scroll
-	tradeanim_animate_frontpic
-	tradeanim_wait_80_if_ot_egg
-	tradeanim_textbox_scroll
-	tradeanim_take_care_of_text
-	tradeanim_scroll_out_right
-	tradeanim_end
+	tradeanim TradeAnim_OTSendsText1
+	tradeanim TradeAnim_OTBidsFarewell
+	tradeanim TradeAnim_Wait40
+	tradeanim TradeAnim_ScrollOutRight
+	tradeanim TradeAnim_GetTrademonSFX
+	tradeanim TradeAnim_TubeToPlayer1
+	tradeanim TradeAnim_EnterLinkTube1
+	tradeanim TradeAnim_DropBall
+	tradeanim TradeAnim_ExitLinkTube
+	tradeanim TradeAnim_WaitAnim
+	tradeanim TradeAnim_ShowGetmonData
+	tradeanim TradeAnim_Poof
+	tradeanim TradeAnim_WaitAnim
+	tradeanim TradeAnim_FrontpicScrollStart
+	tradeanim TradeAnim_AnimateFrontpic
+	tradeanim TradeAnim_Wait80IfOTEgg
+	tradeanim TradeAnim_TextboxScrollStart
+	tradeanim TradeAnim_TakeCareOfText
+	tradeanim TradeAnim_ScrollOutRight
+	tradeanim TradeAnim_End
 
 TradeAnimationPlayer2:
 	xor a
-	ld [wcf66], a
+	ld [wUnusedTradeAnimPlayEvolutionMusic], a
 	ld hl, wOTTrademonSenderName
 	ld de, wPlayerTrademonSenderName
 	call LinkTradeAnim_LoadTradePlayerNames
@@ -73,42 +82,42 @@ TradeAnimationPlayer2:
 	jr RunTradeAnimScript
 
 .script
-	tradeanim_ot_sends_text_2
-	tradeanim_ot_bids_farewell
-	tradeanim_wait_40
-	tradeanim_scroll_out_right
-	tradeanim_get_trademon_sfx
-	tradeanim_tube_to_ot
-	tradeanim_enter_link_tube
-	tradeanim_drop_ball
-	tradeanim_exit_link_tube
-	tradeanim_wait_anim
-	tradeanim_show_getmon_data
-	tradeanim_poof
-	tradeanim_wait_anim
-	tradeanim_frontpic_scroll
-	tradeanim_animate_frontpic
-	tradeanim_wait_180_if_ot_egg
-	tradeanim_textbox_scroll
-	tradeanim_take_care_of_text
-	tradeanim_scroll_out_right
+	tradeanim TradeAnim_OTSendsText2
+	tradeanim TradeAnim_OTBidsFarewell
+	tradeanim TradeAnim_Wait40
+	tradeanim TradeAnim_ScrollOutRight
+	tradeanim TradeAnim_GetTrademonSFX
+	tradeanim TradeAnim_TubeToOT1
+	tradeanim TradeAnim_EnterLinkTube1
+	tradeanim TradeAnim_DropBall
+	tradeanim TradeAnim_ExitLinkTube
+	tradeanim TradeAnim_WaitAnim
+	tradeanim TradeAnim_ShowGetmonData
+	tradeanim TradeAnim_Poof
+	tradeanim TradeAnim_WaitAnim
+	tradeanim TradeAnim_FrontpicScrollStart
+	tradeanim TradeAnim_AnimateFrontpic
+	tradeanim TradeAnim_Wait180IfOTEgg
+	tradeanim TradeAnim_TextboxScrollStart
+	tradeanim TradeAnim_TakeCareOfText
+	tradeanim TradeAnim_ScrollOutRight
 
-	tradeanim_setup_givemon_scroll
-	tradeanim_show_givemon_data
-	tradeanim_do_givemon_scroll
-	tradeanim_wait_40
-	tradeanim_poof
-	tradeanim_rocking_ball
-	tradeanim_enter_link_tube
-	tradeanim_wait_anim
-	tradeanim_bulge_through_tube
-	tradeanim_wait_anim
-	tradeanim_textbox_scroll
-	tradeanim_give_trademon_sfx
-	tradeanim_tube_to_player
-	tradeanim_sent_to_ot_text
-	tradeanim_scroll_out_right
-	tradeanim_end
+	tradeanim TradeAnim_SetupGivemonScroll
+	tradeanim TradeAnim_ShowGivemonData
+	tradeanim TradeAnim_DoGivemonScroll
+	tradeanim TradeAnim_Wait40
+	tradeanim TradeAnim_Poof
+	tradeanim TradeAnim_RockingBall
+	tradeanim TradeAnim_EnterLinkTube1
+	tradeanim TradeAnim_WaitAnim
+	tradeanim TradeAnim_BulgeThroughTube
+	tradeanim TradeAnim_WaitAnim
+	tradeanim TradeAnim_TextboxScrollStart
+	tradeanim TradeAnim_GiveTrademonSFX
+	tradeanim TradeAnim_TubeToPlayer1
+	tradeanim TradeAnim_SentToOTText
+	tradeanim TradeAnim_ScrollOutRight
+	tradeanim TradeAnim_End
 
 RunTradeAnimScript:
 	ld hl, wTradeAnimAddress
@@ -128,7 +137,7 @@ RunTradeAnimScript:
 	push af
 	set NO_TEXT_SCROLL, [hl]
 	call .TradeAnimLayout
-	ld a, [wcf66]
+	ld a, [wUnusedTradeAnimPlayEvolutionMusic]
 	and a
 	jr nz, .anim_loop
 	ld de, MUSIC_EVOLUTION
@@ -149,7 +158,7 @@ RunTradeAnimScript:
 	ld [wJumptableIndex], a
 	call ClearBGPalettes
 	call ClearSprites
-	call ClearTileMap
+	call ClearTilemap
 	call DisableLCD
 	call LoadFontsBattleExtra
 	callfar ClearSpriteAnims
@@ -159,7 +168,7 @@ RunTradeAnimScript:
 	ld a, $1
 	ldh [rVBK], a
 	ld hl, vTiles0
-	ld bc, sScratch - vTiles0
+	ld bc, VRAM_End - VRAM_Begin
 	xor a
 	call ByteFill
 	ld a, $0
@@ -167,21 +176,21 @@ RunTradeAnimScript:
 
 .NotCGB:
 	hlbgcoord 0, 0
-	ld bc, sScratch - vBGMap0
+	ld bc, VRAM_End - vBGMap0
 	ld a, " "
 	call ByteFill
 	ld hl, TradeGameBoyLZ
 	ld de, vTiles2 tile $31
 	call Decompress
-	ld hl, TradeArrowGFX
+	ld hl, TradeArrowRightGFX
 	ld de, vTiles0 tile TRADEANIM_RIGHT_ARROW
 	ld bc, 1 tiles
-	ld a, BANK(TradeArrowGFX)
+	ld a, BANK(TradeArrowRightGFX)
 	call FarCopyBytes
-	ld hl, TradeArrowGFX + 1 tiles
+	ld hl, TradeArrowLeftGFX
 	ld de, vTiles0 tile TRADEANIM_LEFT_ARROW
 	ld bc, 1 tiles
-	ld a, BANK(TradeArrowGFX)
+	ld a, BANK(TradeArrowLeftGFX)
 	call FarCopyBytes
 	xor a
 	ldh [hSCX], a
@@ -203,10 +212,10 @@ RunTradeAnimScript:
 	call TradeAnim_GetFrontpic
 	ld a, [wPlayerTrademonSpecies]
 	ld de, wPlayerTrademonSpeciesName
-	call TradeAnim_GetNickname
+	call TradeAnim_GetNicknamename
 	ld a, [wOTTrademonSpecies]
 	ld de, wOTTrademonSpeciesName
-	call TradeAnim_GetNickname
+	call TradeAnim_GetNicknamename
 	call TradeAnim_NormalPals
 	ret
 
@@ -216,7 +225,7 @@ DoTradeAnimation:
 	jr nz, .finished
 	call .DoTradeAnimCommand
 	callfar PlaySpriteAnimations
-	ld hl, wcf65
+	ld hl, wFrameCounter2
 	inc [hl]
 	call DelayFrame
 	and a
@@ -228,67 +237,57 @@ DoTradeAnimation:
 	ret
 
 .DoTradeAnimCommand:
-	ld a, [wJumptableIndex]
-	ld e, a
-	ld d, 0
-	ld hl, .JumpTable
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	jp hl
+	jumptable .Jumptable, wJumptableIndex
 
-.JumpTable:
-; entries correspond to macros/scripts/trade_anims.asm enumeration
-	dw TradeAnim_AdvanceScriptPointer ; 00
-	dw TradeAnim_ShowGivemonData      ; 01
-	dw TradeAnim_ShowGetmonData       ; 02
-	dw TradeAnim_EnterLinkTube1       ; 03
-	dw TradeAnim_EnterLinkTube2       ; 04
-	dw TradeAnim_ExitLinkTube         ; 05
-	dw TradeAnim_TubeToOT1            ; 06
-	dw TradeAnim_TubeToOT2            ; 07
-	dw TradeAnim_TubeToOT3            ; 08
-	dw TradeAnim_TubeToOT4            ; 09
-	dw TradeAnim_TubeToOT5            ; 0a
-	dw TradeAnim_TubeToOT6            ; 0b
-	dw TradeAnim_TubeToOT7            ; 0c
-	dw TradeAnim_TubeToOT8            ; 0d
-	dw TradeAnim_TubeToPlayer1        ; 0e
-	dw TradeAnim_TubeToPlayer2        ; 0f
-	dw TradeAnim_TubeToPlayer3        ; 10
-	dw TradeAnim_TubeToPlayer4        ; 11
-	dw TradeAnim_TubeToPlayer5        ; 12
-	dw TradeAnim_TubeToPlayer6        ; 13
-	dw TradeAnim_TubeToPlayer7        ; 14
-	dw TradeAnim_TubeToPlayer8        ; 15
-	dw TradeAnim_SentToOTText         ; 16
-	dw TradeAnim_OTBidsFarewell       ; 17
-	dw TradeAnim_TakeCareOfText       ; 18
-	dw TradeAnim_OTSendsText1         ; 19
-	dw TradeAnim_OTSendsText2         ; 1a
-	dw TradeAnim_SetupGivemonScroll   ; 1b
-	dw TradeAnim_DoGivemonScroll      ; 1c
-	dw TradeAnim_FrontpicScrollStart  ; 1d
-	dw TradeAnim_TextboxScrollStart   ; 1e
-	dw TradeAnim_ScrollOutRight       ; 1f
-	dw TradeAnim_ScrollOutRight2      ; 20
-	dw TraideAnim_Wait80              ; 21
-	dw TraideAnim_Wait40              ; 22
-	dw TradeAnim_RockingBall          ; 23
-	dw TradeAnim_DropBall             ; 24
-	dw TradeAnim_WaitAnim             ; 25
-	dw TradeAnim_WaitAnim2            ; 26
-	dw TradeAnim_Poof                 ; 27
-	dw TradeAnim_BulgeThroughTube     ; 28
-	dw TradeAnim_GiveTrademonSFX      ; 29
-	dw TradeAnim_GetTrademonSFX       ; 2a
-	dw TradeAnim_End                  ; 2b
-	dw TradeAnim_AnimateFrontpic      ; 2c
-	dw TraideAnim_Wait96              ; 2d
-	dw TraideAnim_Wait80IfOTEgg       ; 2e
-	dw TraideAnim_Wait180IfOTEgg      ; 2f
+.Jumptable:
+	add_tradeanim TradeAnim_AdvanceScriptPointer ; 00
+	add_tradeanim TradeAnim_ShowGivemonData      ; 01
+	add_tradeanim TradeAnim_ShowGetmonData       ; 02
+	add_tradeanim TradeAnim_EnterLinkTube1       ; 03
+	add_tradeanim TradeAnim_EnterLinkTube2       ; 04
+	add_tradeanim TradeAnim_ExitLinkTube         ; 05
+	add_tradeanim TradeAnim_TubeToOT1            ; 06
+	add_tradeanim TradeAnim_TubeToOT2            ; 07
+	add_tradeanim TradeAnim_TubeToOT3            ; 08
+	add_tradeanim TradeAnim_TubeToOT4            ; 09
+	add_tradeanim TradeAnim_TubeToOT5            ; 0a
+	add_tradeanim TradeAnim_TubeToOT6            ; 0b
+	add_tradeanim TradeAnim_TubeToOT7            ; 0c
+	add_tradeanim TradeAnim_TubeToOT8            ; 0d
+	add_tradeanim TradeAnim_TubeToPlayer1        ; 0e
+	add_tradeanim TradeAnim_TubeToPlayer2        ; 0f
+	add_tradeanim TradeAnim_TubeToPlayer3        ; 10
+	add_tradeanim TradeAnim_TubeToPlayer4        ; 11
+	add_tradeanim TradeAnim_TubeToPlayer5        ; 12
+	add_tradeanim TradeAnim_TubeToPlayer6        ; 13
+	add_tradeanim TradeAnim_TubeToPlayer7        ; 14
+	add_tradeanim TradeAnim_TubeToPlayer8        ; 15
+	add_tradeanim TradeAnim_SentToOTText         ; 16
+	add_tradeanim TradeAnim_OTBidsFarewell       ; 17
+	add_tradeanim TradeAnim_TakeCareOfText       ; 18
+	add_tradeanim TradeAnim_OTSendsText1         ; 19
+	add_tradeanim TradeAnim_OTSendsText2         ; 1a
+	add_tradeanim TradeAnim_SetupGivemonScroll   ; 1b
+	add_tradeanim TradeAnim_DoGivemonScroll      ; 1c
+	add_tradeanim TradeAnim_FrontpicScrollStart  ; 1d
+	add_tradeanim TradeAnim_TextboxScrollStart   ; 1e
+	add_tradeanim TradeAnim_ScrollOutRight       ; 1f
+	add_tradeanim TradeAnim_ScrollOutRight2      ; 20
+	add_tradeanim TradeAnim_Wait80               ; 21
+	add_tradeanim TradeAnim_Wait40               ; 22
+	add_tradeanim TradeAnim_RockingBall          ; 23
+	add_tradeanim TradeAnim_DropBall             ; 24
+	add_tradeanim TradeAnim_WaitAnim             ; 25
+	add_tradeanim TradeAnim_WaitAnim2            ; 26
+	add_tradeanim TradeAnim_Poof                 ; 27
+	add_tradeanim TradeAnim_BulgeThroughTube     ; 28
+	add_tradeanim TradeAnim_GiveTrademonSFX      ; 29
+	add_tradeanim TradeAnim_GetTrademonSFX       ; 2a
+	add_tradeanim TradeAnim_End                  ; 2b
+	add_tradeanim TradeAnim_AnimateFrontpic      ; 2c
+	add_tradeanim TradeAnim_Wait96               ; 2d
+	add_tradeanim TradeAnim_Wait80IfOTEgg        ; 2e
+	add_tradeanim TradeAnim_Wait180IfOTEgg       ; 2f
 
 TradeAnim_IncrementJumptableIndex:
 	ld hl, wJumptableIndex
@@ -359,7 +358,7 @@ TradeAnim_InitTubeAnim:
 
 	pop de
 	ld a, SPRITE_ANIM_INDEX_TRADEMON_ICON
-	call _InitSpriteAnimStruct
+	call InitSpriteAnimStruct
 
 	ld hl, SPRITEANIMSTRUCT_JUMPTABLE_INDEX
 	add hl, bc
@@ -368,7 +367,7 @@ TradeAnim_InitTubeAnim:
 
 	pop de
 	ld a, SPRITE_ANIM_INDEX_TRADEMON_BUBBLE
-	call _InitSpriteAnimStruct
+	call InitSpriteAnimStruct
 
 	ld hl, SPRITEANIMSTRUCT_JUMPTABLE_INDEX
 	add hl, bc
@@ -466,12 +465,12 @@ TradeAnim_TubeToPlayer6:
 TradeAnim_TubeToOT8:
 TradeAnim_TubeToPlayer8:
 	call ClearBGPalettes
-	call ClearTileMap
+	call ClearTilemap
 	call ClearSprites
 	call DisableLCD
 	callfar ClearSpriteAnims
 	hlbgcoord 0, 0
-	ld bc, sScratch - vBGMap0
+	ld bc, VRAM_End - vBGMap0
 	ld a, " "
 	call ByteFill
 	xor a
@@ -534,7 +533,7 @@ TradeAnim_TubeAnimJumptable:
 
 .Zero:
 .Three:
-	call TradeAnim_BlankTileMap
+	call TradeAnim_BlankTilemap
 	hlcoord 9, 3
 	ld [hl], $5b
 	inc hl
@@ -546,7 +545,7 @@ TradeAnim_TubeAnimJumptable:
 	ret
 
 .One:
-	call TradeAnim_BlankTileMap
+	call TradeAnim_BlankTilemap
 	hlcoord 0, 3
 	ld bc, SCREEN_WIDTH
 	ld a, $60
@@ -554,7 +553,7 @@ TradeAnim_TubeAnimJumptable:
 	ret
 
 .Two:
-	call TradeAnim_BlankTileMap
+	call TradeAnim_BlankTilemap
 	hlcoord 0, 3
 	ld bc, $11
 	ld a, $60
@@ -593,7 +592,7 @@ TradeAnim_PlaceTrademonStatsOnTubeAnim:
 	call WaitTop
 	ld a, HIGH(vBGMap1)
 	ldh [hBGMapAddress + 1], a
-	call ClearTileMap
+	call ClearTilemap
 	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH
 	ld a, "─"
@@ -623,11 +622,11 @@ TradeAnim_PlaceTrademonStatsOnTubeAnim:
 	call WaitTop
 	ld a, HIGH(vBGMap0)
 	ldh [hBGMapAddress + 1], a
-	call ClearTileMap
+	call ClearTilemap
 	ret
 
 TradeAnim_EnterLinkTube1:
-	call ClearTileMap
+	call ClearTilemap
 	call WaitTop
 	ld a, $a0
 	ldh [hSCX], a
@@ -671,7 +670,7 @@ TradeAnim_ExitLinkTube:
 	ret
 
 .done
-	call ClearTileMap
+	call ClearTilemap
 	xor a
 	ldh [hSCX], a
 	call TradeAnim_AdvanceScriptPointer
@@ -735,7 +734,7 @@ TradeAnim_ScrollOutRight:
 	call WaitTop
 	ld a, HIGH(vBGMap0)
 	ldh [hBGMapAddress + 1], a
-	call ClearTileMap
+	call ClearTilemap
 	call TradeAnim_IncrementJumptableIndex
 	ret
 
@@ -818,9 +817,9 @@ TradeAnim_GetFrontpic:
 	predef GetMonFrontpic
 	ret
 
-TradeAnim_GetNickname:
+TradeAnim_GetNicknamename:
 	push de
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	ld hl, wStringBuffer1
 	pop de
@@ -840,7 +839,7 @@ TradeAnim_ShowFrontpic:
 	lb bc, 10, $31
 	call Request2bpp
 	call WaitTop
-	call TradeAnim_BlankTileMap
+	call TradeAnim_BlankTilemap
 	hlcoord 7, 2
 	xor a
 	ldh [hGraphicStartTile], a
@@ -849,32 +848,32 @@ TradeAnim_ShowFrontpic:
 	call WaitBGMap
 	ret
 
-TraideAnim_Wait80:
+TradeAnim_Wait80:
 	ld c, 80
 	call DelayFrames
 	call TradeAnim_AdvanceScriptPointer
 	ret
 
-TraideAnim_Wait40:
+TradeAnim_Wait40:
 	ld c, 40
 	call DelayFrames
 	call TradeAnim_AdvanceScriptPointer
 	ret
 
-TraideAnim_Wait96:
+TradeAnim_Wait96:
 	ld c, 96
 	call DelayFrames
 	call TradeAnim_AdvanceScriptPointer
 	ret
 
-TraideAnim_Wait80IfOTEgg:
+TradeAnim_Wait80IfOTEgg:
 	call IsOTTrademonEgg
 	ret nz
 	ld c, 80
 	call DelayFrames
 	ret
 
-TraideAnim_Wait180IfOTEgg:
+TradeAnim_Wait180IfOTEgg:
 	call IsOTTrademonEgg
 	ret nz
 	ld c, 180
@@ -925,7 +924,7 @@ ShowOTTrademonStats:
 
 TrademonStats_MonTemplate:
 	call WaitTop
-	call TradeAnim_BlankTileMap
+	call TradeAnim_BlankTilemap
 	ld a, HIGH(vBGMap1)
 	ldh [hBGMapAddress + 1], a
 	hlcoord 3, 0
@@ -945,7 +944,7 @@ TrademonStats_MonTemplate:
 
 TrademonStats_Egg:
 	call WaitTop
-	call TradeAnim_BlankTileMap
+	call TradeAnim_BlankTilemap
 	ld a, HIGH(vBGMap1)
 	ldh [hBGMapAddress + 1], a
 	hlcoord 3, 0
@@ -971,9 +970,20 @@ TrademonStats_WaitBGMap:
 	ret
 
 TrademonStats_PrintSpeciesNumber:
+; input de = address to species number
+	ld a, [de]
+	call GetPokemonIndexFromID
+	ld a, h
+	ld h, l
+	ld l, a
+	push hl
+	ld hl, sp + 0
+	ld d, h
+	ld e, l
 	hlcoord 10, 0
-	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
+	lb bc, PRINTNUM_LEADINGZEROS | 2, 3
 	call PrintNum
+	pop de
 	ld [hl], " "
 	ret
 
@@ -1012,7 +1022,7 @@ TrademonStats_PrintTrademonID:
 TradeAnim_RockingBall:
 	depixel 10, 11, 4, 0
 	ld a, SPRITE_ANIM_INDEX_TRADE_POKE_BALL
-	call _InitSpriteAnimStruct
+	call InitSpriteAnimStruct
 	call TradeAnim_AdvanceScriptPointer
 	ld a, 32
 	ld [wFrameCounter], a
@@ -1021,7 +1031,7 @@ TradeAnim_RockingBall:
 TradeAnim_DropBall:
 	depixel 10, 11, 4, 0
 	ld a, SPRITE_ANIM_INDEX_TRADE_POKE_BALL
-	call _InitSpriteAnimStruct
+	call InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_JUMPTABLE_INDEX
 	add hl, bc
 	ld [hl], $1
@@ -1036,7 +1046,7 @@ TradeAnim_DropBall:
 TradeAnim_Poof:
 	depixel 10, 11, 4, 0
 	ld a, SPRITE_ANIM_INDEX_TRADE_POOF
-	call _InitSpriteAnimStruct
+	call InitSpriteAnimStruct
 	call TradeAnim_AdvanceScriptPointer
 	ld a, 16
 	ld [wFrameCounter], a
@@ -1049,7 +1059,7 @@ TradeAnim_BulgeThroughTube:
 	call DmgToCgbObjPal0
 	depixel 5, 11
 	ld a, SPRITE_ANIM_INDEX_TRADE_TUBE_BULGE
-	call _InitSpriteAnimStruct
+	call InitSpriteAnimStruct
 	call TradeAnim_AdvanceScriptPointer
 	ld a, 64
 	ld [wFrameCounter], a
@@ -1085,13 +1095,13 @@ TradeAnim_AnimateTrademonInTube:
 
 .InitTimer:
 	call .JumptableNext
-	ld hl, SPRITEANIMSTRUCT_0C
+	ld hl, SPRITEANIMSTRUCT_VAR1
 	add hl, bc
 	ld [hl], $80
 	ret
 
 .WaitTimer1:
-	ld hl, SPRITEANIMSTRUCT_0C
+	ld hl, SPRITEANIMSTRUCT_VAR1
 	add hl, bc
 	ld a, [hl]
 	dec [hl]
@@ -1149,13 +1159,13 @@ TradeAnim_AnimateTrademonInTube:
 
 .done_move_left
 	call .JumptableNext
-	ld hl, SPRITEANIMSTRUCT_0C
+	ld hl, SPRITEANIMSTRUCT_VAR1
 	add hl, bc
 	ld [hl], $80
 	ret
 
 .WaitTimer2:
-	ld hl, SPRITEANIMSTRUCT_0C
+	ld hl, SPRITEANIMSTRUCT_VAR1
 	add hl, bc
 	ld a, [hl]
 	dec [hl]
@@ -1170,11 +1180,11 @@ TradeAnim_SentToOTText:
 	ld a, [wLinkMode]
 	cp LINK_TIMECAPSULE
 	jr z, .time_capsule
-	ld hl, .Text_MonName
+	ld hl, .MonNameSentToText
 	call PrintText
 	ld c, 189
 	call DelayFrames
-	ld hl, .Text_WasSentTo
+	ld hl, .MonWasSentToText
 	call PrintText
 	call TradeAnim_Wait80Frames
 	ld c, 128
@@ -1183,40 +1193,36 @@ TradeAnim_SentToOTText:
 	ret
 
 .time_capsule
-	ld hl, .Text_WasSentTo
+	ld hl, .MonWasSentToText
 	call PrintText
 	call TradeAnim_Wait80Frames
 	call TradeAnim_AdvanceScriptPointer
 	ret
 
-.Text_WasSentTo:
-	; was sent to @ .
-	text_far _TradingText1
+.MonWasSentToText:
+	text_far _MonWasSentToText
 	text_end
 
-.Text_MonName:
-	;
-	text_far _TradingText2
+.MonNameSentToText:
+	text_far _MonNameSentToText
 	text_end
 
 TradeAnim_OTBidsFarewell:
-	ld hl, .Text_BidsFarewellToMon
+	ld hl, .BidsFarewellToMonText
 	call PrintText
 	call TradeAnim_Wait80Frames
-	ld hl, .Text_MonName
+	ld hl, .MonNameBidsFarewellText
 	call PrintText
 	call TradeAnim_Wait80Frames
 	call TradeAnim_AdvanceScriptPointer
 	ret
 
-.Text_BidsFarewellToMon:
-	; bids farewell to
-	text_far _TradingText3
+.BidsFarewellToMonText:
+	text_far _BidsFarewellToMonText
 	text_end
 
-.Text_MonName:
-	; .
-	text_far _TradingText4
+.MonNameBidsFarewellText:
+	text_far _MonNameBidsFarewellText
 	text_end
 
 TradeAnim_TakeCareOfText:
@@ -1226,22 +1232,21 @@ TradeAnim_TakeCareOfText:
 	ld a, " "
 	call ByteFill
 	call WaitBGMap
-	ld hl, .Text_TakeGoodCareOfMon
+	ld hl, .TakeGoodCareOfMonText
 	call PrintText
 	call TradeAnim_Wait80Frames
 	call TradeAnim_AdvanceScriptPointer
 	ret
 
-.Text_TakeGoodCareOfMon:
-	; Take good care of @ .
-	text_far _TradingText5
+.TakeGoodCareOfMonText:
+	text_far _TakeGoodCareOfMonText
 	text_end
 
 TradeAnim_OTSendsText1:
-	ld hl, .Text_ForYourMon
+	ld hl, .ForYourMonSendsText
 	call PrintText
 	call TradeAnim_Wait80Frames
-	ld hl, .Text_OTSends
+	ld hl, .OTSendsText
 	call PrintText
 	call TradeAnim_Wait80Frames
 	ld c, 14
@@ -1249,21 +1254,19 @@ TradeAnim_OTSendsText1:
 	call TradeAnim_AdvanceScriptPointer
 	ret
 
-.Text_ForYourMon:
-	; For @ 's @ ,
-	text_far _TradingText6
+.ForYourMonSendsText:
+	text_far _ForYourMonSendsText
 	text_end
 
-.Text_OTSends:
-	; sends @ .
-	text_far _TradingText7
+.OTSendsText:
+	text_far _OTSendsText
 	text_end
 
 TradeAnim_OTSendsText2:
-	ld hl, .Text_WillTrade
+	ld hl, .WillTradeText
 	call PrintText
 	call TradeAnim_Wait80Frames
-	ld hl, .Text_ForYourMon
+	ld hl, .ForYourMonWillTradeText
 	call PrintText
 	call TradeAnim_Wait80Frames
 	ld c, 14
@@ -1271,14 +1274,12 @@ TradeAnim_OTSendsText2:
 	call TradeAnim_AdvanceScriptPointer
 	ret
 
-.Text_WillTrade:
-	; will trade @ @
-	text_far _TradingText8
+.WillTradeText:
+	text_far _WillTradeText
 	text_end
 
-.Text_ForYourMon:
-	; for @ 's @ .
-	text_far _TradingText9
+.ForYourMonWillTradeText:
+	text_far _ForYourMonWillTradeText
 	text_end
 
 TradeAnim_Wait80Frames:
@@ -1286,7 +1287,7 @@ TradeAnim_Wait80Frames:
 	call DelayFrames
 	ret
 
-TradeAnim_BlankTileMap:
+TradeAnim_BlankTilemap:
 	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	ld a, " "
@@ -1343,7 +1344,7 @@ LinkTradeAnim_LoadTradeMonSpecies:
 	ret
 
 TradeAnim_FlashBGPals:
-	ld a, [wcf65]
+	ld a, [wFrameCounter2]
 	and $7
 	ret nz
 	ldh a, [rBGP]
@@ -1365,7 +1366,7 @@ LoadTradeBallAndCableGFX:
 	ld hl, vTiles0 tile $74
 	lb bc, BANK(TradeCableGFX), 4
 	call Request2bpp
-	xor a
+	xor a ; SPRITE_ANIM_DICT_DEFAULT
 	ld hl, wSpriteAnimDict
 	ld [hli], a
 	ld [hl], $62
@@ -1379,7 +1380,7 @@ LoadTradeBubbleGFX:
 	ld hl, vTiles0 tile $72
 	lb bc, BANK(TradeBubbleGFX), 4
 	call Request2bpp
-	xor a
+	xor a ; SPRITE_ANIM_DICT_DEFAULT
 	ld hl, wSpriteAnimDict
 	ld [hli], a
 	ld [hl], $62
@@ -1409,26 +1410,13 @@ TradeAnim_WaitAnim2:
 	call TradeAnim_AdvanceScriptPointer
 	ret
 
-TradeGameBoyTilemap:
-; 6x8
-	db $31, $32, $32, $32, $32, $33
-	db $34, $35, $36, $36, $37, $38
-	db $34, $39, $3a, $3a, $3b, $38
-	db $3c, $3d, $3e, $3e, $3f, $40
-	db $41, $42, $43, $43, $44, $45
-	db $46, $47, $43, $48, $49, $4a
-	db $41, $43, $4b, $4c, $4d, $4e
-	db $4f, $50, $50, $50, $51, $52
+TradeGameBoyTilemap:  INCBIN "gfx/trade/game_boy.tilemap" ; 6x8
+TradeLinkTubeTilemap: INCBIN "gfx/trade/link_cable.tilemap" ; 12x3
 
-TradeLinkTubeTilemap:
-; 12x3
-	db $43, $55, $56, $53, $53, $53, $53, $53, $53, $53, $53, $53
-	db $43, $57, $58, $54, $54, $54, $54, $54, $54, $54, $54, $54
-	db $43, $59, $5a, $43, $43, $43, $43, $43, $43, $43, $43, $43
-
-TradeArrowGFX:  INCBIN "gfx/trade/arrow.2bpp"
-TradeCableGFX:  INCBIN "gfx/trade/cable.2bpp"
-TradeBubbleGFX: INCBIN "gfx/trade/bubble.2bpp"
-TradeGameBoyLZ: INCBIN "gfx/trade/game_boy.2bpp.lz"
-TradeBallGFX:   INCBIN "gfx/trade/ball.2bpp"
-TradePoofGFX:   INCBIN "gfx/trade/poof.2bpp"
+TradeArrowRightGFX:   INCBIN "gfx/trade/arrow_right.2bpp"
+TradeArrowLeftGFX:    INCBIN "gfx/trade/arrow_left.2bpp"
+TradeCableGFX:        INCBIN "gfx/trade/cable.2bpp"
+TradeBubbleGFX:       INCBIN "gfx/trade/bubble.2bpp"
+TradeGameBoyLZ:       INCBIN "gfx/trade/game_boy_cable.2bpp.lz"
+TradeBallGFX:         INCBIN "gfx/trade/ball.2bpp"
+TradePoofGFX:         INCBIN "gfx/trade/poof.2bpp"

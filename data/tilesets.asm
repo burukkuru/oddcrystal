@@ -1,4 +1,4 @@
-tileset: MACRO
+MACRO tileset
 	dba \1GFX, \1Meta, \1Coll
 	dw \1Anim
 	dw NULL
@@ -11,7 +11,8 @@ ENDM
 ; - The *Anim are defined in engine/tilesets/tileset_anims.asm
 
 Tilesets::
-; entries correspond to TILESET_* constants
+; entries correspond to TILESET_* constants (see constants/tileset_constants.asm)
+	table_width TILESET_LENGTH, Tilesets
 	tileset Tileset0
 	tileset TilesetJohto
 	tileset TilesetJohtoModern
@@ -34,7 +35,7 @@ Tilesets::
 	tileset TilesetLighthouse
 	tileset TilesetPlayersRoom
 	tileset TilesetPokeComCenter
-	tileset TilesetBattleTower
+	tileset TilesetBattleTowerInside
 	tileset TilesetTower
 	tileset TilesetCave
 	tileset TilesetPark
@@ -49,3 +50,4 @@ Tilesets::
 	tileset TilesetKabutoWordRoom
 	tileset TilesetOmanyteWordRoom
 	tileset TilesetAerodactylWordRoom
+	assert_table_length NUM_TILESETS + 1

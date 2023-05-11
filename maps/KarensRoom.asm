@@ -1,22 +1,22 @@
-	object_const_def ; object_event constants
+	object_const_def
 	const KARENSROOM_KAREN
 
 KarensRoom_MapScripts:
-	db 2 ; scene scripts
-	scene_script .LockDoor ; SCENE_DEFAULT
-	scene_script .DummyScene ; SCENE_FINISHED
+	def_scene_scripts
+	scene_script KarensRoomLockDoorScene, SCENE_KARENSROOM_LOCK_DOOR
+	scene_script KarensRoomNoopScene,     SCENE_KARENSROOM_NOOP
 
-	db 1 ; callbacks
-	callback MAPCALLBACK_TILES, .KarensRoomDoors
+	def_callbacks
+	callback MAPCALLBACK_TILES, KarensRoomDoorsCallback
 
-.LockDoor:
-	prioritysjump .KarensDoorLocksBehindYou
+KarensRoomLockDoorScene:
+	sdefer KarensRoomDoorLocksBehindYouScript
 	end
 
-.DummyScene:
+KarensRoomNoopScene:
 	end
 
-.KarensRoomDoors:
+KarensRoomDoorsCallback:
 	checkevent EVENT_KARENS_ROOM_ENTRANCE_CLOSED
 	iffalse .KeepEntranceOpen
 	changeblock 4, 14, $2a ; wall
@@ -25,9 +25,9 @@ KarensRoom_MapScripts:
 	iffalse .KeepExitClosed
 	changeblock 4, 2, $16 ; open door
 .KeepExitClosed:
-	return
+	endcallback
 
-.KarensDoorLocksBehindYou:
+KarensRoomDoorLocksBehindYouScript:
 	applymovement PLAYER, KarensRoom_EnterMovement
 	refreshscreen $86
 	playsound SFX_STRENGTH
@@ -35,7 +35,7 @@ KarensRoom_MapScripts:
 	changeblock 4, 14, $2a ; wall
 	reloadmappart
 	closetext
-	setscene SCENE_FINISHED
+	setscene SCENE_KARENSROOM_NOOP
 	setevent EVENT_KARENS_ROOM_ENTRANCE_CLOSED
 	waitsfx
 	end
@@ -133,15 +133,15 @@ KarenScript_KarenDefeatText:
 KarensRoom_MapEvents:
 	db 0, 0 ; filler
 
-	db 4 ; warp events
+	def_warp_events
 	warp_event  4, 17, BRUNOS_ROOM, 3
 	warp_event  5, 17, BRUNOS_ROOM, 4
 	warp_event  4,  2, LANCES_ROOM, 1
 	warp_event  5,  2, LANCES_ROOM, 2
 
-	db 0 ; coord events
+	def_coord_events
 
-	db 0 ; bg events
+	def_bg_events
 
-	db 1 ; object events
+	def_object_events
 	object_event  5,  7, SPRITE_KAREN, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, KarenScript_Battle, -1

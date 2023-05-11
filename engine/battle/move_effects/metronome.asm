@@ -1,17 +1,15 @@
 BattleCommand_Metronome:
-; metronome
-
 	call ClearLastMove
 	call CheckUserIsCharging
-	jr nz, .asm_3742b
+	jr nz, .charging
 
-	ld a, [wKickCounter]
+	ld a, [wBattleAnimParam]
 	push af
 	call BattleCommand_LowerSub
 	pop af
-	ld [wKickCounter], a
+	ld [wBattleAnimParam], a
 
-.asm_3742b
+.charging
 	call LoadMoveAnim
 
 .GetMove:
@@ -20,7 +18,7 @@ BattleCommand_Metronome:
 ; None of the moves in MetronomeExcepts.
 	ld de, 2
 	ld hl, MetronomeExcepts
-	call IsInHalfwordArray
+	call IsInWordArray
 	jr c, .GetMove
 	ld h, b
 	ld l, c

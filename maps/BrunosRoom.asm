@@ -1,22 +1,22 @@
-	object_const_def ; object_event constants
+	object_const_def
 	const BRUNOSROOM_BRUNO
 
 BrunosRoom_MapScripts:
-	db 2 ; scene scripts
-	scene_script .LockDoor ; SCENE_DEFAULT
-	scene_script .DummyScene ; SCENE_FINISHED
+	def_scene_scripts
+	scene_script BrunosRoomLockDoorScene, SCENE_BRUNOSROOM_LOCK_DOOR
+	scene_script BrunosRoomNoopScene,     SCENE_BRUNOSROOM_NOOP
 
-	db 1 ; callbacks
-	callback MAPCALLBACK_TILES, .BrunosRoomDoors
+	def_callbacks
+	callback MAPCALLBACK_TILES, BrunosRoomDoorsCallback
 
-.LockDoor:
-	prioritysjump .BrunosDoorLocksBehindYou
+BrunosRoomLockDoorScene:
+	sdefer BrunosRoomDoorLocksBehindYouScript
 	end
 
-.DummyScene:
+BrunosRoomNoopScene:
 	end
 
-.BrunosRoomDoors:
+BrunosRoomDoorsCallback:
 	checkevent EVENT_BRUNOS_ROOM_ENTRANCE_CLOSED
 	iffalse .KeepEntranceOpen
 	changeblock 4, 14, $2a ; wall
@@ -25,9 +25,9 @@ BrunosRoom_MapScripts:
 	iffalse .KeepExitClosed
 	changeblock 4, 2, $16 ; open door
 .KeepExitClosed:
-	return
+	endcallback
 
-.BrunosDoorLocksBehindYou:
+BrunosRoomDoorLocksBehindYouScript:
 	applymovement PLAYER, BrunosRoom_EnterMovement
 	refreshscreen $86
 	playsound SFX_STRENGTH
@@ -35,7 +35,7 @@ BrunosRoom_MapScripts:
 	changeblock 4, 14, $2a ; wall
 	reloadmappart
 	closetext
-	setscene SCENE_FINISHED
+	setscene SCENE_BRUNOSROOM_NOOP
 	setevent EVENT_BRUNOS_ROOM_ENTRANCE_CLOSED
 	waitsfx
 	end
@@ -125,15 +125,15 @@ BrunoScript_BrunoDefeatText:
 BrunosRoom_MapEvents:
 	db 0, 0 ; filler
 
-	db 4 ; warp events
+	def_warp_events
 	warp_event  4, 17, KOGAS_ROOM, 3
 	warp_event  5, 17, KOGAS_ROOM, 4
 	warp_event  4,  2, KARENS_ROOM, 1
 	warp_event  5,  2, KARENS_ROOM, 2
 
-	db 0 ; coord events
+	def_coord_events
 
-	db 0 ; bg events
+	def_bg_events
 
-	db 1 ; object events
+	def_object_events
 	object_event  5,  7, SPRITE_BRUNO, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BROWN, OBJECTTYPE_SCRIPT, 0, BrunoScript_Battle, -1

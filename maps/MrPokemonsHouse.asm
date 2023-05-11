@@ -1,22 +1,22 @@
-	object_const_def ; object_event constants
+	object_const_def
 	const MRPOKEMONSHOUSE_GENTLEMAN
 	const MRPOKEMONSHOUSE_OAK
 
 MrPokemonsHouse_MapScripts:
-	db 2 ; scene scripts
-	scene_script .MeetMrPokemon ; SCENE_DEFAULT
-	scene_script .DummyScene ; SCENE_FINISHED
+	def_scene_scripts
+	scene_script MrPokemonsHouseMeetMrPokemonScene, SCENE_MRPOKEMONSHOUSE_MEET_MR_POKEMON
+	scene_script MrPokemonsHouseNoopScene,          SCENE_MRPOKEMONSHOUSE_NOOP
 
-	db 0 ; callbacks
+	def_callbacks
 
-.MeetMrPokemon:
-	prioritysjump .MrPokemonEvent
+MrPokemonsHouseMeetMrPokemonScene:
+	sdefer MrPokemonsHouseMrPokemonEventScript
 	end
 
-.DummyScene:
+MrPokemonsHouseNoopScene:
 	end
 
-.MrPokemonEvent:
+MrPokemonsHouseMrPokemonEventScript:
 	showemote EMOTE_SHOCK, MRPOKEMONSHOUSE_GENTLEMAN, 15
 	turnobject MRPOKEMONSHOUSE_GENTLEMAN, DOWN
 	opentext
@@ -26,7 +26,7 @@ MrPokemonsHouse_MapScripts:
 	applymovement PLAYER, MrPokemonsHouse_PlayerWalksToMrPokemon
 	opentext
 	writetext MrPokemonIntroText2
-	buttonsound
+	promptbutton
 	waitsfx
 	giveitem MYSTERY_EGG
 	writetext MrPokemonsHouse_GotEggText
@@ -36,10 +36,10 @@ MrPokemonsHouse_MapScripts:
 	setevent EVENT_GOT_MYSTERY_EGG_FROM_MR_POKEMON
 	blackoutmod CHERRYGROVE_CITY
 	writetext MrPokemonIntroText3
-	buttonsound
+	promptbutton
 	turnobject MRPOKEMONSHOUSE_GENTLEMAN, RIGHT
 	writetext MrPokemonIntroText4
-	buttonsound
+	promptbutton
 	turnobject MRPOKEMONSHOUSE_GENTLEMAN, DOWN
 	turnobject MRPOKEMONSHOUSE_OAK, LEFT
 	writetext MrPokemonIntroText5
@@ -87,7 +87,7 @@ MrPokemonsHouse_OakScript:
 	turnobject PLAYER, RIGHT
 	opentext
 	writetext MrPokemonsHouse_OakText1
-	buttonsound
+	promptbutton
 	waitsfx
 	writetext MrPokemonsHouse_GetDexText
 	playsound SFX_ITEM
@@ -123,7 +123,7 @@ MrPokemonsHouse_OakScript:
 	setevent EVENT_RIVAL_NEW_BARK_TOWN
 	setevent EVENT_PLAYERS_HOUSE_1F_NEIGHBOR
 	clearevent EVENT_PLAYERS_NEIGHBORS_HOUSE_NEIGHBOR
-	setscene SCENE_FINISHED
+	setscene SCENE_MRPOKEMONSHOUSE_NOOP
 	setmapscene CHERRYGROVE_CITY, SCENE_CHERRYGROVECITY_MEET_RIVAL
 	setmapscene ELMS_LAB, SCENE_ELMSLAB_MEET_OFFICER
 	specialphonecall SPECIALCALL_ROBBED
@@ -373,19 +373,19 @@ MrPokemonsHouse_StrangeCoinsText:
 MrPokemonsHouse_MapEvents:
 	db 0, 0 ; filler
 
-	db 2 ; warp events
+	def_warp_events
 	warp_event  2,  7, ROUTE_30, 2
 	warp_event  3,  7, ROUTE_30, 2
 
-	db 0 ; coord events
+	def_coord_events
 
-	db 5 ; bg events
+	def_bg_events
 	bg_event  0,  1, BGEVENT_READ, MrPokemonsHouse_ForeignMagazines
 	bg_event  1,  1, BGEVENT_READ, MrPokemonsHouse_ForeignMagazines
 	bg_event  6,  1, BGEVENT_READ, MrPokemonsHouse_BrokenComputer
 	bg_event  7,  1, BGEVENT_READ, MrPokemonsHouse_BrokenComputer
 	bg_event  6,  4, BGEVENT_READ, MrPokemonsHouse_StrangeCoins
 
-	db 2 ; object events
+	def_object_events
 	object_event  3,  5, SPRITE_GENTLEMAN, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, MrPokemonsHouse_MrPokemonScript, -1
 	object_event  6,  5, SPRITE_OAK, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_MR_POKEMONS_HOUSE_OAK

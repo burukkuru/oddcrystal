@@ -20,7 +20,7 @@ CheckForLuckyNumberWinners:
 	dec d
 	jr nz, .PartyLoop
 	ld a, BANK(sBox)
-	call GetSRAMBank
+	call OpenSRAM
 	ld a, [sBoxCount]
 	and a
 	jr z, .SkipOpenBox
@@ -59,7 +59,7 @@ CheckForLuckyNumberWinners:
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	call GetSRAMBank
+	call OpenSRAM
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a ; hl now contains the address of the loaded box in SRAM
@@ -110,9 +110,10 @@ CheckForLuckyNumberWinners:
 	ld a, [wScriptVar]
 	and a
 	ret z ; found nothing
+
 	farcall StubbedTrainerRankings_LuckyNumberShow
 	ld a, [wTempByteValue]
-	ld hl, .FoundPartymonText
+	ld hl, .LuckyNumberMatchPartyText
 	and a
 	jr z, .print
 	dec a
@@ -124,7 +125,7 @@ CheckForLuckyNumberWinners:
 	add hl, de
 	add hl, de
 	ld a, [hli]
-	call GetSRAMBank
+	call OpenSRAM
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -139,10 +140,10 @@ CheckForLuckyNumberWinners:
 	call GetPokemonIDFromIndex
 	ld [wCurPartySpecies], a
 .print_box
-	ld hl, .FoundBoxmonText
+	ld hl, .LuckyNumberMatchPCText
 .print
 	ld a, [wCurPartySpecies]
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	jp PrintText
 
@@ -152,7 +153,7 @@ CheckForLuckyNumberWinners:
 	push hl
 	ld d, h
 	ld e, l
-	ld hl, wBuffer1
+	ld hl, wMonIDDigitsBuffer
 	lb bc, PRINTNUM_LEADINGZEROS | 2, 5
 	call PrintNum
 	ld hl, wLuckyNumberDigitsBuffer
@@ -162,7 +163,7 @@ CheckForLuckyNumberWinners:
 	ld b, 5
 	ld c, 0
 	ld hl, wLuckyNumberDigitsBuffer + 4
-	ld de, wBuffer1 + 4
+	ld de, wMonIDDigitsBuffer + 4
 .loop
 	ld a, [de]
 	cp [hl]
@@ -176,7 +177,7 @@ CheckForLuckyNumberWinners:
 .done
 	pop hl
 	push hl
-	ld de, -6
+	ld de, MON_SPECIES - MON_ID
 	add hl, de
 	ld a, [hl]
 	pop hl
@@ -219,22 +220,14 @@ CheckForLuckyNumberWinners:
 	ret
 
 .BoxBankAddresses:
-	dba sBox1
-	dba sBox2
-	dba sBox3
-	dba sBox4
-	dba sBox5
-	dba sBox6
-	dba sBox7
-	dba sBox8
-	dba sBox9
-	dba sBox10
-	dba sBox11
-	dba sBox12
-	dba sBox13
-	dba sBox14
+	table_width 3, CheckForLuckyNumberWinners.BoxBankAddresses
+for n, 1, NUM_BOXES + 1
+	dba sBox{d:n}
+endr
+	assert_table_length NUM_BOXES
 
 .BoxSpeciesBankAddresses:
+	table_width 3, CheckForLuckyNumberWinners.BoxSpeciesBankAddresses
 	dba sBox1PokemonIndexes
 	dba sBox2PokemonIndexes
 	dba sBox3PokemonIndexes
@@ -249,15 +242,14 @@ CheckForLuckyNumberWinners:
 	dba sBox12PokemonIndexes
 	dba sBox13PokemonIndexes
 	dba sBox14PokemonIndexes
+	assert_table_length NUM_BOXES
 
-.FoundPartymonText:
-	; Congratulations! We have a match with the ID number of @  in your party.
-	text_far UnknownText_0x1c1261
+.LuckyNumberMatchPartyText:
+	text_far _LuckyNumberMatchPartyText
 	text_end
 
-.FoundBoxmonText:
-	; Congratulations! We have a match with the ID number of @  in your PC BOX.
-	text_far UnknownText_0x1c12ae
+.LuckyNumberMatchPCText:
+	text_far _LuckyNumberMatchPCText
 	text_end
 
 PrintTodaysLuckyNumber:

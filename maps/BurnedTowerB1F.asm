@@ -1,4 +1,4 @@
-	object_const_def ; object_event constants
+	object_const_def
 	const BURNEDTOWERB1F_BOULDER
 	const BURNEDTOWERB1F_RAIKOU1
 	const BURNEDTOWERB1F_ENTEI1
@@ -10,25 +10,25 @@
 	const BURNEDTOWERB1F_EUSINE
 
 BurnedTowerB1F_MapScripts:
-	db 2 ; scene scripts
-	scene_script .DummyScene0 ; SCENE_DEFAULT
-	scene_script .DummyScene1 ; SCENE_FINISHED
+	def_scene_scripts
+	scene_script BurnedTowerB1FNoop1Scene, SCENE_BURNEDTOWERB1F_RELEASE_THE_BEASTS
+	scene_script BurnedTowerB1FNoop2Scene, SCENE_BURNEDTOWERB1F_NOOP
 
-	db 1 ; callbacks
-	callback MAPCALLBACK_TILES, .LadderCallback
+	def_callbacks
+	callback MAPCALLBACK_TILES, BurnedTowerB1FLadderCallback
 
-.DummyScene0:
+BurnedTowerB1FNoop1Scene:
 	end
 
-.DummyScene1:
+BurnedTowerB1FNoop2Scene:
 	end
 
-.LadderCallback:
+BurnedTowerB1FLadderCallback:
 	checkevent EVENT_RELEASED_THE_BEASTS
 	iftrue .HideLadder
 	changeblock 6, 14, $02 ; floor
 .HideLadder:
-	return
+	endcallback
 
 ReleaseTheBeasts:
 	playmusic MUSIC_NONE
@@ -79,10 +79,10 @@ ReleaseTheBeasts:
 	disappear BURNEDTOWERB1F_SUICUNE1
 	waitsfx
 	special RestartMapMusic
-	setscene SCENE_FINISHED
+	setscene SCENE_BURNEDTOWERB1F_NOOP
 	setevent EVENT_RELEASED_THE_BEASTS
 	special InitRoamMons
-	setmapscene ECRUTEAK_GYM, SCENE_FINISHED
+	setmapscene ECRUTEAK_GYM, SCENE_ECRUTEAKGYM_NOOP
 	setmapscene CIANWOOD_CITY, SCENE_CIANWOODCITY_SUICUNE_AND_EUSINE
 	clearevent EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY
 	setevent EVENT_ECRUTEAK_GYM_GRAMPS
@@ -94,7 +94,7 @@ ReleaseTheBeasts:
 	changeblock 6, 14, $1b ; ladder
 	reloadmappart
 	closetext
-	setscene SCENE_FINISHED
+	setscene SCENE_BURNEDTOWERB1F_NOOP
 	end
 
 BurnedTowerB1FEusine:
@@ -120,7 +120,7 @@ BurnedTowerB1FTMEndure:
 	itemball TM_ENDURE
 
 BurnedTowerB1FBoulder:
-	jumpstd strengthboulder
+	jumpstd StrengthBoulderScript
 
 BurnedTowerRaikouMovement:
 	set_sliding
@@ -155,8 +155,7 @@ BurnedTowerSuicuneMovement2:
 	remove_sliding
 	step_end
 
-BurnedTowerUnusedMovement:
-; unreferenced
+BurnedTowerUnusedMovement: ; unreferenced
 	set_sliding
 	big_step DOWN
 	remove_sliding
@@ -237,7 +236,7 @@ BurnedTowerB1FEusineText:
 BurnedTowerB1F_MapEvents:
 	db 0, 0 ; filler
 
-	db 6 ; warp events
+	def_warp_events
 	warp_event 10,  9, BURNED_TOWER_1F, 3
 	warp_event 17,  7, BURNED_TOWER_1F, 7
 	warp_event 10,  8, BURNED_TOWER_1F, 9
@@ -245,12 +244,12 @@ BurnedTowerB1F_MapEvents:
 	warp_event 17, 14, BURNED_TOWER_1F, 12
 	warp_event  7, 15, BURNED_TOWER_1F, 14
 
-	db 1 ; coord events
-	coord_event 10,  6, SCENE_DEFAULT, ReleaseTheBeasts
+	def_coord_events
+	coord_event 10,  6, SCENE_BURNEDTOWERB1F_RELEASE_THE_BEASTS, ReleaseTheBeasts
 
-	db 0 ; bg events
+	def_bg_events
 
-	db 9 ; object events
+	def_object_events
 	object_event 17,  8, SPRITE_BOULDER, SPRITEMOVEDATA_STRENGTH_BOULDER, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, BurnedTowerB1FBoulder, -1
 	object_event  7,  3, SPRITE_RAIKOU, SPRITEMOVEDATA_POKEMON, 0, 0, -1, -1, PAL_NPC_BROWN, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_BURNED_TOWER_B1F_BEASTS_1
 	object_event 12,  3, SPRITE_ENTEI, SPRITEMOVEDATA_POKEMON, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_BURNED_TOWER_B1F_BEASTS_1

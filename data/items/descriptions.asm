@@ -1,5 +1,6 @@
 ItemDescriptions:
-; entries correspond to item ids
+; entries correspond to item ids (see constants/item_constants.asm)
+	table_width 2, ItemDescriptions
 	dw MasterBallDesc
 	dw UltraBallDesc
 	dw BrightpowderDesc
@@ -188,11 +189,12 @@ ItemDescriptions:
 	dw MorphMailDesc
 	dw BlueSkyMailDesc
 	dw MusicMailDesc
-	dw MewMailDesc
+	dw MirageMailDesc
 	dw QuestionMarkDesc
 	dw QuestionMarkDesc
 	dw QuestionMarkDesc
 	dw QuestionMarkDesc
+	assert_table_length NUM_ITEMS
 	dw QuestionMarkDesc
 	dw QuestionMarkDesc
 	dw QuestionMarkDesc
@@ -255,6 +257,7 @@ ItemDescriptions:
 	dw QuestionMarkDesc
 	dw QuestionMarkDesc
 	dw QuestionMarkDesc
+	assert_table_length $ff
 
 MasterBallDesc:
 	db   "The best BALL. It"
@@ -909,6 +912,6 @@ MusicMailDesc:
 	db   "NATU-print MAIL."
 	next "(HOLD)@"
 
-MewMailDesc:
+MirageMailDesc:
 	db   "MEW-print MAIL."
 	next "(HOLD)@"

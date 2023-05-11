@@ -1,5 +1,6 @@
 MonMenuOptions:
 ; category, item, value; actions are in PokemonActionSubmenu (see engine/pokemon/mon_menu.asm)
+	table_width 4, MonMenuOptions
 ; moves
 	dbbw MONMENU_FIELD_MOVE, MONMENUITEM_CUT,        CUT
 	dbbw MONMENU_FIELD_MOVE, MONMENUITEM_FLY,        FLY
@@ -23,6 +24,7 @@ MonMenuOptions:
 	dbbw MONMENU_MENUOPTION, MONMENUITEM_MOVE,       .move
 	dbbw MONMENU_MENUOPTION, MONMENUITEM_MAIL,       .mail
 	dbbw MONMENU_MENUOPTION, MONMENUITEM_ERROR,      .error
+	assert_table_length NUM_MONMENUITEMS
 	db -1
 
 .stats:  db "STATS@"

@@ -1,9 +1,9 @@
 ; PrintDayCareText.TextTable indexes
 	const_def
 	const DAYCARETEXT_MAN_INTRO
-	const DAYCARETEXT_MAN_EGG
+	const DAYCARETEXT_MAN_INTRO_EGG
 	const DAYCARETEXT_LADY_INTRO
-	const DAYCARETEXT_LADY_EGG
+	const DAYCARETEXT_LADY_INTRO_EGG
 	const DAYCARETEXT_WHICH_ONE
 	const DAYCARETEXT_DEPOSIT
 	const DAYCARETEXT_CANT_BREED_EGG
@@ -40,7 +40,7 @@ DayCareMan:
 
 .AskWithdrawMon:
 	farcall GetBreedMon1LevelGrowth
-	ld hl, wBreedMon1Nick
+	ld hl, wBreedMon1Nickname
 	call GetPriceToRetrieveBreedmon
 	call DayCare_AskWithdrawBreedMon
 	jr c, .print_text
@@ -78,7 +78,7 @@ DayCareLady:
 
 .AskWithdrawMon:
 	farcall GetBreedMon2LevelGrowth
-	ld hl, wBreedMon2Nick
+	ld hl, wBreedMon2Nickname
 	call GetPriceToRetrieveBreedmon
 	call DayCare_AskWithdrawBreedMon
 	jr c, .print_text
@@ -137,7 +137,7 @@ DayCareAskDepositPokemon:
 	jr c, .HoldingMail
 	ld hl, wPartyMonNicknames
 	ld a, [wCurPartyMon]
-	call GetNick
+	call GetNickname
 	and a
 	ret
 
@@ -166,8 +166,7 @@ DayCareAskDepositPokemon:
 	scf
 	ret
 
-.DummyText:
-	;
+.DaycareDummyText: ; unreferenced
 	text_far _DaycareDummyText
 	text_end
 
@@ -207,7 +206,7 @@ DayCare_AskWithdrawBreedMon:
 	jr c, .not_enough_money
 	ld a, [wPartyCount]
 	cp PARTY_LENGTH
-	jr nc, .PartyFull
+	jr nc, .party_full
 	and a
 	ret
 
@@ -221,7 +220,7 @@ DayCare_AskWithdrawBreedMon:
 	scf
 	ret
 
-.PartyFull:
+.party_full
 	ld a, DAYCARETEXT_PARTY_FULL
 	scf
 	ret
@@ -274,124 +273,104 @@ PrintDayCareText:
 
 .TextTable:
 ; entries correspond to DAYCARETEXT_* constants
-	dw .DayCareManIntro ; 00
-	dw .DayCareManOddEgg ; 01
-	dw .DayCareLadyIntro ; 02
-	dw .DayCareLadyOddEgg ; 03
-	dw .WhichOne ; 04
-	dw .OkayIllRaiseYourMon ; 05
-	dw .CantAcceptEgg ; 06
-	dw .JustOneMon ; 07
-	dw .LastHealthyMon ; 08
-	dw .ComeBackForItLater ; 09
-	dw .RemoveMail ; 0a
-	dw .AreWeGeniusesOrWhat ; 0b
-	dw .AskRetrieveMon ; 0c
-	dw .PerfectHeresYourMon ; 0d
-	dw .GotBackMon ; 0e
-	dw .ImmediatelyWithdrawMon ; 0f
-	dw .PartyFull ; 10
-	dw .NotEnoughMoney ; 11
-	dw .OhFineThen ; 12
-	dw .ComeAgain ; 13
+	dw .DayCareManIntroText ; 00
+	dw .DayCareManIntroEggText ; 01
+	dw .DayCareLadyIntroText ; 02
+	dw .DayCareLadyIntroEggText ; 03
+	dw .WhatShouldIRaiseText ; 04
+	dw .IllRaiseYourMonText ; 05
+	dw .CantAcceptEggText ; 06
+	dw .OnlyOneMonText ; 07
+	dw .LastHealthyMonText ; 08
+	dw .ComeBackLaterText ; 09
+	dw .RemoveMailText ; 0a
+	dw .AreWeGeniusesText ; 0b
+	dw .YourMonHasGrownText ; 0c
+	dw .PerfectHeresYourMonText ; 0d
+	dw .GotBackMonText ; 0e
+	dw .BackAlreadyText ; 0f
+	dw .HaveNoRoomText ; 10
+	dw .NotEnoughMoneyText ; 11
+	dw .OhFineThenText ; 12
+	dw .ComeAgainText ; 13
 
-.DayCareManIntro:
-	; I'm the DAY-CARE MAN. Want me to raise a #MON?
+.DayCareManIntroText:
 	text_far _DayCareManIntroText
 	text_end
 
-.DayCareManOddEgg:
-	; I'm the DAY-CARE MAN. Do you know about EGGS? I was raising #MON with my wife, you see. We were shocked to find an EGG! How incredible is that? So, want me to raise a #MON?
-	text_far _DayCareManOddEggText
+.DayCareManIntroEggText:
+	text_far _DayCareManIntroEggText
 	text_end
 
-.DayCareLadyIntro:
-	; I'm the DAY-CARE LADY. Should I raise a #MON for you?
+.DayCareLadyIntroText:
 	text_far _DayCareLadyIntroText
 	text_end
 
-.DayCareLadyOddEgg:
-	; I'm the DAY-CARE LADY. Do you know about EGGS? My husband and I were raising some #MON, you see. We were shocked to find an EGG! How incredible could that be? Should I raise a #MON for you?
-	text_far _DayCareLadyOddEggText
+.DayCareLadyIntroEggText:
+	text_far _DayCareLadyIntroEggText
 	text_end
 
-.WhichOne:
-	; What should I raise for you?
+.WhatShouldIRaiseText:
 	text_far _WhatShouldIRaiseText
 	text_end
 
-.JustOneMon:
-	; Oh? But you have just one #MON.
+.OnlyOneMonText:
 	text_far _OnlyOneMonText
 	text_end
 
-.CantAcceptEgg:
-	; Sorry, but I can't accept an EGG.
-	text_far _CantRaiseEggText
+.CantAcceptEggText:
+	text_far _CantAcceptEggText
 	text_end
 
-.RemoveMail:
-	; Remove MAIL before you come see me.
+.RemoveMailText:
 	text_far _RemoveMailText
 	text_end
 
-.LastHealthyMon:
-	; If you give me that, what will you battle with?
+.LastHealthyMonText:
 	text_far _LastHealthyMonText
 	text_end
 
-.OkayIllRaiseYourMon:
-	; OK. I'll raise your @ .
+.IllRaiseYourMonText:
 	text_far _IllRaiseYourMonText
 	text_end
 
-.ComeBackForItLater:
-	; Come back for it later.
+.ComeBackLaterText:
 	text_far _ComeBackLaterText
 	text_end
 
-.AreWeGeniusesOrWhat:
-	; Are we geniuses or what? Want to see your @ ?
+.AreWeGeniusesText:
 	text_far _AreWeGeniusesText
 	text_end
 
-.AskRetrieveMon:
-	; Your @ has grown a lot. By level, it's grown by @ . If you want your #MON back, it will cost ¥@ .
+.YourMonHasGrownText:
 	text_far _YourMonHasGrownText
 	text_end
 
-.PerfectHeresYourMon:
-	; Perfect! Here's your #MON.
+.PerfectHeresYourMonText:
 	text_far _PerfectHeresYourMonText
 	text_end
 
-.GotBackMon:
-	; got back @ .
+.GotBackMonText:
 	text_far _GotBackMonText
 	text_end
 
-.ImmediatelyWithdrawMon:
-	; Huh? Back already? Your @ needs a little more time with us. If you want your #MON back, it will cost ¥100.
+.BackAlreadyText:
 	text_far _BackAlreadyText
 	text_end
 
-.PartyFull:
-	; You have no room for it.
+.HaveNoRoomText:
 	text_far _HaveNoRoomText
 	text_end
 
-.NotEnoughMoney:
-	; You don't have enough money.
-	text_far _DCNotEnoughMoneyText
+.NotEnoughMoneyText:
+	text_far _NotEnoughMoneyText
 	text_end
 
-.OhFineThen:
-	; Oh, fine then.
+.OhFineThenText:
 	text_far _OhFineThenText
 	text_end
 
-.ComeAgain:
-	; Come again.
+.ComeAgainText:
 	text_far _ComeAgainText
 	text_end
 
@@ -399,17 +378,16 @@ DayCareManOutside:
 	ld hl, wDayCareMan
 	bit DAYCAREMAN_HAS_EGG_F, [hl]
 	jr nz, .AskGiveEgg
-	ld hl, .NotYet
+	ld hl, .NotYetText
 	call PrintText
 	ret
 
-.NotYet:
-	; Not yet…
+.NotYetText:
 	text_far _NotYetText
 	text_end
 
 .AskGiveEgg:
-	ld hl, .IntroText
+	ld hl, .FoundAnEggText
 	call PrintText
 	call YesNoBox
 	jr c, .Declined
@@ -420,13 +398,13 @@ DayCareManOutside:
 	ld hl, wDayCareMan
 	res DAYCAREMAN_HAS_EGG_F, [hl]
 	call DayCare_InitBreeding
-	ld hl, .GotEggText
+	ld hl, .ReceivedEggText
 	call PrintText
-	ld de, SFX_GET_EGG_FROM_DAY_CARE_LADY
+	ld de, SFX_GET_EGG
 	call PlaySFX
 	ld c, 120
 	call DelayFrames
-	ld hl, .TakeGoodCareOfItText
+	ld hl, .TakeGoodCareOfEggText
 	jr .Load0
 
 .Declined:
@@ -439,34 +417,29 @@ DayCareManOutside:
 	ret
 
 .PartyFull:
-	ld hl, .PartyFullText
+	ld hl, .NoRoomForEggText
 	call PrintText
 	ld a, TRUE
 	ld [wScriptVar], a
 	ret
 
-.IntroText:
-	; Ah, it's you! We were raising your #MON, and my goodness, were we surprised! Your #MON had an EGG! We don't know how it got there, but your #MON had it. You want it?
+.FoundAnEggText:
 	text_far _FoundAnEggText
 	text_end
 
-.GotEggText:
-	; received the EGG!
+.ReceivedEggText:
 	text_far _ReceivedEggText
 	text_end
 
-.TakeGoodCareOfItText:
-	; Take good care of it.
+.TakeGoodCareOfEggText:
 	text_far _TakeGoodCareOfEggText
 	text_end
 
 .IllKeepItThanksText:
-	; Well then, I'll keep it. Thanks!
-	text_far _RefuseEggText
+	text_far _IllKeepItThanksText
 	text_end
 
-.PartyFullText:
-	; You have no room in your party. Come back later.
+.NoRoomForEggText:
 	text_far _NoRoomForEggText
 	text_end
 
@@ -494,20 +467,20 @@ DayCare_GiveEgg:
 	ld hl, wPartyMonNicknames
 	ld bc, MON_NAME_LENGTH
 	call DayCare_GetCurrentPartyMember
-	ld hl, wEggNick
+	ld hl, wEggMonNickname
 	call CopyBytes
 
-	ld hl, wPartyMonOT
+	ld hl, wPartyMonOTs
 	ld bc, NAME_LENGTH
 	call DayCare_GetCurrentPartyMember
-	ld hl, wEggOT
+	ld hl, wEggMonOT
 	call CopyBytes
 
 	ld hl, wPartyMon1
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call DayCare_GetCurrentPartyMember
 	ld hl, wEggMon
-	ld bc, wEggMonEnd - wEggMon
+	ld bc, BOXMON_STRUCT_LENGTH
 	call CopyBytes
 
 	call GetBaseData
@@ -575,12 +548,12 @@ DayCare_InitBreeding:
 .UselessJump:
 	xor a
 	ld hl, wEggMon
-	ld bc, wEggMonEnd - wEggMon
+	ld bc, BOXMON_STRUCT_LENGTH
 	call ByteFill
-	ld hl, wEggNick
+	ld hl, wEggMonNickname
 	ld bc, MON_NAME_LENGTH
 	call ByteFill
-	ld hl, wEggOT
+	ld hl, wEggMonOT
 	ld bc, NAME_LENGTH
 	call ByteFill
 	ld a, [wBreedMon1DVs]
@@ -589,7 +562,7 @@ DayCare_InitBreeding:
 	ld [wTempMonDVs + 1], a
 	ld a, [wBreedMon1Species]
 	ld [wCurPartySpecies], a
-	ld a, $3
+	ld a, TEMPMON
 	ld [wMonType], a
 	ld hl, DITTO
 	call GetPokemonIDFromIndex
@@ -625,18 +598,18 @@ DayCare_InitBreeding:
 	ld [wEggMonSpecies], a
 
 	call GetBaseData
-	ld hl, wEggNick
+	ld hl, wEggMonNickname
 	ld de, .String_EGG
 	call CopyName2
 	ld hl, wPlayerName
-	ld de, wEggOT
+	ld de, wEggMonOT
 	ld bc, NAME_LENGTH
 	call CopyBytes
 	xor a
 	ld [wEggMonItem], a
 	ld de, wEggMonMoves
-	xor a
-	ld [wBuffer1], a
+	xor a ; FALSE
+	ld [wSkipMovesBeforeLevelUp], a
 	predef FillMoves
 	farcall InitEggMoves
 	ld hl, wEggMonID
@@ -760,7 +733,7 @@ Daycare_CheckAlternateOffspring:
 	ld c, l
 	ld de, 4
 	ld hl, .alternate_offspring_table
-	call IsInHalfwordArray
+	call IsInWordArray
 	pop bc
 	pop de
 	ld a, [wCurPartySpecies]

@@ -1,66 +1,27 @@
+; The add_tm, add_hm, and add_mt macros in constants/item_constants.asm simultaneously
+; define constants for the item IDs and for the corresponding move values.
+
 TMHMMoves:
-; entries correspond to *_TMNUM enums (see constants/item_constants.asm)
+; entries correspond to *_TMNUM constants (see constants/item_constants.asm)
+	table_width 2, TMHMMoves
+
 ; TMs
-	dw DYNAMICPUNCH
-	dw HEADBUTT
-	dw CURSE
-	dw ROLLOUT
-	dw ROAR
-	dw TOXIC
-	dw ZAP_CANNON
-	dw ROCK_SMASH
-	dw PSYCH_UP
-	dw HIDDEN_POWER
-	dw SUNNY_DAY
-	dw SWEET_SCENT
-	dw SNORE
-	dw BLIZZARD
-	dw HYPER_BEAM
-	dw ICY_WIND
-	dw PROTECT
-	dw RAIN_DANCE
-	dw GIGA_DRAIN
-	dw ENDURE
-	dw FRUSTRATION
-	dw SOLARBEAM
-	dw IRON_TAIL
-	dw DRAGONBREATH
-	dw THUNDER
-	dw EARTHQUAKE
-	dw RETURN
-	dw DIG
-	dw PSYCHIC_M
-	dw SHADOW_BALL
-	dw MUD_SLAP
-	dw DOUBLE_TEAM
-	dw ICE_PUNCH
-	dw SWAGGER
-	dw SLEEP_TALK
-	dw SLUDGE_BOMB
-	dw SANDSTORM
-	dw FIRE_BLAST
-	dw SWIFT
-	dw DEFENSE_CURL
-	dw THUNDERPUNCH
-	dw DREAM_EATER
-	dw DETECT
-	dw REST
-	dw ATTRACT
-	dw THIEF
-	dw STEEL_WING
-	dw FIRE_PUNCH
-	dw FURY_CUTTER
-	dw NIGHTMARE
+for n, 1, NUM_TMS + 1
+	dw TM{02d:n}_MOVE
+endr
+	assert_table_length NUM_TMS
+
 ; HMs
-	dw CUT
-	dw FLY
-	dw SURF
-	dw STRENGTH
-	dw FLASH
-	dw WHIRLPOOL
-	dw WATERFALL
-; Move tutor
-	dw FLAMETHROWER
-	dw THUNDERBOLT
-	dw ICE_BEAM
+for n, 1, NUM_HMS + 1
+	dw HM{02d:n}_MOVE
+endr
+	assert_table_length NUM_TMS + NUM_HMS
+
+; Move tutors
+DEF n = 1
+for n, 1, NUM_TUTORS + 1
+	dw MT{02d:n}_MOVE
+endr
+	assert_table_length NUM_TM_HM_TUTOR
+
 	dw 0 ; end

@@ -1,4 +1,4 @@
-PrintMoveDesc:
+PrintMoveDescription:
 	push hl
 	ld a, [wCurSpecies]
 	call GetMoveIndexFromID
@@ -15,3 +15,5 @@ PrintMoveDesc:
 	ld e, l
 	pop hl
 	jp FarPlaceString
+
+INCLUDE "data/moves/descriptions.asm"

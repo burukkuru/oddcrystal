@@ -1,4 +1,4 @@
-Function_LoadOpponentTrainerAndPokemons:
+LoadOpponentTrainerAndPokemon:
 	ldh a, [rSVBK]
 	push af
 	ld a, BANK(wBT_OTTrainer)
@@ -32,7 +32,7 @@ Function_LoadOpponentTrainerAndPokemons:
 	ld b, a
 
 	ld a, BANK(sBTTrainers)
-	call GetSRAMBank
+	call OpenSRAM
 
 	ld c, BATTLETOWER_STREAK_LENGTH
 	ld hl, sBTTrainers
@@ -61,7 +61,7 @@ Function_LoadOpponentTrainerAndPokemons:
 	ld bc, NAME_LENGTH
 	call CopyBytes
 
-	call Function_LoadRandomBattleTowerMon
+	call LoadRandomBattleTowerMon
 	pop af
 
 	ld hl, BattleTowerTrainerData
@@ -84,12 +84,12 @@ Function_LoadOpponentTrainerAndPokemons:
 
 	ret
 
-Function_LoadRandomBattleTowerMon:
+LoadRandomBattleTowerMon:
 	ld c, BATTLETOWER_PARTY_LENGTH
 .loop
 	push bc
-	ld a, BANK(sBTMonPrevTrainer1)
-	call GetSRAMBank
+	ld a, BANK(sBTMonOfTrainers)
+	call OpenSRAM
 
 .FindARandomBattleTowerMon:
 	; a = 1, 2, ..., 10 indicating level 10, 20, ..., 100 opponents

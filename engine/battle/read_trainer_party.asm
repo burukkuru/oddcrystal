@@ -14,7 +14,7 @@ ReadTrainerParty:
 	ld [hl], a
 
 	ld hl, wOTPartyMons
-	ld bc, wOTPartyMonsEnd - wOTPartyMons
+	ld bc, PARTYMON_STRUCT_LENGTH * PARTY_LENGTH
 	xor a
 	call ByteFill
 
@@ -72,7 +72,7 @@ ReadTrainerParty:
 
 .cal2
 	ld a, BANK(sMysteryGiftTrainer)
-	call GetSRAMBank
+	call OpenSRAM
 	ld a, TRAINERTYPE_MOVES
 	ld [wOtherTrainerType], a
 	ld de, sMysteryGiftTrainer
@@ -229,14 +229,14 @@ GetTrainerName::
 	jr nz, .not_cal2
 
 	ld a, BANK(sMysteryGiftTrainerHouseFlag)
-	call GetSRAMBank
+	call OpenSRAM
 	ld a, [sMysteryGiftTrainerHouseFlag]
 	and a
 	call CloseSRAM
 	jr z, .not_cal2
 
 	ld a, BANK(sMysteryGiftPartnerName)
-	call GetSRAMBank
+	call OpenSRAM
 	ld hl, sMysteryGiftPartnerName
 	call CopyTrainerName
 	jp CloseSRAM
@@ -281,8 +281,8 @@ CopyTrainerName:
 	pop de
 	ret
 
-Function39990:
-; This function is useless.
+IncompleteCopyNameFunction: ; unreferenced
+; Copy of CopyTrainerName but without "call CopyBytes"
 	ld de, wStringBuffer1
 	push de
 	ld bc, NAME_LENGTH

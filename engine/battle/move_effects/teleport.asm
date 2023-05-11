@@ -1,6 +1,4 @@
 BattleCommand_Teleport:
-; teleport
-
 	ld a, [wBattleType]
 	cp BATTLETYPE_SHINY
 	jr z, .failed
@@ -15,31 +13,34 @@ BattleCommand_Teleport:
 	call GetBattleVar
 	bit SUBSTATUS_CANT_RUN, a
 	jr nz, .failed
-; Only need to check these next things if it's your turn
 	ldh a, [hBattleTurn]
 	and a
 	jr nz, .enemy_turn
-; Can't teleport from a trainer battle
+
+	; Can't teleport from a trainer battle
 	ld a, [wBattleMode]
 	dec a
 	jr nz, .failed
-; If your level is greater than the opponent's, you run without fail.
+	; b = player level
 	ld a, [wCurPartyLevel]
 	ld b, a
+	; If player level >= enemy level, Teleport will succeed
 	ld a, [wBattleMonLevel]
 	cp b
 	jr nc, .run_away
-; Generate a number between 0 and (YourLevel + TheirLevel).
+	; c = player level + enemy level + 1
 	add b
 	ld c, a
 	inc c
+	; Generate a number less than c
 .loop_player
 	call BattleRandom
 	cp c
 	jr nc, .loop_player
-; If that number is greater than 4 times your level, run away.
+	; b = enemy level / 4
 	srl b
 	srl b
+	; If the random number >= enemy level / 4, Teleport will succeed
 	cp b
 	jr nc, .run_away
 
@@ -48,36 +49,40 @@ BattleCommand_Teleport:
 	jp PrintButItFailed
 
 .enemy_turn
+	; Can't teleport from a trainer battle
 	ld a, [wBattleMode]
 	dec a
 	jr nz, .failed
+	; b = enemy level
 	ld a, [wBattleMonLevel]
 	ld b, a
+	; If enemy level >= player level, Teleport will succeed
 	ld a, [wCurPartyLevel]
 	cp b
 	jr nc, .run_away
+	; c = enemy level + player level + 1
 	add b
 	ld c, a
 	inc c
+	; Generate a number less than c
 .loop_enemy
+; BUG: Wild Pokémon can always Teleport regardless of level difference (see docs/bugs_and_glitches.md)
 	call BattleRandom
 	cp c
 	jr nc, .loop_enemy
+	; b = player level / 4
 	srl b
 	srl b
 	cp b
-	; This does the wrong thing. What was
-	; probably intended was jr c, .failed
-	; The way this is made makes enemy use
-	; of Teleport always succeed if able
 	jr nc, .run_away
+
 .run_away
 	call UpdateBattleMonInParty
 	xor a
 	ld [wNumHits], a
 	inc a
 	ld [wForcedSwitch], a
-	ld [wKickCounter], a
+	ld [wBattleAnimParam], a
 	call SetBattleDraw
 	call BattleCommand_LowerSub
 	call LoadMoveAnim

@@ -1,14 +1,16 @@
-	; npctrade struct members (see data/events/npc_trades.asm)
-NPCTRADE_DIALOG  EQU  0 ; db
-NPCTRADE_GIVEMON EQU  1 ; dw
-NPCTRADE_GETMON  EQU  3 ; dw
-NPCTRADE_NICK    EQU  5 ; ds MON_NAME_LENGTH
-NPCTRADE_DVS     EQU 16 ; dw
-NPCTRADE_ITEM    EQU 18 ; db
-NPCTRADE_OT_ID   EQU 19 ; dw
-NPCTRADE_OT_NAME EQU 21 ; ds PLAYER_NAME_LENGTH
-NPCTRADE_GENDER  EQU 29 ; db
-NPCTRADE_PADDING EQU 30 ; ds 2
+; npctrade struct members (see data/events/npc_trades.asm)
+rsreset
+DEF NPCTRADE_DIALOG   rb
+DEF NPCTRADE_GIVEMON  rw
+DEF NPCTRADE_GETMON   rw
+DEF NPCTRADE_NICKNAME rb MON_NAME_LENGTH
+DEF NPCTRADE_DVS      rw
+DEF NPCTRADE_ITEM     rb
+DEF NPCTRADE_OT_ID    rw
+DEF NPCTRADE_OT_NAME  rb PLAYER_NAME_LENGTH
+DEF NPCTRADE_GENDER   rb
+                      rb_skip 2
+DEF NPCTRADE_STRUCT_LENGTH EQU _RS
 
 ; NPCTrades indexes (see data/events/npc_trades.asm)
 	const_def
@@ -19,7 +21,7 @@ NPCTRADE_PADDING EQU 30 ; ds 2
 	const NPC_TRADE_CHRIS  ; 4
 	const NPC_TRADE_KIM    ; 5
 	const NPC_TRADE_FOREST ; 6
-NUM_NPC_TRADES EQU const_value
+DEF NUM_NPC_TRADES EQU const_value
 
 ; trade gender limits
 	const_def

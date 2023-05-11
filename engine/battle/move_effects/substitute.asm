@@ -1,6 +1,4 @@
 BattleCommand_Substitute:
-; substitute
-
 	call BattleCommand_MoveDelay
 	ld hl, wBattleMonMaxHP
 	ld de, wPlayerSubstituteHP
@@ -61,7 +59,7 @@ BattleCommand_Substitute:
 
 	xor a
 	ld [wNumHits], a
-	ld [wKickCounter], a
+	ld [wBattleAnimParam], a
 	ld hl, SUBSTITUTE
 	call GetMoveIDFromIndex
 	call LoadAnim

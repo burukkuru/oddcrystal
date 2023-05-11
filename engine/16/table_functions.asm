@@ -30,7 +30,7 @@ PokemonTableGarbageCollection:
 	ld a, 1
 	ldh [rSVBK], a
 	___conversion_bitmap_check_structs wPartyMons, PARTYMON_STRUCT_LENGTH, PARTY_LENGTH, .set_bit
-	___conversion_bitmap_check_structs wBreedMon1, wBreedMon2 - wBreedMon1, 2, .set_bit
+	___conversion_bitmap_check_structs wBreedMon1Species, wBreedMon2 - wBreedMon1Species, 2, .set_bit
 	ld a, [wEggMonSpecies]
 	call .set_bit
 	; may or may not be valid, but marking them in use is free
@@ -44,10 +44,10 @@ PokemonTableGarbageCollection:
 	ldh a, [hSRAMBank]
 	push af
 	ld a, BANK(sBox)
-	call GetSRAMBank
+	call OpenSRAM
 	___conversion_bitmap_check_structs sBoxMons, BOXMON_STRUCT_LENGTH, MONS_PER_BOX, .set_bit
 	pop af
-	call GetSRAMBank ;will close SRAM if hSRAMBank was -1
+	call OpenSRAM ;will close SRAM if hSRAMBank was -1
 	___conversion_bitmap_free_unused wPokemonIndexTable, MON_TABLE
 	pop de
 	ret
@@ -71,8 +71,7 @@ MoveTableGarbageCollection:
 	push af
 	ld a, 1
 	ldh [rSVBK], a
-___move = 0
-	rept NUM_MOVES
+	FOR ___move, NUM_MOVES
 		___conversion_bitmap_check_structs wPartyMon1Moves + ___move, PARTYMON_STRUCT_LENGTH, PARTY_LENGTH, .set_bit
 		___conversion_bitmap_check_structs wBreedMon1Moves + ___move, wBreedMon2 - wBreedMon1, 2, .set_bit
 		ld a, [wEggMonMoves + ___move]
@@ -82,9 +81,8 @@ ___move = 0
 		___conversion_bitmap_check_values .set_bit, wBufferMonMoves + ___move, wTempMonMoves + ___move, wContestMonMoves + ___move, \
 		                                            wBattleMonMoves + ___move, wEnemyMonMoves + ___move, wWildMonMoves + ___move, \
 		                                            wPlayerUsedMoves + ___move
-___move = ___move + 1
 	endr
-	ld a, [wNamedObjectIndexBuffer] ;or any of its aliases...
+	ld a, [wNamedObjectIndex] ;or any of its aliases...
 	call .set_bit
 	; only valid sometimes
 	___conversion_bitmap_check_values .set_bit, wCurPlayerMove, wCurEnemyMove, wDisabledMove, wEnemyDisabledMove, wUnusedPlayerLockedMove, \
@@ -96,14 +94,12 @@ ___move = ___move + 1
 	ldh a, [hSRAMBank]
 	push af
 	ld a, BANK(sBox)
-	call GetSRAMBank
-___move = 0
-	rept NUM_MOVES
+	call OpenSRAM
+	FOR ___move, NUM_MOVES
 		___conversion_bitmap_check_structs sBoxMon1Moves + ___move, BOXMON_STRUCT_LENGTH, MONS_PER_BOX, .set_bit
-___move = ___move + 1
 	endr
 	pop af
-	call GetSRAMBank
+	call OpenSRAM
 	___conversion_bitmap_free_unused wMoveIndexTable, MOVE_TABLE
 	pop de
 	ret

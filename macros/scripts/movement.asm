@@ -1,220 +1,222 @@
 ; MovementPointers indexes (see engine/overworld/movement.asm)
-	enum_start 0, +4
+	const_def 0, 4
 
 ; Directional movements
 
-	enum movement_turn_head ; $00
-turn_head: MACRO
+	const movement_turn_head ; $00
+MACRO turn_head
 	db movement_turn_head | \1
 ENDM
 
-	enum movement_turn_step ; $04
-turn_step: MACRO
+	const movement_turn_step ; $04
+MACRO turn_step
 	db movement_turn_step | \1
 ENDM
 
-	enum movement_slow_step ; $08
-slow_step: MACRO
+	const movement_slow_step ; $08
+MACRO slow_step
 	db movement_slow_step | \1
 ENDM
 
-	enum movement_step ; $0c
-step: MACRO
+	const movement_step ; $0c
+MACRO step
 	db movement_step | \1
 ENDM
 
-	enum movement_big_step ; $10
-big_step: MACRO
+	const movement_big_step ; $10
+MACRO big_step
 	db movement_big_step | \1
 ENDM
 
-	enum movement_slow_slide_step ; $14
-slow_slide_step: MACRO
+	const movement_slow_slide_step ; $14
+MACRO slow_slide_step
 	db movement_slow_slide_step | \1
 ENDM
 
-	enum movement_slide_step ; $18
-slide_step: MACRO
+	const movement_slide_step ; $18
+MACRO slide_step
 	db movement_slide_step | \1
 ENDM
 
-	enum movement_fast_slide_step ; $1c
-fast_slide_step: MACRO
+	const movement_fast_slide_step ; $1c
+MACRO fast_slide_step
 	db movement_fast_slide_step | \1
 ENDM
 
-	enum movement_turn_away ; $20
-turn_away: MACRO
+	const movement_turn_away ; $20
+MACRO turn_away
 	db movement_turn_away | \1
 ENDM
 
-	enum movement_turn_in ; $24
-turn_in: MACRO
+	const movement_turn_in ; $24
+MACRO turn_in
 	db movement_turn_in | \1
 ENDM
 
-	enum movement_turn_waterfall ; $28
-turn_waterfall: MACRO
+	const movement_turn_waterfall ; $28
+MACRO turn_waterfall
 	db movement_turn_waterfall | \1
 ENDM
 
-	enum movement_slow_jump_step ; $2c
-slow_jump_step: MACRO
+	const movement_slow_jump_step ; $2c
+MACRO slow_jump_step
 	db movement_slow_jump_step | \1
 ENDM
 
-	enum movement_jump_step ; $30
-jump_step: MACRO
+	const movement_jump_step ; $30
+MACRO jump_step
 	db movement_jump_step | \1
 ENDM
 
-	enum movement_fast_jump_step ; $34
-fast_jump_step: MACRO
+	const movement_fast_jump_step ; $34
+MACRO fast_jump_step
 	db movement_fast_jump_step | \1
 ENDM
 
-__enumdir__ = +1
+DEF const_inc = 1
 
 ; Control
-	enum movement_remove_sliding ; $38
-remove_sliding: MACRO
+	const movement_remove_sliding ; $38
+MACRO remove_sliding
 	db movement_remove_sliding
 ENDM
 
-	enum movement_set_sliding ; $39
-set_sliding: MACRO
+	const movement_set_sliding ; $39
+MACRO set_sliding
 	db movement_set_sliding
 ENDM
 
-	enum movement_remove_fixed_facing ; $3a
-remove_fixed_facing: MACRO
+	const movement_remove_fixed_facing ; $3a
+MACRO remove_fixed_facing
 	db movement_remove_fixed_facing
 ENDM
 
-	enum movement_fix_facing ; $3b
-fix_facing: MACRO
+	const movement_fix_facing ; $3b
+MACRO fix_facing
 	db movement_fix_facing
 ENDM
 
-	enum movement_show_object ; $3c
-show_object: MACRO
+	const movement_show_object ; $3c
+MACRO show_object
 	db movement_show_object
 ENDM
 
-	enum movement_hide_object ; $3d
-hide_object: MACRO
+	const movement_hide_object ; $3d
+MACRO hide_object
 	db movement_hide_object
 ENDM
 
 ; Sleep
 
-	enum movement_step_sleep ; $3e
-step_sleep: MACRO
-if \1 <= 8
-	db movement_step_sleep + \1 - 1
-else
-	db movement_step_sleep + 8, \1
-endc
+	const movement_step_sleep ; $3e
+MACRO step_sleep
+	if \1 <= 8
+		db movement_step_sleep + \1 - 1
+	else
+		db movement_step_sleep + 8, \1
+	endc
 ENDM
 
-__enum__ = __enum__ + 8
+	const_skip 8 ; all step_sleep values
 
-	enum movement_step_end ; $47
-step_end: MACRO
+	const movement_step_end ; $47
+MACRO step_end
 	db movement_step_end
 ENDM
 
-	enum movement_step_48 ; $48
-step_48: MACRO
+	const movement_step_48 ; $48
+MACRO step_48
 	db movement_step_48
 	db \1 ; ???
 ENDM
 
-	enum movement_remove_object ; $49
-remove_object: MACRO
+	const movement_remove_object ; $49
+MACRO remove_object
 	db movement_remove_object
 ENDM
 
-	enum movement_step_loop ; $4a
-step_loop: MACRO
+	const movement_step_loop ; $4a
+MACRO step_loop
 	db movement_step_loop
 ENDM
 
-	enum movement_step_4b ; $4b
-step_4b: MACRO
+	const movement_step_4b ; $4b
+MACRO step_4b
 	db movement_step_4b
 ENDM
 
-	enum movement_teleport_from ; $4c
-teleport_from: MACRO
+	const movement_teleport_from ; $4c
+MACRO teleport_from
 	db movement_teleport_from
 ENDM
 
-	enum movement_teleport_to ; $4d
-teleport_to: MACRO
+	const movement_teleport_to ; $4d
+MACRO teleport_to
 	db movement_teleport_to
 ENDM
 
-	enum movement_skyfall ; $4e
-skyfall: MACRO
+	const movement_skyfall ; $4e
+MACRO skyfall
 	db movement_skyfall
 ENDM
 
-	enum movement_step_dig ; $4f
-step_dig: MACRO
+	const movement_step_dig ; $4f
+MACRO step_dig
 	db movement_step_dig
 	db \1 ; length
 ENDM
 
-	enum movement_step_bump ; $50
-step_bump: MACRO
+	const movement_step_bump ; $50
+MACRO step_bump
 	db movement_step_bump
 ENDM
 
-	enum movement_fish_got_bite ; $51
-fish_got_bite: MACRO
+	const movement_fish_got_bite ; $51
+MACRO fish_got_bite
 	db movement_fish_got_bite
 ENDM
 
-	enum movement_fish_cast_rod ; $52
-fish_cast_rod: MACRO
+	const movement_fish_cast_rod ; $52
+MACRO fish_cast_rod
 	db movement_fish_cast_rod
 ENDM
 
-	enum movement_hide_emote ; $53
-hide_emote: MACRO
+	const movement_hide_emote ; $53
+MACRO hide_emote
 	db movement_hide_emote
 ENDM
 
-	enum movement_show_emote ; $54
-show_emote: MACRO
+	const movement_show_emote ; $54
+MACRO show_emote
 	db movement_show_emote
 ENDM
 
-	enum movement_step_shake ; $55
-step_shake: MACRO
+	const movement_step_shake ; $55
+MACRO step_shake
 	db movement_step_shake
 	db \1 ; displacement
 ENDM
 
-	enum movement_tree_shake ; $56
-tree_shake: MACRO
+	const movement_tree_shake ; $56
+MACRO tree_shake
 	db movement_tree_shake
 ENDM
 
-	enum movement_rock_smash ; $57
-rock_smash: MACRO
+	const movement_rock_smash ; $57
+MACRO rock_smash
 	db movement_rock_smash
 	db \1 ; length
 ENDM
 
-	enum movement_return_dig ; $58
-return_dig: MACRO
+	const movement_return_dig ; $58
+MACRO return_dig
 	db movement_return_dig
 	db \1 ; length
 ENDM
 
-	enum movement_skyfall_top ; $59
-skyfall_top: MACRO
+	const movement_skyfall_top ; $59
+MACRO skyfall_top
 	db movement_skyfall_top
 ENDM
+
+DEF NUM_MOVEMENT_CMDS EQU const_value

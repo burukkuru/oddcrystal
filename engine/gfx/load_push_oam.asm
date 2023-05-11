@@ -1,21 +1,28 @@
 WriteOAMDMACodeToHRAM::
-	ld c, LOW(hTransferVirtualOAM)
-	ld b, .PushOAMEnd - .PushOAM
-	ld hl, .PushOAM
-.loop
+	ld c, LOW(hTransferShadowOAM)
+	ld b, OAMDMACodeEnd - OAMDMACode
+	ld hl, OAMDMACode
+.copy
 	ld a, [hli]
 	ldh [c], a
 	inc c
 	dec b
-	jr nz, .loop
+	jr nz, .copy
 	ret
 
-.PushOAM:
-	ld a, HIGH(wVirtualOAM)
+OAMDMACode:
+; This code is defined in ROM, but
+; copied to and called from HRAM.
+LOAD "OAM DMA", HRAM
+hTransferShadowOAM::
+	; initiate DMA
+	ld a, HIGH(wShadowOAM)
 	ldh [rDMA], a
+	; wait for DMA to finish
 	ld a, NUM_SPRITE_OAM_STRUCTS
-.pushoam_loop
+.wait
 	dec a
-	jr nz, .pushoam_loop
+	jr nz, .wait
 	ret
-.PushOAMEnd
+ENDL
+OAMDMACodeEnd:

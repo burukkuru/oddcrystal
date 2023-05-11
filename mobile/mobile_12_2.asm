@@ -1,6 +1,15 @@
 MobileCheckOwnMonAnywhere:
-; Like CheckOwnMonAnywhere, but only check for species.
+; Like CheckOwnMonAnywhere, but only checks for species.
 ; OT/ID don't matter.
+
+; inputs:
+; [wScriptVar] should contain the species we're looking for.
+
+; outputs:
+; sets carry if monster matches species.
+
+	; If there are no monsters in the party,
+	; the player must not own any yet.
 
 	ld a, [wPartyCount]
 	and a
@@ -9,62 +18,81 @@ MobileCheckOwnMonAnywhere:
 	ld d, a
 	ld e, 0
 	ld hl, wPartyMon1Species
-	ld bc, wPartyMonOT
-.asm_4a851
+	ld bc, wPartyMonOTs
+
+	; Run .CheckMatch on each Pokémon in the party.
+
+.partymon
 	call .CheckMatch
 	ret c
+
 	push bc
 	ld bc, PARTYMON_STRUCT_LENGTH
 	add hl, bc
 	pop bc
-	call .CopyName
+	call .AdvanceOTName
 	dec d
-	jr nz, .asm_4a851
+	jr nz, .partymon
+
+	; Run .CheckMatch on each Pokémon in the PC.
+
 	ld a, BANK(sBoxCount)
-	call GetSRAMBank
+	call OpenSRAM
 	ld a, [sBoxCount]
 	and a
-	jr z, .asm_4a888
+	jr z, .boxes
+
 	ld d, a
 	ld hl, sBoxMon1Species
-	ld bc, sBoxMonOT
-.asm_4a873
+	ld bc, sBoxMonOTs
+.openboxmon
 	call .CheckMatch
-	jr nc, .asm_4a87c
+	jr nc, .loop
+
 	call CloseSRAM
 	ret
 
-.asm_4a87c
+.loop
 	push bc
 	ld bc, BOXMON_STRUCT_LENGTH
 	add hl, bc
 	pop bc
-	call .CopyName
+	call .AdvanceOTName
 	dec d
-	jr nz, .asm_4a873
+	jr nz, .openboxmon
 
-.asm_4a888
+	; Run .CheckMatch on each monster in the other 13 PC boxes.
+
+.boxes
 	call CloseSRAM
+
 	ld c, 0
 	ld a, [wScriptVar]
 	call GetPokemonIndexFromID
 	ld d, h
 	ld e, l
-.asm_4a88d
+.box
+	; Don't search the current box again.
 	ld a, [wCurBox]
 	and $f
 	cp c
-	jr z, .asm_4a8d1
-	ld hl, .BoxAddrs
+	jr z, .loopbox
+
+	; Load the box.
+
+	ld hl, .BoxAddresses
 	ld b, 0
 	add hl, bc
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	call GetSRAMBank
+	call OpenSRAM
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
+
+	; Number of monsters in the box
+
 	ld b, MONS_PER_BOX
 .box_search_loop
 	ld a, [hli]
@@ -76,11 +104,13 @@ MobileCheckOwnMonAnywhere:
 .next_box_mon
 	dec b
 	jr nz, .box_search_loop
-.asm_4a8d1
+
+.loopbox
 	inc c
 	ld a, c
 	cp NUM_BOXES
-	jr c, .asm_4a88d
+	jr c, .box
+
 	call CloseSRAM
 	and a
 	ret
@@ -91,11 +121,19 @@ MobileCheckOwnMonAnywhere:
 	ret
 
 .CheckMatch:
+	; Check if a Pokémon is of a specific species.
+	; We compare the species we are looking for in
+	; [wScriptVar] to the species we have in [hl].
+	; Sets carry flag if species matches.
+
 	push bc
 	push hl
 	push de
 	ld d, b
 	ld e, c
+
+	; check species
+
 	ld a, [wScriptVar]
 	ld b, [hl]
 	cp b
@@ -116,23 +154,14 @@ MobileCheckOwnMonAnywhere:
 	scf
 	ret
 
-.BoxAddrs:
-	dba sBox1PokemonIndexes
-	dba sBox2PokemonIndexes
-	dba sBox3PokemonIndexes
-	dba sBox4PokemonIndexes
-	dba sBox5PokemonIndexes
-	dba sBox6PokemonIndexes
-	dba sBox7PokemonIndexes
-	dba sBox8PokemonIndexes
-	dba sBox9PokemonIndexes
-	dba sBox10PokemonIndexes
-	dba sBox11PokemonIndexes
-	dba sBox12PokemonIndexes
-	dba sBox13PokemonIndexes
-	dba sBox14PokemonIndexes
+.BoxAddresses:
+	table_width 3, MobileCheckOwnMonAnywhere.BoxAddresses
+for n, 1, NUM_BOXES + 1
+	dba sBox{d:n}PokemonIndexes
+endr
+	assert_table_length NUM_BOXES
 
-.CopyName:
+.AdvanceOTName:
 	push hl
 	ld hl, NAME_LENGTH
 	add hl, bc
@@ -221,13 +250,12 @@ Function4a94e:
 .asm_4a9b0
 	ld de, SFX_WRONG
 	call PlaySFX
-	ld hl, UnknownText_0x4a9be
+	ld hl, MobilePickThreeMonForBattleText
 	call PrintText
 	jr .asm_4a974
 
-UnknownText_0x4a9be:
-	; Pick three #MON for battle.
-	text_far UnknownText_0x1c51d7
+MobilePickThreeMonForBattleText:
+	text_far _MobilePickThreeMonForBattleText
 	text_end
 
 Function4a9c3:
@@ -251,36 +279,35 @@ Function4a9c3:
 Function4a9d7:
 	ld a, [wd002]
 	ld hl, wPartyMonNicknames
-	call GetNick
+	call GetNickname
 	ld h, d
 	ld l, e
-	ld de, wd006
-	ld bc, 6
+	ld de, wMobileParticipant1Nickname
+	ld bc, NAME_LENGTH_JAPANESE
 	call CopyBytes
 	ld a, [wd003]
 	ld hl, wPartyMonNicknames
-	call GetNick
+	call GetNickname
 	ld h, d
 	ld l, e
-	ld de, wd00c
-	ld bc, 6
+	ld de, wMobileParticipant2Nickname
+	ld bc, NAME_LENGTH_JAPANESE
 	call CopyBytes
 	ld a, [wd004]
 	ld hl, wPartyMonNicknames
-	call GetNick
+	call GetNickname
 	ld h, d
 	ld l, e
-	ld de, wd012
-	ld bc, 6
+	ld de, wMobileParticipant3Nickname
+	ld bc, NAME_LENGTH_JAPANESE
 	call CopyBytes
-	ld hl, UnknownText_0x4aa1d
+	ld hl, MobileUseTheseThreeMonText
 	call PrintText
 	call YesNoBox
 	ret
 
-UnknownText_0x4aa1d:
-	; , @  and @ . Use these three?
-	text_far UnknownText_0x1c51f4
+MobileUseTheseThreeMonText:
+	text_far _MobileUseTheseThreeMonText
 	text_end
 
 Function4aa22:
@@ -320,7 +347,7 @@ Function4aa34:
 	pop af
 	ret
 
-Function4aa6e:
+Function4aa6e: ; unreferenced
 	pop af
 	ld de, SFX_WRONG
 	call PlaySFX
@@ -410,15 +437,15 @@ Function4aad3:
 
 	ld c, a
 	xor a
-	ldh [hObjectStructIndexBuffer], a
+	ldh [hObjectStructIndex], a
 .loop
 	push bc
 	push hl
 	ld e, MONICON_PARTYMENU
 	farcall LoadMenuMonIcon
-	ldh a, [hObjectStructIndexBuffer]
+	ldh a, [hObjectStructIndex]
 	inc a
-	ldh [hObjectStructIndexBuffer], a
+	ldh [hObjectStructIndex], a
 	pop hl
 	pop bc
 	dec c
@@ -483,7 +510,7 @@ Function4ab1a:
 	dec a
 	ld [wCurPartyMon], a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld hl, wPartySpecies
 	add hl, bc
 	ld a, [hl]
@@ -707,7 +734,7 @@ Function4acaa:
 	ld a, $b
 	ld [wMenuBorderLeftCoord], a
 	ld a, $1
-	ld [wMenuCursorBuffer], a
+	ld [wMenuCursorPosition], a
 	call InitVerticalMenuCursor
 	ld hl, w2DMenuFlags1
 	set 6, [hl]
@@ -758,7 +785,7 @@ Function4ad17:
 	jr z, .asm_4ad39
 	ld de, SFX_WRONG
 	call WaitPlaySFX
-	ld hl, UnknownText_0x4ad51
+	ld hl, MobileOnlyThreeMonMayEnterText
 	call PrintText
 	ret
 
@@ -778,9 +805,8 @@ Function4ad17:
 	call Function4adc2
 	ret
 
-UnknownText_0x4ad51:
-	; Only three #MON may enter.
-	text_far UnknownText_0x1c521c
+MobileOnlyThreeMonMayEnterText:
+	text_far _MobileOnlyThreeMonMayEnterText
 	text_end
 
 Function4ad56:
@@ -792,7 +818,7 @@ Function4ad60:
 	farcall ManagePokemonMoves
 	ret
 
-Function4ad67:
+Function4ad67: ; unreferenced
 	ret
 
 Function4ad68:

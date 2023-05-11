@@ -1,22 +1,22 @@
-	object_const_def ; object_event constants
+	object_const_def
 	const WILLSROOM_WILL
 
 WillsRoom_MapScripts:
-	db 2 ; scene scripts
-	scene_script .LockDoor ; SCENE_DEFAULT
-	scene_script .DummyScene ; SCENE_FINISHED
+	def_scene_scripts
+	scene_script WillsRoomLockDoorScene, SCENE_WILLSROOM_LOCK_DOOR
+	scene_script WillsRoomNoopScene,     SCENE_WILLSROOM_NOOP
 
-	db 1 ; callbacks
-	callback MAPCALLBACK_TILES, .WillsRoomDoors
+	def_callbacks
+	callback MAPCALLBACK_TILES, WillsRoomDoorsCallback
 
-.LockDoor:
-	prioritysjump .WillsDoorLocksBehindYou
+WillsRoomLockDoorScene:
+	sdefer WillsRoomDoorLocksBehindYouScript
 	end
 
-.DummyScene:
+WillsRoomNoopScene:
 	end
 
-.WillsRoomDoors:
+WillsRoomDoorsCallback:
 	checkevent EVENT_WILLS_ROOM_ENTRANCE_CLOSED
 	iffalse .KeepEntranceOpen
 	changeblock 4, 14, $2a ; wall
@@ -25,9 +25,9 @@ WillsRoom_MapScripts:
 	iffalse .KeepExitClosed
 	changeblock 4, 2, $16 ; open door
 .KeepExitClosed:
-	return
+	endcallback
 
-.WillsDoorLocksBehindYou:
+WillsRoomDoorLocksBehindYouScript:
 	applymovement PLAYER, WillsRoom_EnterMovement
 	refreshscreen $86
 	playsound SFX_STRENGTH
@@ -35,7 +35,7 @@ WillsRoom_MapScripts:
 	changeblock 4, 14, $2a ; wall
 	reloadmappart
 	closetext
-	setscene SCENE_FINISHED
+	setscene SCENE_WILLSROOM_NOOP
 	setevent EVENT_WILLS_ROOM_ENTRANCE_CLOSED
 	waitsfx
 	end
@@ -129,14 +129,14 @@ WillScript_WillDefeatText:
 WillsRoom_MapEvents:
 	db 0, 0 ; filler
 
-	db 3 ; warp events
+	def_warp_events
 	warp_event  5, 17, INDIGO_PLATEAU_POKECENTER_1F, 4
 	warp_event  4,  2, KOGAS_ROOM, 1
 	warp_event  5,  2, KOGAS_ROOM, 2
 
-	db 0 ; coord events
+	def_coord_events
 
-	db 0 ; bg events
+	def_bg_events
 
-	db 1 ; object events
+	def_object_events
 	object_event  5,  7, SPRITE_WILL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, WillScript_Battle, -1

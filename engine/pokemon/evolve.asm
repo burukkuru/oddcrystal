@@ -195,14 +195,14 @@ EvolveAfterBattle_MasterLoop:
 	ld [wMonTriedToEvolve], a
 
 	ldh a, [hTemp]
-	call GetFarHalfword
+	call GetFarWord
 	call GetPokemonIDFromIndex
 	ld [wEvolutionNewSpecies], a
 	ld a, [wCurPartyMon]
 	ld hl, wPartyMonNicknames
-	call GetNick
+	call GetNickname
 	call CopyName1
-	ld hl, Text_WhatEvolving
+	ld hl, EvolvingText
 	call PrintText
 
 	ld c, 50
@@ -225,17 +225,17 @@ EvolveAfterBattle_MasterLoop:
 	pop af
 	jp c, CancelEvolution
 
-	ld hl, Text_CongratulationsYourPokemon
+	ld hl, CongratulationsYourPokemonText
 	call PrintText
 
 	ld a, [wEvolutionNewSpecies]
 	ld [wCurSpecies], a
 	ld [wTempMonSpecies], a
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	call GetPokemonName
 
 	push hl
-	ld hl, Text_EvolvedIntoPKMN
+	ld hl, EvolvedIntoText
 	call PrintTextboxText
 	farcall StubbedTrainerRankings_MonsEvolved
 
@@ -248,7 +248,7 @@ EvolveAfterBattle_MasterLoop:
 	ld c, 40
 	call DelayFrames
 
-	call ClearTileMap
+	call ClearTilemap
 	call UpdateSpeciesNameIfNotNicknamed
 	call GetBaseData
 
@@ -337,7 +337,7 @@ EvolveAfterBattle_MasterLoop:
 	inc hl
 	jp .loop
 
-; unused
+.UnusedReturnToMap: ; unreferenced
 	pop hl
 .ReturnToMap:
 	pop de
@@ -358,7 +358,7 @@ UpdateSpeciesNameIfNotNicknamed:
 	ld a, [wCurSpecies]
 	push af
 	ld a, [wBaseSpecies]
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	pop af
 	ld [wCurSpecies], a
@@ -379,7 +379,7 @@ UpdateSpeciesNameIfNotNicknamed:
 	call AddNTimes
 	push hl
 	ld a, [wCurSpecies]
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	ld hl, wStringBuffer1
 	pop de
@@ -387,9 +387,9 @@ UpdateSpeciesNameIfNotNicknamed:
 	jp CopyBytes
 
 CancelEvolution:
-	ld hl, Text_StoppedEvolving
+	ld hl, StoppedEvolvingText
 	call PrintText
-	call ClearTileMap
+	call ClearTilemap
 	jp EvolveAfterBattle_MasterLoop
 
 IsMonHoldingEverstone:
@@ -403,24 +403,20 @@ IsMonHoldingEverstone:
 	pop hl
 	ret
 
-Text_CongratulationsYourPokemon:
-	; Congratulations! Your @ @
-	text_far UnknownText_0x1c4b92
+CongratulationsYourPokemonText:
+	text_far _CongratulationsYourPokemonText
 	text_end
 
-Text_EvolvedIntoPKMN:
-	; evolved into @ !
-	text_far UnknownText_0x1c4baf
+EvolvedIntoText:
+	text_far _EvolvedIntoText
 	text_end
 
-Text_StoppedEvolving:
-	; Huh? @ stopped evolving!
-	text_far UnknownText_0x1c4bc5
+StoppedEvolvingText:
+	text_far _StoppedEvolvingText
 	text_end
 
-Text_WhatEvolving:
-	; What? @ is evolving!
-	text_far UnknownText_0x1c4be3
+EvolvingText:
+	text_far _EvolvingText
 	text_end
 
 LearnLevelMoves:
@@ -475,7 +471,7 @@ LearnLevelMoves:
 .learn
 	ld a, d
 	ld [wPutativeTMHMMove], a
-	ld [wNamedObjectIndexBuffer], a
+	ld [wNamedObjectIndex], a
 	call GetMoveName
 	call CopyName1
 	predef LearnMove
@@ -517,10 +513,10 @@ FillMoves:
 	ld a, [wCurPartyLevel]
 	cp b
 	jp c, .done
-	ld a, [wEvolutionOldSpecies]
+	ld a, [wSkipMovesBeforeLevelUp]
 	and a
 	jr z, .CheckMove
-	ld a, [wd002]
+	ld a, [wPrevPartyLevel]
 	cp b
 	jr nc, .GetMove
 
@@ -529,7 +525,7 @@ FillMoves:
 	ld c, NUM_MOVES
 	ldh a, [hTemp]
 	push hl
-	call GetFarHalfword
+	call GetFarWord
 	call GetMoveIDFromIndex
 	pop hl
 	ld b, a
@@ -573,7 +569,7 @@ FillMoves:
 .LearnMove:
 	ldh a, [hTemp]
 	push hl
-	call GetFarHalfword
+	call GetFarWord
 	call GetMoveIDFromIndex
 	pop hl
 	ld b, a
@@ -626,7 +622,7 @@ GetLowestEvolutionStage:
 	add hl, hl
 	add hl, bc
 	ld a, BANK(FirstEvoStages)
-	call GetFarHalfword
+	call GetFarWord
 	call GetPokemonIDFromIndex
 	ld [wCurPartySpecies], a
 	ret
@@ -664,12 +660,12 @@ DetermineEvolutionItemResults::
 	cp EVOLVE_ITEM
 	jr nz, .skip_species_parameter
 	call GetNextEvoAttackByte
-	ld b, a	
+	ld b, a
 	ld a, [wCurItem]
 	cp b
 	jr nz, .skip_species
 	ldh a, [hTemp]
-	call GetFarHalfword
+	call GetFarWord
 	ld d, h
 	ld e, l
 	ret

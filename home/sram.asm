@@ -1,11 +1,8 @@
-GetSRAMBank::
-; load sram bank a
+OpenSRAM::
 ; if invalid bank, sram is disabled
 	cp NUM_SRAM_BANKS
 	jr nc, CloseSRAM
-; fallthrough
 
-OpenSRAM::
 ; switch to sram bank a
 	push af
 ; latch clock data

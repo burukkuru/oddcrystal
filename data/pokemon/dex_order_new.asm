@@ -1,6 +1,7 @@
 ; Every Pokémon sorted in New Pokédex Order.
 
 NewPokedexOrder:
+	table_width 2, NewPokedexOrder
 	dw CHIKORITA
 	dw BAYLEEF
 	dw MEGANIUM
@@ -252,3 +253,4 @@ NewPokedexOrder:
 	dw MEWTWO
 	dw MEW
 	dw CELEBI
+	assert_table_length NUM_POKEMON

@@ -152,6 +152,7 @@ EggMovePointers1:
 	dw NoEggMoves1
 	dw NoEggMoves1
 	dw NoEggMoves1
+.IndirectEnd::
 
 BulbasaurEggMoves:
 	dw LIGHT_SCREEN

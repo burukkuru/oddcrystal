@@ -256,6 +256,7 @@ MoveDescriptions1:
 	dw RockSmashDescription
 	dw WhirlpoolDescription
 	dw BeatUpDescription
+.IndirectEnd::
 
 InvalidMoveDescription:
 	db "?@"

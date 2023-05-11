@@ -72,7 +72,7 @@ Rate:
 	ld d, h
 	ld e, l
 	pop hl
-	lb bc, PRINTNUM_RIGHTALIGN | 2, 4
+	lb bc, PRINTNUM_LEFTALIGN | 2, 4
 	call PrintNum
 	pop bc
 	ret

@@ -51,7 +51,7 @@ _InterpretMobileMenu::
 	ld c, a
 	ld a, [w2DMenuNumRows]
 	call SimpleMultiply
-	ld [wMenuCursorBuffer], a
+	ld [wMenuCursorPosition], a
 	and a
 	ret
 
@@ -91,7 +91,7 @@ Mobile_GetMenuSelection:
 	ld c, a
 	ld a, [wMenuCursorX]
 	add c
-	ld [wMenuCursorBuffer], a
+	ld [wMenuCursorPosition], a
 	and a
 	ret
 
@@ -172,7 +172,7 @@ Init2DMenuCursorPosition:
 	call .InitFlags_c
 	ld a, [w2DMenuNumCols]
 	ld e, a
-	ld a, [wMenuCursorBuffer]
+	ld a, [wMenuCursorPosition]
 	ld b, a
 	xor a
 	ld d, 0
@@ -272,12 +272,11 @@ MobileMenuJoypad:
 	ld c, a
 	ret
 
-Unreferenced_Function241d5:
+Function241d5: ; unreferenced
 	call Place2DMenuCursor
 .loop
 	call Move2DMenuCursor
-	call HDMATransferTileMapToWRAMBank3 ; BUG: This function is in another bank.
-	                    ; Pointer in current bank (9) is bogus.
+	call HDMATransferTilemapToWRAMBank3 ; should be farcall
 	call .loop2
 	jr nc, .done
 	call _2DMenuInterpretJoypad
@@ -299,8 +298,7 @@ Unreferenced_Function241d5:
 	ret c
 	ld c, 1
 	ld b, 3
-	call AdvanceMobileInactivityTimerAndCheckExpired ; BUG: This function is in another bank.
-	                    ; Pointer in current bank (9) is bogus.
+	call AdvanceMobileInactivityTimerAndCheckExpired ; should be farcall
 	ret c
 	farcall Function100337
 	ret c
@@ -344,7 +342,7 @@ MenuJoypadLoop:
 
 Do2DMenuRTCJoypad:
 .loopRTC
-	call RTC
+	call UpdateTimeAndPals
 	call Menu_WasButtonPressed
 	ret c
 	ld a, [w2DMenuFlags1]
@@ -364,7 +362,9 @@ Menu_WasButtonPressed:
 	call GetMenuJoypad
 	and a
 	ret z
+	vc_hook Forbid_printing_photo_studio
 	scf
+	vc_hook Forbid_printing_PC_Box
 	ret
 
 _2DMenuInterpretJoypad:
@@ -566,8 +566,8 @@ _PushWindow::
 	ld d, [hl]
 	push de
 
-	ld b, $10
-	ld hl, wMenuFlags
+	ld b, wMenuHeaderEnd - wMenuHeader
+	ld hl, wMenuHeader
 .loop
 	ld a, [hli]
 	ld [de], a
@@ -692,12 +692,12 @@ _ExitMenu::
 	dec [hl]
 	ret
 
-Unreferenced_Function24423:
+RestoreOverworldMapTiles: ; unreferenced
 	ld a, [wVramState]
 	bit 0, a
 	ret z
 	xor a ; sScratch
-	call GetSRAMBank
+	call OpenSRAM
 	hlcoord 0, 0
 	ld de, sScratch
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
@@ -705,7 +705,7 @@ Unreferenced_Function24423:
 	call CloseSRAM
 	call OverworldTextModeSwitch
 	xor a ; sScratch
-	call GetSRAMBank
+	call OpenSRAM
 	ld hl, sScratch
 	decoord 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
@@ -725,14 +725,14 @@ Unreferenced_Function24423:
 	ret
 
 Error_Cant_ExitMenu:
-	ld hl, .Text_NoWindowsAvailableForPopping
+	ld hl, .WindowPoppingErrorText
 	call PrintText
 	call WaitBGMap
-.InfiniteLoop:
-	jr .InfiniteLoop
+.infinite_loop
+	jr .infinite_loop
 
-.Text_NoWindowsAvailableForPopping:
-	text_far UnknownText_0x1c46b7
+.WindowPoppingErrorText:
+	text_far _WindowPoppingErrorText
 	text_end
 
 _InitVerticalMenuCursor::
@@ -782,7 +782,7 @@ _InitVerticalMenuCursor::
 .skip_bit_1
 	ld [hli], a
 ; wMenuCursorY
-	ld a, [wMenuCursorBuffer]
+	ld a, [wMenuCursorPosition]
 	and a
 	jr z, .load_at_the_top
 	ld c, a

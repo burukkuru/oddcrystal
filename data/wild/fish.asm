@@ -1,12 +1,14 @@
-TIME_GROUP EQU 0 ; use the nth TimeFishGroups entry
+DEF TIME_GROUP EQU 0 ; use the nth TimeFishGroups entry
 
-fishgroup: MACRO
+MACRO fishgroup
 ; chance, old rod, good rod, super rod
-	dbwww \1, \2, \3, \4
+	db \1
+	dw \2, \3, \4
 ENDM
 
 FishGroups:
 ; entries correspond to FISHGROUP_* constants
+	table_width FISHGROUP_DATA_LENGTH, FishGroups
 	fishgroup 50 percent + 1, .Shore_Old,            .Shore_Good,            .Shore_Super
 	fishgroup 50 percent + 1, .Ocean_Old,            .Ocean_Good,            .Ocean_Super
 	fishgroup 50 percent + 1, .Lake_Old,             .Lake_Good,             .Lake_Super
@@ -20,6 +22,7 @@ FishGroups:
 	fishgroup 50 percent + 1, .Qwilfish_Old,         .Qwilfish_Good,         .Qwilfish_Super
 	fishgroup 50 percent + 1, .Remoraid_Old,         .Remoraid_Good,         .Remoraid_Super
 	fishgroup 50 percent + 1, .Qwilfish_NoSwarm_Old, .Qwilfish_NoSwarm_Good, .Qwilfish_NoSwarm_Super
+	assert_table_length NUM_FISHGROUPS
 
 .Shore_Old:
 	dbbw  70 percent + 1, 10, MAGIKARP
@@ -29,10 +32,10 @@ FishGroups:
 	dbbw  35 percent,     20, MAGIKARP
 	dbbw  70 percent,     20, KRABBY
 	dbbw  90 percent + 1, 20, KRABBY
-	dbbw 100 percent,      0, TIME_GROUP
+	dbbw 100 percent,     0, TIME_GROUP
 .Shore_Super:
 	dbbw  40 percent,     40, KRABBY
-	dbbw  70 percent,      1, TIME_GROUP
+	dbbw  70 percent,     1, TIME_GROUP
 	dbbw  90 percent + 1, 40, KRABBY
 	dbbw 100 percent,     40, KINGLER
 
@@ -44,10 +47,10 @@ FishGroups:
 	dbbw  35 percent,     20, MAGIKARP
 	dbbw  70 percent,     20, TENTACOOL
 	dbbw  90 percent + 1, 20, CHINCHOU
-	dbbw 100 percent,      2, TIME_GROUP
+	dbbw 100 percent,     2, TIME_GROUP
 .Ocean_Super:
 	dbbw  40 percent,     40, CHINCHOU
-	dbbw  70 percent,      3, TIME_GROUP
+	dbbw  70 percent,     3, TIME_GROUP
 	dbbw  90 percent + 1, 40, TENTACRUEL
 	dbbw 100 percent,     40, LANTURN
 
@@ -59,10 +62,10 @@ FishGroups:
 	dbbw  35 percent,     20, MAGIKARP
 	dbbw  70 percent,     20, GOLDEEN
 	dbbw  90 percent + 1, 20, GOLDEEN
-	dbbw 100 percent,      4, TIME_GROUP
+	dbbw 100 percent,     4, TIME_GROUP
 .Lake_Super:
 	dbbw  40 percent,     40, GOLDEEN
-	dbbw  70 percent,      5, TIME_GROUP
+	dbbw  70 percent,     5, TIME_GROUP
 	dbbw  90 percent + 1, 40, MAGIKARP
 	dbbw 100 percent,     40, SEAKING
 
@@ -74,10 +77,10 @@ FishGroups:
 	dbbw  35 percent,     20, MAGIKARP
 	dbbw  70 percent,     20, POLIWAG
 	dbbw  90 percent + 1, 20, POLIWAG
-	dbbw 100 percent,      6, TIME_GROUP
+	dbbw 100 percent,     6, TIME_GROUP
 .Pond_Super:
 	dbbw  40 percent,     40, POLIWAG
-	dbbw  70 percent,      7, TIME_GROUP
+	dbbw  70 percent,     7, TIME_GROUP
 	dbbw  90 percent + 1, 40, MAGIKARP
 	dbbw 100 percent,     40, POLIWAG
 
@@ -89,17 +92,17 @@ FishGroups:
 	dbbw  35 percent,     20, MAGIKARP
 	dbbw  70 percent,     20, MAGIKARP
 	dbbw  90 percent + 1, 20, MAGIKARP
-	dbbw 100 percent,      8, TIME_GROUP
+	dbbw 100 percent,     8, TIME_GROUP
 .Dratini_Super:
 	dbbw  40 percent,     40, MAGIKARP
-	dbbw  70 percent,      9, TIME_GROUP
+	dbbw  70 percent,     9, TIME_GROUP
 	dbbw  90 percent + 1, 40, MAGIKARP
 	dbbw 100 percent,     40, DRAGONAIR
 
 .Qwilfish_Swarm_Old:
-	dbbw  70 percent + 1,  5, MAGIKARP
-	dbbw  85 percent + 1,  5, MAGIKARP
-	dbbw 100 percent,      5, QWILFISH
+	dbbw  70 percent + 1, 5, MAGIKARP
+	dbbw  85 percent + 1, 5, MAGIKARP
+	dbbw 100 percent,     5, QWILFISH
 .Qwilfish_Swarm_Good:
 	dbbw  35 percent,     20, MAGIKARP
 	dbbw  70 percent,     20, QWILFISH
@@ -197,10 +200,10 @@ FishGroups:
 	dbbw  35 percent,     20, MAGIKARP
 	dbbw  70 percent,     20, POLIWAG
 	dbbw  90 percent + 1, 20, POLIWAG
-	dbbw 100 percent,      6, TIME_GROUP
+	dbbw 100 percent,     6, TIME_GROUP
 .Remoraid_Super:
 	dbbw  40 percent,     40, POLIWAG
-	dbbw  70 percent,      7, TIME_GROUP
+	dbbw  70 percent,     7, TIME_GROUP
 	dbbw  90 percent + 1, 40, MAGIKARP
 	dbbw 100 percent,     40, REMORAID
 

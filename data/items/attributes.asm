@@ -1,4 +1,4 @@
-item_attribute: MACRO
+MACRO item_attribute
 ; price, held effect, parameter, property, pocket, field menu, battle menu
 	dw \1
 	db \2, \3, \4, \5
@@ -6,7 +6,8 @@ item_attribute: MACRO
 ENDM
 
 ItemAttributes:
-; entries correspond to item ids
+; entries correspond to item ids (see constants/item_constants.asm)
+	table_width ITEMATTR_STRUCT_LENGTH, ItemAttributes
 ; MASTER_BALL
 	item_attribute 0, HELD_NONE, 0, CANT_SELECT, BALL, ITEMMENU_NOUSE, ITEMMENU_CLOSE
 ; ULTRA_BALL
@@ -201,7 +202,7 @@ ItemAttributes:
 	item_attribute 100, HELD_PSYCHIC_BOOST, 10, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; WHT_APRICORN
 	item_attribute 200, HELD_NONE, 0, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
-; BLACKBELT
+; BLACKBELT_I
 	item_attribute 100, HELD_FIGHTING_BOOST, 10, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; BLK_APRICORN
 	item_attribute 200, HELD_NONE, 0, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
@@ -293,6 +294,7 @@ ItemAttributes:
 	item_attribute $9999, HELD_NONE, 0, NO_LIMITS, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; METAL_COAT
 	item_attribute 100, HELD_STEEL_BOOST, 10, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
+; BUG: Dragon Scale, not Dragon Fang, boosts Dragon-type moves (see docs/bugs_and_glitches.md)
 ; DRAGON_FANG
 	item_attribute 100, HELD_NONE, 0, CANT_SELECT, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; ITEM_91
@@ -393,6 +395,7 @@ ItemAttributes:
 	item_attribute $9999, HELD_NONE, 0, NO_LIMITS, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; ITEM_FA
 	item_attribute $9999, HELD_NONE, 0, NO_LIMITS, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
+	assert_table_length NUM_ITEMS
 ; TM01
 	item_attribute 3000, HELD_NONE, 0, CANT_SELECT, TM_HM, ITEMMENU_PARTY, ITEMMENU_NOUSE
 ; TM02
@@ -493,6 +496,7 @@ ItemAttributes:
 	item_attribute 3000, HELD_NONE, 0, CANT_SELECT, TM_HM, ITEMMENU_PARTY, ITEMMENU_NOUSE
 ; TM50
 	item_attribute 2000, HELD_NONE, 0, CANT_SELECT, TM_HM, ITEMMENU_PARTY, ITEMMENU_NOUSE
+	assert_table_length NUM_ITEMS + NUM_TMS
 ; HM01
 	item_attribute 0, HELD_NONE, 0, CANT_SELECT | CANT_TOSS, TM_HM, ITEMMENU_PARTY, ITEMMENU_NOUSE
 ; HM02
@@ -507,6 +511,7 @@ ItemAttributes:
 	item_attribute 0, HELD_NONE, 0, CANT_SELECT | CANT_TOSS, TM_HM, ITEMMENU_PARTY, ITEMMENU_NOUSE
 ; HM07
 	item_attribute 0, HELD_NONE, 0, CANT_SELECT | CANT_TOSS, TM_HM, ITEMMENU_PARTY, ITEMMENU_NOUSE
+	assert_table_length NUM_ITEMS + NUM_TMS + NUM_HMS
 ; $fb
 	item_attribute $9999, HELD_NONE, 0, NO_LIMITS, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; $fc
@@ -519,3 +524,4 @@ ItemAttributes:
 	item_attribute $9999, HELD_NONE, 0, NO_LIMITS, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; $00
 	item_attribute $9999, HELD_NONE, 0, NO_LIMITS, ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE
+	assert_table_length $100

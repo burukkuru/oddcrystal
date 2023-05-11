@@ -32,6 +32,7 @@ CalcLevel:
 
 CalcExpAtLevel:
 ; (a/b)*n**3 + c*n**2 + d*n - e
+; BUG: Experience underflow for level 1 Pokémon with Medium-Slow growth rate (see docs/bugs_and_glitches.md)
 	ld a, [wBaseGrowthRate]
 	add a
 	add a
@@ -93,7 +94,7 @@ CalcExpAtLevel:
 	ldh a, [hProduct + 3]
 	sub b
 	ldh [hMultiplicand + 2], a
-	ld b, $0
+	ld b, 0
 	ldh a, [hProduct + 2]
 	sbc b
 	ldh [hMultiplicand + 1], a

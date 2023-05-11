@@ -1,38 +1,38 @@
 RuinsOfAlphAerodactylChamber_MapScripts:
-	db 2 ; scene scripts
-	scene_script .CheckWall ; SCENE_DEFAULT
-	scene_script .DummyScene ; SCENE_FINISHED
+	def_scene_scripts
+	scene_script RuinsOfAlphAerodactylChamberCheckWallScene, SCENE_RUINSOFALPHAERODACTYLCHAMBER_CHECK_WALL
+	scene_script RuinsOfAlphAerodactylChamberNoopScene,      SCENE_RUINSOFALPHAERODACTYLCHAMBER_NOOP
 
-	db 1 ; callbacks
-	callback MAPCALLBACK_TILES, .HiddenDoors
+	def_callbacks
+	callback MAPCALLBACK_TILES, RuinsOfAlphAerodactylChamberHiddenDoorsCallback
 
-.CheckWall:
+RuinsOfAlphAerodactylChamberCheckWallScene:
 	checkevent EVENT_WALL_OPENED_IN_AERODACTYL_CHAMBER
 	iftrue .OpenWall
 	end
 
 .OpenWall:
-	prioritysjump .WallOpenScript
+	sdefer RuinsOfAlphAerodactylChamberWallOpenScript
 	end
 
-.DummyScene:
+RuinsOfAlphAerodactylChamberNoopScene:
 	end
 
-.HiddenDoors:
+RuinsOfAlphAerodactylChamberHiddenDoorsCallback:
 	checkevent EVENT_WALL_OPENED_IN_AERODACTYL_CHAMBER
 	iftrue .WallOpen
 	changeblock 4, 0, $2e ; closed wall
 .WallOpen:
 	checkevent EVENT_SOLVED_AERODACTYL_PUZZLE
 	iffalse .FloorClosed
-	return
+	endcallback
 
 .FloorClosed:
 	changeblock 2, 2, $01 ; left floor
 	changeblock 4, 2, $02 ; right floor
-	return
+	endcallback
 
-.WallOpenScript:
+RuinsOfAlphAerodactylChamberWallOpenScript:
 	pause 30
 	earthquake 30
 	showemote EMOTE_SHOCK, PLAYER, 20
@@ -41,7 +41,7 @@ RuinsOfAlphAerodactylChamber_MapScripts:
 	changeblock 4, 0, $30 ; open wall
 	reloadmappart
 	earthquake 50
-	setscene SCENE_FINISHED
+	setscene SCENE_RUINSOFALPHAERODACTYLCHAMBER_NOOP
 	closetext
 	end
 
@@ -112,8 +112,7 @@ RuinsOfAlphAerodactylChamberWallPatternLeftText:
 	line "on the walls…"
 	done
 
-RuinsOfAlphAerodactylChamberUnownText:
-; unused
+RuinsOfAlphAerodactylChamberUnownText: ; unreferenced
 	text "It's UNOWN text!"
 	done
 
@@ -144,16 +143,16 @@ RuinsOfAlphAerodactylChamberDescriptionText:
 RuinsOfAlphAerodactylChamber_MapEvents:
 	db 0, 0 ; filler
 
-	db 5 ; warp events
+	def_warp_events
 	warp_event  3,  9, RUINS_OF_ALPH_OUTSIDE, 4
 	warp_event  4,  9, RUINS_OF_ALPH_OUTSIDE, 4
 	warp_event  3,  3, RUINS_OF_ALPH_INNER_CHAMBER, 8
 	warp_event  4,  3, RUINS_OF_ALPH_INNER_CHAMBER, 9
 	warp_event  4,  0, RUINS_OF_ALPH_AERODACTYL_ITEM_ROOM, 1
 
-	db 0 ; coord events
+	def_coord_events
 
-	db 6 ; bg events
+	def_bg_events
 	bg_event  2,  3, BGEVENT_READ, RuinsOfAlphAerodactylChamberAncientReplica
 	bg_event  5,  3, BGEVENT_READ, RuinsOfAlphAerodactylChamberAncientReplica
 	bg_event  3,  2, BGEVENT_UP, RuinsOfAlphAerodactylChamberPuzzle
@@ -161,4 +160,4 @@ RuinsOfAlphAerodactylChamber_MapEvents:
 	bg_event  3,  0, BGEVENT_UP, RuinsOfAlphAerodactylChamberWallPatternLeft
 	bg_event  4,  0, BGEVENT_UP, RuinsOfAlphAerodactylChamberWallPatternRight
 
-	db 0 ; object events
+	def_object_events

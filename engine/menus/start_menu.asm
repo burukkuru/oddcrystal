@@ -27,13 +27,13 @@ StartMenu::
 .GotMenuData:
 	call LoadMenuHeader
 	call .SetUpMenuItems
-	ld a, [wBattleMenuCursorBuffer]
-	ld [wMenuCursorBuffer], a
+	ld a, [wBattleMenuCursorPosition]
+	ld [wMenuCursorPosition], a
 	call .DrawMenuAccount
 	call DrawVariableLengthMenuBox
 	call .DrawBugContestStatusBox
 	call SafeUpdateSprites
-	call _OpenAndCloseMenu_HDMATransferTileMapAndAttrMap
+	call _OpenAndCloseMenu_HDMATransferTilemapAndAttrmap
 	farcall LoadFonts_NoOAMUpdate
 	call .DrawBugContestStatus
 	call UpdateTimePals
@@ -43,15 +43,15 @@ StartMenu::
 	call UpdateSprites
 	call UpdateTimePals
 	call .SetUpMenuItems
-	ld a, [wBattleMenuCursorBuffer]
-	ld [wMenuCursorBuffer], a
+	ld a, [wBattleMenuCursorPosition]
+	ld [wMenuCursorPosition], a
 
 .Select:
 	call .GetInput
 	jr c, .Exit
 	call ._DrawMenuAccount
-	ld a, [wMenuCursorBuffer]
-	ld [wBattleMenuCursorBuffer], a
+	ld a, [wMenuCursorPosition]
+	ld [wBattleMenuCursorPosition], a
 	call PlayClickSFX
 	call PlaceHollowCursor
 	call .OpenMenu
@@ -410,7 +410,7 @@ StartMenu_Exit:
 StartMenu_Quit:
 ; Retire from the bug catching contest.
 
-	ld hl, .EndTheContestText
+	ld hl, .StartMenuContestEndText
 	call StartMenuYesNo
 	jr c, .DontEndContest
 	ld a, BANK(BugCatchingContestReturnToGateScript)
@@ -423,8 +423,8 @@ StartMenu_Quit:
 	ld a, 0
 	ret
 
-.EndTheContestText:
-	text_far UnknownText_0x1c1a6c
+.StartMenuContestEndText:
+	text_far _StartMenuContestEndText
 	text_end
 
 StartMenu_Save:
@@ -432,10 +432,11 @@ StartMenu_Save:
 
 	call BufferScreen
 	farcall SaveMenu
-	jr nc, .asm_12919
+	jr nc, .saved
 	ld a, 0
 	ret
-.asm_12919
+
+.saved
 	ld a, 1
 	ret
 
@@ -443,7 +444,7 @@ StartMenu_Option:
 ; Game options.
 
 	call FadeToMenu
-	farcall OptionsMenu
+	farcall Option
 	ld a, 6
 	ret
 
@@ -459,13 +460,13 @@ StartMenu_Status:
 StartMenu_Pokedex:
 	ld a, [wPartyCount]
 	and a
-	jr z, .asm_12949
+	jr z, .empty
 
 	call FadeToMenu
 	farcall Pokedex
 	call CloseSubmenu
 
-.asm_12949
+.empty
 	ld a, 0
 	ret
 

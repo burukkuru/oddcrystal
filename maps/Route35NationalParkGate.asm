@@ -1,57 +1,57 @@
-	object_const_def ; object_event constants
+	object_const_def
 	const ROUTE35NATIONALPARKGATE_OFFICER1
 	const ROUTE35NATIONALPARKGATE_YOUNGSTER
 	const ROUTE35NATIONALPARKGATE_OFFICER2
 
 Route35NationalParkGate_MapScripts:
-	db 3 ; scene scripts
-	scene_script .DummyScene0 ; SCENE_ROUTE35NATIONALPARKGATE_NOTHING
-	scene_script .DummyScene1 ; SCENE_ROUTE35NATIONALPARKGATE_UNUSED
-	scene_script .LeaveContestEarly ; SCENE_ROUTE35NATIONALPARKGATE_LEAVE_CONTEST_EARLY
+	def_scene_scripts
+	scene_script Route35NationalParkGateNoop1Scene,             SCENE_ROUTE35NATIONALPARKGATE_NOOP
+	scene_script Route35NationalParkGateNoop2Scene,             SCENE_ROUTE35NATIONALPARKGATE_UNUSED
+	scene_script Route35NationalParkGateLeaveContestEarlyScene, SCENE_ROUTE35NATIONALPARKGATE_LEAVE_CONTEST_EARLY
 
-	db 2 ; callbacks
-	callback MAPCALLBACK_NEWMAP, .CheckIfContestRunning
-	callback MAPCALLBACK_OBJECTS, .CheckIfContestAvailable
+	def_callbacks
+	callback MAPCALLBACK_NEWMAP, Route35NationalParkGateCheckIfContestRunningCallback
+	callback MAPCALLBACK_OBJECTS, Route35NationalParkGateCheckIfContestAvailableCallback
 
-.DummyScene0:
+Route35NationalParkGateNoop1Scene:
 	end
 
-.DummyScene1:
+Route35NationalParkGateNoop2Scene:
 	end
 
-.LeaveContestEarly:
-	prioritysjump .LeavingContestEarly
+Route35NationalParkGateLeaveContestEarlyScene:
+	sdefer Route35NationalParkGateLeavingContestEarlyScript
 	end
 
-.CheckIfContestRunning:
+Route35NationalParkGateCheckIfContestRunningCallback:
 	checkflag ENGINE_BUG_CONTEST_TIMER
-	iftrue .BugContestIsRunning
-	setscene SCENE_ROUTE35NATIONALPARKGATE_NOTHING
-	return
+	iftrue Route35NationalParkBugContestIsRunningScript
+	setscene SCENE_ROUTE35NATIONALPARKGATE_NOOP
+	endcallback
 
-.BugContestIsRunning:
+Route35NationalParkBugContestIsRunningScript:
 	setscene SCENE_ROUTE35NATIONALPARKGATE_LEAVE_CONTEST_EARLY
-	return
+	endcallback
 
-.CheckIfContestAvailable:
+Route35NationalParkGateCheckIfContestAvailableCallback:
 	readvar VAR_WEEKDAY
 	ifequal TUESDAY, .SetContestOfficer
 	ifequal THURSDAY, .SetContestOfficer
 	ifequal SATURDAY, .SetContestOfficer
 	checkflag ENGINE_BUG_CONTEST_TIMER
-	iftrue .BugContestIsRunning
+	iftrue Route35NationalParkBugContestIsRunningScript
 	disappear ROUTE35NATIONALPARKGATE_OFFICER1
 	appear ROUTE35NATIONALPARKGATE_YOUNGSTER
 	appear ROUTE35NATIONALPARKGATE_OFFICER2
-	return
+	endcallback
 
 .SetContestOfficer:
 	appear ROUTE35NATIONALPARKGATE_OFFICER1
 	disappear ROUTE35NATIONALPARKGATE_YOUNGSTER
 	disappear ROUTE35NATIONALPARKGATE_OFFICER2
-	return
+	endcallback
 
-.LeavingContestEarly:
+Route35NationalParkGateLeavingContestEarlyScript:
 	applymovement PLAYER, Route35NationalParkGatePlayerApproachOfficer1Movement
 	turnobject ROUTE35NATIONALPARKGATE_OFFICER1, RIGHT
 	opentext
@@ -64,7 +64,7 @@ Route35NationalParkGate_MapScripts:
 	writetext Route35NationalParkGateOfficer1WaitAtNorthGateText
 	waitbutton
 	closetext
-	jumpstd bugcontestresultswarp
+	jumpstd BugContestResultsWarpScript
 
 .GoBackToContest:
 	writetext Route35NationalParkGateOfficer1OkGoFinishText
@@ -99,7 +99,7 @@ Route35NationalParkGate_OkayToProceed:
 	setflag ENGINE_BUG_CONTEST_TIMER
 	special PlayMapMusic
 	writetext Route35NationalParkGateOfficer1GiveParkBallsText
-	buttonsound
+	promptbutton
 	writetext Route35NationalParkGatePlayerReceivedParkBallsText
 	playsound SFX_ITEM
 	waitsfx
@@ -141,11 +141,11 @@ Route35NationalParkGate_LessThanFullParty:
 	iftrue Route35NationalParkGate_FirstMonIsFainted
 	setevent EVENT_LEFT_MONS_WITH_CONTEST_OFFICER
 	writetext Route35NationalParkGateOfficer1WellHoldYourMonText
-	buttonsound
+	promptbutton
 	writetext Route35NationalParkGatePlayersMonLeftWithHelperText
 	playsound SFX_GOT_SAFARI_BALLS
 	waitsfx
-	buttonsound
+	promptbutton
 	sjump Route35NationalParkGate_OkayToProceed
 
 Route35NationalParkGate_DeclinedToParticipate:
@@ -204,7 +204,7 @@ BugCatchingContestExplanationSign:
 	jumptext BugCatchingContestExplanationText
 
 Route35NationalParkGate_GetDayOfWeek:
-	jumpstd daytotext
+	jumpstd DayToTextScript
 	end
 
 Route35NationalParkGatePlayerApproachOfficer1Movement:
@@ -252,7 +252,7 @@ Route35NationalParkGateOfficer1GiveParkBallsText:
 
 Route35NationalParkGatePlayerReceivedParkBallsText:
 	text "<PLAYER> received"
-	line "20 PARK BALLS."
+	line "{d:BUG_CONTEST_BALLS} PARK BALLS."
 	done
 
 Route35NationalParkGateOfficer1ExplainsRulesText:
@@ -261,7 +261,7 @@ Route35NationalParkGateOfficer1ExplainsRulesText:
 	cont "est bug #MON"
 	cont "is the winner."
 
-	para "You have 20"
+	para "You have {d:BUG_CONTEST_MINUTES}"
 	line "minutes."
 
 	para "If you run out of"
@@ -438,18 +438,18 @@ BugCatchingContestExplanationText:
 Route35NationalParkGate_MapEvents:
 	db 0, 0 ; filler
 
-	db 4 ; warp events
+	def_warp_events
 	warp_event  3,  0, NATIONAL_PARK, 3
 	warp_event  4,  0, NATIONAL_PARK, 4
 	warp_event  3,  7, ROUTE_35, 3
 	warp_event  4,  7, ROUTE_35, 3
 
-	db 0 ; coord events
+	def_coord_events
 
-	db 1 ; bg events
+	def_bg_events
 	bg_event  5,  0, BGEVENT_READ, BugCatchingContestExplanationSign
 
-	db 3 ; object events
+	def_object_events
 	object_event  2,  1, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, Route35OfficerScriptContest, EVENT_ROUTE_35_NATIONAL_PARK_GATE_OFFICER_CONTEST_DAY
 	object_event  6,  5, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, Route35NationalParkGateYoungsterScript, EVENT_ROUTE_35_NATIONAL_PARK_GATE_YOUNGSTER
 	object_event  0,  3, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, Route35NationalParkGateOfficerScript, EVENT_ROUTE_35_NATIONAL_PARK_GATE_OFFICER_NOT_CONTEST_DAY

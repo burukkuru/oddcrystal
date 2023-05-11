@@ -1,8 +1,9 @@
 BattleTowerMons:
 ; 10 groups of 21 mons.
 ; Each mon is several bytes too long; the initial species, item and move IDs must be converted to 8-bit when loading.
+	table_width NICKNAMED_MON_STRUCT_LENGTH + 5, BattleTowerMons
 
-BattleTowerMons1:
+; BattleTowerMons group 1
 
 	dw JOLTEON
 	db MIRACLEBERRY
@@ -572,7 +573,7 @@ BattleTowerMons1:
 	db "BARIYA-DO@@"
 
 
-BattleTowerMons2:
+; BattleTowerMons group 2
 
 	dw UMBREON
 	db LEFTOVERS
@@ -1142,7 +1143,7 @@ BattleTowerMons2:
 	db "NUO-@@@@@@@"
 
 
-BattleTowerMons3:
+; BattleTowerMons group 3
 
 	dw JOLTEON
 	db MIRACLEBERRY
@@ -1712,7 +1713,7 @@ BattleTowerMons3:
 	db "OKORIZARU@@"
 
 
-BattleTowerMons4:
+; BattleTowerMons group 4
 
 	dw TAUROS
 	db GOLD_BERRY
@@ -2282,7 +2283,7 @@ BattleTowerMons4:
 	db "EREBU-@@@@@"
 
 
-BattleTowerMons5:
+; BattleTowerMons group 5
 
 	dw KINGDRA
 	db GOLD_BERRY
@@ -2852,7 +2853,7 @@ BattleTowerMons5:
 	db "HURI-ZA-@@@"
 
 
-BattleTowerMons6:
+; BattleTowerMons group 6
 
 	dw KINGDRA
 	db LEFTOVERS
@@ -3422,7 +3423,7 @@ BattleTowerMons6:
 	db "GORO-NIya@@"
 
 
-BattleTowerMons7:
+; BattleTowerMons group 7
 
 	dw JOLTEON
 	db MIRACLEBERRY
@@ -3992,7 +3993,7 @@ BattleTowerMons7:
 	db "KAMEtuKUSU@"
 
 
-BattleTowerMons8:
+; BattleTowerMons group 8
 
 	dw JOLTEON
 	db MIRACLEBERRY
@@ -4562,7 +4563,7 @@ BattleTowerMons8:
 	db "GURANBURU@@"
 
 
-BattleTowerMons9:
+; BattleTowerMons group 9
 
 	dw UMBREON
 	db KINGS_ROCK
@@ -5132,7 +5133,7 @@ BattleTowerMons9:
 	db "BETOBETON@@"
 
 
-BattleTowerMons10:
+; BattleTowerMons group 10
 
 	dw HOUNDOOM
 	db MINT_BERRY
@@ -5700,3 +5701,5 @@ BattleTowerMons10:
 	bigdw 214 ; SAtk
 	bigdw 214 ; SDef
 	db "RANTA-N@@@@"
+
+	assert_table_length 10 * BATTLETOWER_NUM_UNIQUE_MON

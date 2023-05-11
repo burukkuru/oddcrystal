@@ -109,7 +109,7 @@ VBlank0::
 	ldh a, [hOAMUpdate]
 	and a
 	jr nz, .done_oam
-	call hTransferVirtualOAM
+	call hTransferShadowOAM
 .done_oam
 
 	; vblank-sensitive operations are done
@@ -131,7 +131,7 @@ VBlank0::
 	ld [wTextDelayFrames], a
 .ok2
 
-	call Joypad
+	call UpdateJoypad
 
 	ld a, BANK(_UpdateSound)
 	rst Bankswitch
@@ -140,7 +140,7 @@ VBlank0::
 	rst Bankswitch
 
 	ldh a, [hSeconds]
-	ldh [hSecondsBackup], a
+	ldh [hUnusedBackup], a
 
 	ret
 
@@ -183,9 +183,9 @@ VBlank1::
 	call UpdateBGMap
 	call Serve2bppRequest_VBlank
 
-	call hTransferVirtualOAM
-.done
+	call hTransferShadowOAM
 
+.done
 	xor a
 	ld [wVBlankOccurred], a
 
@@ -269,7 +269,7 @@ VBlank3::
 	call UpdateBGMap
 	call Serve2bppRequest_VBlank
 
-	call hTransferVirtualOAM
+	call hTransferShadowOAM
 .done
 
 	xor a
@@ -323,9 +323,9 @@ VBlank4::
 	call UpdateBGMap
 	call Serve2bppRequest
 
-	call hTransferVirtualOAM
+	call hTransferShadowOAM
 
-	call Joypad
+	call UpdateJoypad
 
 	xor a
 	ld [wVBlankOccurred], a
@@ -364,7 +364,7 @@ VBlank5::
 	xor a
 	ld [wVBlankOccurred], a
 
-	call Joypad
+	call UpdateJoypad
 
 	xor a
 	ldh [rIF], a

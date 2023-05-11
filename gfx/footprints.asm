@@ -1,3 +1,6 @@
+Footprints:
+	table_width LEN_1BPP_TILE * 4, Footprints
+
 INCBIN "gfx/footprints/bulbasaur.1bpp"
 INCBIN "gfx/footprints/ivysaur.1bpp"
 INCBIN "gfx/footprints/venusaur.1bpp"
@@ -254,3 +257,5 @@ INCBIN "gfx/footprints/253.1bpp"
 INCBIN "gfx/footprints/254.1bpp"
 INCBIN "gfx/footprints/255.1bpp"
 INCBIN "gfx/footprints/256.1bpp"
+
+	assert_table_length $100

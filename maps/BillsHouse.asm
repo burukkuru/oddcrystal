@@ -1,4 +1,4 @@
-	object_const_def ; object_event constants
+	object_const_def
 	const BILLSHOUSE_GRAMPS
 
 	const_def 1 ; locked Pokémon ID table entries, used for species checking
@@ -10,19 +10,19 @@
 	const BILLSHOUSE_INDEX_PICHU
 
 BillsHouse_MapScripts:
-	db 0 ; scene scripts
+	def_scene_scripts
 
-	db 1 ; callbacks
-	callback MAPCALLBACK_NEWMAP, .LoadReservedIDs
+	def_callbacks
+	callback MAPCALLBACK_NEWMAP, BillsHouseLoadReservedIDsCallback
 
-.LoadReservedIDs:
+BillsHouseLoadReservedIDsCallback:
 	loadmonindex BILLSHOUSE_INDEX_LICKITUNG, LICKITUNG
 	loadmonindex BILLSHOUSE_INDEX_ODDISH, ODDISH
 	loadmonindex BILLSHOUSE_INDEX_STARYU, STARYU
 	loadmonindex BILLSHOUSE_INDEX_GROWLITHE, GROWLITHE
 	loadmonindex BILLSHOUSE_INDEX_VULPIX, VULPIX
 	loadmonindex BILLSHOUSE_INDEX_PICHU, PICHU
-	return
+	endcallback
 
 BillsGrandpa:
 	faceplayer
@@ -34,7 +34,7 @@ BillsGrandpa:
 	checkevent EVENT_MET_BILLS_GRANDPA
 	iftrue .MetGrandpa
 	writetext BillsGrandpaIntroText
-	buttonsound
+	promptbutton
 	setevent EVENT_MET_BILLS_GRANDPA
 .MetGrandpa:
 	checkevent EVENT_SHOWED_PICHU_TO_BILLS_GRANDPA
@@ -48,7 +48,7 @@ BillsGrandpa:
 	checkevent EVENT_SHOWED_LICKITUNG_TO_BILLS_GRANDPA
 	iftrue .ShowedLickitung
 	writetext BillsGrandpaLickitungText
-	buttonsound
+	promptbutton
 	writetext BillsGrandpaAskToSeeMonText
 	yesorno
 	iffalse .SaidNo
@@ -63,7 +63,7 @@ BillsGrandpa:
 
 .GotEverstone:
 	writetext BillsGrandpaOddishText
-	buttonsound
+	promptbutton
 	writetext BillsGrandpaAskToSeeMonText
 	yesorno
 	iffalse .SaidNo
@@ -78,7 +78,7 @@ BillsGrandpa:
 
 .GotLeafStone:
 	writetext BillsGrandpaStaryuText
-	buttonsound
+	promptbutton
 	writetext BillsGrandpaAskToSeeMonText
 	yesorno
 	iffalse .SaidNo
@@ -95,7 +95,7 @@ BillsGrandpa:
 	checkver
 	iftrue .AskVulpix
 	writetext BillsGrandpaGrowlitheText
-	buttonsound
+	promptbutton
 	writetext BillsGrandpaAskToSeeMonText
 	yesorno
 	iffalse .SaidNo
@@ -110,7 +110,7 @@ BillsGrandpa:
 
 .AskVulpix:
 	writetext BillsGrandpaVulpixText
-	buttonsound
+	promptbutton
 	writetext BillsGrandpaAskToSeeMonText
 	yesorno
 	iffalse .SaidNo
@@ -125,7 +125,7 @@ BillsGrandpa:
 
 .GotFireStone:
 	writetext BillsGrandpaPichuText
-	buttonsound
+	promptbutton
 	writetext BillsGrandpaAskToSeeMonText
 	yesorno
 	iffalse .SaidNo
@@ -192,7 +192,7 @@ BillsGrandpa:
 
 .ExcitedToSee:
 	writetext BillsGrandpaExcitedToSeeText
-	buttonsound
+	promptbutton
 	end
 
 .SaidNo:
@@ -203,12 +203,12 @@ BillsGrandpa:
 
 .CorrectPokemon:
 	writetext BillsGrandpaShownPokemonText
-	buttonsound
+	promptbutton
 	end
 
 .ReceiveItem:
 	writetext BillsGrandpaTokenOfAppreciationText
-	buttonsound
+	promptbutton
 	end
 
 .JustShowedSomething:
@@ -378,13 +378,13 @@ BillsGrandpaPichuText:
 BillsHouse_MapEvents:
 	db 0, 0 ; filler
 
-	db 2 ; warp events
+	def_warp_events
 	warp_event  2,  7, ROUTE_25, 1
 	warp_event  3,  7, ROUTE_25, 1
 
-	db 0 ; coord events
+	def_coord_events
 
-	db 0 ; bg events
+	def_bg_events
 
-	db 1 ; object events
+	def_object_events
 	object_event  2,  3, SPRITE_GRAMPS, SPRITEMOVEDATA_STANDING_UP, 0, 2, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, BillsGrandpa, -1

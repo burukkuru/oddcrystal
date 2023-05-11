@@ -1,57 +1,61 @@
+MACRO add_stdscript
+\1StdScript::
+	dba \1
+ENDM
+
 StdScripts::
-; entries correspond to constants/std_constants.asm
-	dba PokecenterNurseScript
-	dba DifficultBookshelfScript
-	dba PictureBookshelfScript
-	dba MagazineBookshelfScript
-	dba TeamRocketOathScript
-	dba IncenseBurnerScript
-	dba MerchandiseShelfScript
-	dba TownMapScript
-	dba WindowScript
-	dba TVScript
-	dba HomepageScript
-	dba Radio1Script
-	dba Radio2Script
-	dba TrashCanScript
-	dba StrengthBoulderScript
-	dba SmashRockScript
-	dba PokecenterSignScript
-	dba MartSignScript
-	dba GoldenrodRocketsScript
-	dba RadioTowerRocketsScript
-	dba ElevatorButtonScript
-	dba DayToTextScript
-	dba BugContestResultsWarpScript
-	dba BugContestResultsScript
-	dba InitializeEventsScript
-	dba AskNumber1MScript
-	dba AskNumber2MScript
-	dba RegisteredNumberMScript
-	dba NumberAcceptedMScript
-	dba NumberDeclinedMScript
-	dba PhoneFullMScript
-	dba RematchMScript
-	dba GiftMScript
-	dba PackFullMScript
-	dba RematchGiftMScript
-	dba AskNumber1FScript
-	dba AskNumber2FScript
-	dba RegisteredNumberFScript
-	dba NumberAcceptedFScript
-	dba NumberDeclinedFScript
-	dba PhoneFullFScript
-	dba RematchFScript
-	dba GiftFScript
-	dba PackFullFScript
-	dba RematchGiftFScript
-	dba GymStatue1Script
-	dba GymStatue2Script
-	dba ReceiveItemScript
-	dba ReceiveTogepiEggScript
-	dba PCScript
-	dba GameCornerCoinVendorScript
-	dba HappinessCheckScript
+	add_stdscript PokecenterNurseScript
+	add_stdscript DifficultBookshelfScript
+	add_stdscript PictureBookshelfScript
+	add_stdscript MagazineBookshelfScript
+	add_stdscript TeamRocketOathScript
+	add_stdscript IncenseBurnerScript
+	add_stdscript MerchandiseShelfScript
+	add_stdscript TownMapScript
+	add_stdscript WindowScript
+	add_stdscript TVScript
+	add_stdscript HomepageScript ; unused
+	add_stdscript Radio1Script
+	add_stdscript Radio2Script
+	add_stdscript TrashCanScript
+	add_stdscript StrengthBoulderScript
+	add_stdscript SmashRockScript
+	add_stdscript PokecenterSignScript
+	add_stdscript MartSignScript
+	add_stdscript GoldenrodRocketsScript
+	add_stdscript RadioTowerRocketsScript
+	add_stdscript ElevatorButtonScript
+	add_stdscript DayToTextScript
+	add_stdscript BugContestResultsWarpScript
+	add_stdscript BugContestResultsScript
+	add_stdscript InitializeEventsScript
+	add_stdscript AskNumber1MScript
+	add_stdscript AskNumber2MScript
+	add_stdscript RegisteredNumberMScript
+	add_stdscript NumberAcceptedMScript
+	add_stdscript NumberDeclinedMScript
+	add_stdscript PhoneFullMScript
+	add_stdscript RematchMScript
+	add_stdscript GiftMScript
+	add_stdscript PackFullMScript
+	add_stdscript RematchGiftMScript
+	add_stdscript AskNumber1FScript
+	add_stdscript AskNumber2FScript
+	add_stdscript RegisteredNumberFScript
+	add_stdscript NumberAcceptedFScript
+	add_stdscript NumberDeclinedFScript
+	add_stdscript PhoneFullFScript
+	add_stdscript RematchFScript
+	add_stdscript GiftFScript
+	add_stdscript PackFullFScript
+	add_stdscript RematchGiftFScript
+	add_stdscript GymStatue1Script
+	add_stdscript GymStatue2Script
+	add_stdscript ReceiveItemScript
+	add_stdscript ReceiveTogepiEggScript
+	add_stdscript PCScript
+	add_stdscript GameCornerCoinVendorScript
+	add_stdscript HappinessCheckScript
 
 PokecenterNurseScript:
 ; EVENT_WELCOMED_TO_POKECOM_CENTER is never set
@@ -69,33 +73,33 @@ PokecenterNurseScript:
 	checkevent EVENT_WELCOMED_TO_POKECOM_CENTER
 	iftrue .morn_comcenter
 	farwritetext NurseMornText
-	buttonsound
+	promptbutton
 	sjump .ok
 .morn_comcenter
 	farwritetext PokeComNurseMornText
-	buttonsound
+	promptbutton
 	sjump .ok
 
 .day
 	checkevent EVENT_WELCOMED_TO_POKECOM_CENTER
 	iftrue .day_comcenter
 	farwritetext NurseDayText
-	buttonsound
+	promptbutton
 	sjump .ok
 .day_comcenter
 	farwritetext PokeComNurseDayText
-	buttonsound
+	promptbutton
 	sjump .ok
 
 .nite
 	checkevent EVENT_WELCOMED_TO_POKECOM_CENTER
 	iftrue .nite_comcenter
 	farwritetext NurseNiteText
-	buttonsound
+	promptbutton
 	sjump .ok
 .nite_comcenter
 	farwritetext PokeComNurseNiteText
-	buttonsound
+	promptbutton
 	sjump .ok
 
 .ok
@@ -182,7 +186,7 @@ MerchandiseShelfScript:
 
 TownMapScript:
 	opentext
-	farwritetext TownMapText
+	farwritetext LookTownMapText
 	waitbutton
 	special OverworldTownMap
 	closetext
@@ -298,7 +302,7 @@ RadioTowerRocketsScript:
 	clearevent EVENT_USED_THE_CARD_KEY_IN_THE_RADIO_TOWER
 	setevent EVENT_MAHOGANY_TOWN_POKEFAN_M_BLOCKS_EAST
 	specialphonecall SPECIALCALL_WEIRDBROADCAST
-	setmapscene MAHOGANY_TOWN, SCENE_FINISHED
+	setmapscene MAHOGANY_TOWN, SCENE_MAHOGANYTOWN_NOOP
 	end
 
 BugContestResultsWarpScript:
@@ -326,19 +330,19 @@ BugContestResultsScript:
 	ifequal 2, BugContestResults_SecondPlace
 	ifequal 3, BugContestResults_ThirdPlace
 	farwritetext ContestResults_ConsolationPrizeText
-	buttonsound
+	promptbutton
 	waitsfx
 	verbosegiveitem BERRY
 	iffalse BugContestResults_NoRoomForBerry
 
 BugContestResults_DidNotWin:
 	farwritetext ContestResults_DidNotWinText
-	buttonsound
+	promptbutton
 	sjump BugContestResults_FinishUp
 
 BugContestResults_ReturnAfterWinnersPrize:
 	farwritetext ContestResults_JoinUsNextTimeText
-	buttonsound
+	promptbutton
 
 BugContestResults_FinishUp:
 	checkevent EVENT_LEFT_MONS_WITH_CONTEST_OFFICER
@@ -355,8 +359,8 @@ BugContestResults_DidNotLeaveMons:
 	waitbutton
 BugContestResults_CleanUp:
 	closetext
-	setscene SCENE_ROUTE36NATIONALPARKGATE_NOTHING
-	setmapscene ROUTE_35_NATIONAL_PARK_GATE, SCENE_ROUTE35NATIONALPARKGATE_NOTHING
+	setscene SCENE_ROUTE36NATIONALPARKGATE_NOOP
+	setmapscene ROUTE_35_NATIONAL_PARK_GATE, SCENE_ROUTE35NATIONALPARKGATE_NOOP
 	setevent EVENT_BUG_CATCHING_CONTESTANT_1A
 	setevent EVENT_BUG_CATCHING_CONTESTANT_2A
 	setevent EVENT_BUG_CATCHING_CONTESTANT_3A
@@ -408,25 +412,25 @@ BugContestResults_ThirdPlace:
 
 BugContestResults_NoRoomForSunStone:
 	farwritetext BugContestPrizeNoRoomText
-	buttonsound
+	promptbutton
 	setevent EVENT_CONTEST_OFFICER_HAS_SUN_STONE
 	sjump BugContestResults_ReturnAfterWinnersPrize
 
 BugContestResults_NoRoomForEverstone:
 	farwritetext BugContestPrizeNoRoomText
-	buttonsound
+	promptbutton
 	setevent EVENT_CONTEST_OFFICER_HAS_EVERSTONE
 	sjump BugContestResults_ReturnAfterWinnersPrize
 
 BugContestResults_NoRoomForGoldBerry:
 	farwritetext BugContestPrizeNoRoomText
-	buttonsound
+	promptbutton
 	setevent EVENT_CONTEST_OFFICER_HAS_GOLD_BERRY
 	sjump BugContestResults_ReturnAfterWinnersPrize
 
 BugContestResults_NoRoomForBerry:
 	farwritetext BugContestPrizeNoRoomText
-	buttonsound
+	promptbutton
 	setevent EVENT_CONTEST_OFFICER_HAS_BERRY
 	sjump BugContestResults_DidNotWin
 
@@ -535,7 +539,7 @@ InitializeEventsScript:
 	setevent EVENT_PLAYERS_HOUSE_2F_DOLL_2
 	setevent EVENT_PLAYERS_HOUSE_2F_BIG_DOLL
 	setevent EVENT_DECO_BED_1
-	setevent EVENT_DECO_PLANT_4
+	setevent EVENT_DECO_POSTER_1
 	setevent EVENT_GOLDENROD_TRAIN_STATION_GENTLEMAN
 	setevent EVENT_OLIVINE_GYM_JASMINE
 	setevent EVENT_BLACKTHORN_CITY_GRAMPS_NOT_BLOCKING_DRAGONS_DEN
@@ -586,11 +590,11 @@ InitializeEventsScript:
 	setevent EVENT_SAW_SUICUNE_ON_ROUTE_36
 	setevent EVENT_SAW_SUICUNE_ON_ROUTE_42
 	setevent EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY
-	setevent EVENT_BATTLE_TOWER_OUTSIDE_SAILOR
+	setevent EVENT_BATTLE_TOWER_OPEN_CIVILIANS
 	setflag ENGINE_ROCKET_SIGNAL_ON_CH20
 	setflag ENGINE_ROCKETS_IN_MAHOGANY
 	variablesprite SPRITE_WEIRD_TREE, SPRITE_SUDOWOODO
-	variablesprite SPRITE_OLIVINE_RIVAL, SPRITE_SILVER
+	variablesprite SPRITE_OLIVINE_RIVAL, SPRITE_RIVAL
 	variablesprite SPRITE_AZALEA_ROCKET, SPRITE_ROCKET
 	variablesprite SPRITE_FUCHSIA_GYM_1, SPRITE_JANINE
 	variablesprite SPRITE_FUCHSIA_GYM_2, SPRITE_JANINE
@@ -605,12 +609,12 @@ InitializeEventsScript:
 	setevent EVENT_TRAINERS_IN_CERULEAN_GYM
 	setevent EVENT_COPYCATS_HOUSE_2F_DOLL
 	setevent EVENT_VIRIDIAN_GYM_BLUE
-	setevent EVENT_SEAFOAM_GYM_GYM_GUY
+	setevent EVENT_SEAFOAM_GYM_GYM_GUIDE
 	setevent EVENT_MT_MOON_SQUARE_CLEFAIRY
 	setevent EVENT_SAFFRON_TRAIN_STATION_POPULATION
 	setevent EVENT_INDIGO_PLATEAU_POKECENTER_RIVAL
 	setevent EVENT_INITIALIZED_EVENTS
-	return
+	endcallback
 
 AskNumber1MScript:
 	special RandomPhoneMon
@@ -786,7 +790,7 @@ RegisteredNumberMScript:
 	farwritetext RegisteredNumber1Text
 	playsound SFX_REGISTER_PHONE_NUMBER
 	waitsfx
-	buttonsound
+	promptbutton
 	end
 
 NumberAcceptedMScript:
@@ -1279,31 +1283,31 @@ GiftMScript:
 
 .Jose:
 	farwritetext JoseGiftText
-	buttonsound
+	promptbutton
 	end
 .Wade:
 	farwritetext WadeGiftText
-	buttonsound
+	promptbutton
 	end
 .Alan:
 	farwritetext AlanGiftText
-	buttonsound
+	promptbutton
 	end
 .Derek:
 	farwritetext DerekGiftText
-	buttonsound
+	promptbutton
 	end
 .Tully:
 	farwritetext TullyGiftText
-	buttonsound
+	promptbutton
 	end
 .Wilton:
 	farwritetext WiltonGiftText
-	buttonsound
+	promptbutton
 	end
 .Kenji:
 	farwritetext KenjiGiftText
-	buttonsound
+	promptbutton
 	end
 
 PackFullMScript:
@@ -1386,19 +1390,19 @@ RematchGiftMScript:
 
 .Huey:
 	farwritetext HueyRematchGiftText
-	buttonsound
+	promptbutton
 	end
 .Joey:
 	farwritetext JoeyRematchGiftText
-	buttonsound
+	promptbutton
 	end
 .Vance:
 	farwritetext VanceRematchGiftText
-	buttonsound
+	promptbutton
 	end
 .Parry:
 	farwritetext ParryRematchGiftText
-	buttonsound
+	promptbutton
 	end
 
 AskNumber1FScript:
@@ -1477,7 +1481,7 @@ RegisteredNumberFScript:
 	farwritetext RegisteredNumber2Text
 	playsound SFX_REGISTER_PHONE_NUMBER
 	waitsfx
-	buttonsound
+	promptbutton
 	end
 
 NumberAcceptedFScript:
@@ -1691,19 +1695,19 @@ GiftFScript:
 
 .Beverly:
 	farwritetext BeverlyGiftText
-	buttonsound
+	promptbutton
 	end
 .Gina:
 	farwritetext GinaGiftText
-	buttonsound
+	promptbutton
 	end
 .Dana:
 	farwritetext DanaGiftText
-	buttonsound
+	promptbutton
 	end
 .Tiffany:
 	farwritetext TiffanyGiftText
-	buttonsound
+	promptbutton
 	end
 
 PackFullFScript:
@@ -1747,7 +1751,7 @@ RematchGiftFScript:
 .Erin:
 	opentext
 	farwritetext ErinRematchGiftText
-	buttonsound
+	promptbutton
 	end
 
 GymStatue1Script:
@@ -1762,7 +1766,7 @@ GymStatue2Script:
 	getcurlandmarkname STRING_BUFFER_3
 	opentext
 	farwritetext GymStatue_CityGymText
-	buttonsound
+	promptbutton
 	farwritetext GymStatue_WinningTrainersText
 	waitbutton
 	closetext
@@ -1778,7 +1782,7 @@ ReceiveItemScript:
 ReceiveTogepiEggScript:
 	waitsfx
 	farwritetext ReceivedItemText
-	playsound SFX_GET_EGG_FROM_DAY_CARE_LADY
+	playsound SFX_GET_EGG
 	waitsfx
 	end
 
@@ -1786,7 +1790,7 @@ GameCornerCoinVendorScript:
 	faceplayer
 	opentext
 	farwritetext CoinVendor_WelcomeText
-	buttonsound
+	promptbutton
 	checkitem COIN_CASE
 	iftrue CoinVendor_IntroScript
 	farwritetext CoinVendor_NoCoinCaseText

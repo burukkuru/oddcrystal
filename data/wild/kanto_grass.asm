@@ -2,7 +2,7 @@
 
 KantoGrassWildMons:
 
-	map_id DIGLETTS_CAVE
+	def_grass_wildmons DIGLETTS_CAVE
 	db 4 percent, 2 percent, 8 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 3, DIGLETT
@@ -28,8 +28,9 @@ KantoGrassWildMons:
 	dbw 32, DUGTRIO
 	dbw 32, DUGTRIO
 	dbw 32, DUGTRIO
+	end_grass_wildmons
 
-	map_id MOUNT_MOON
+	def_grass_wildmons MOUNT_MOON
 	db 6 percent, 6 percent, 6 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 6, ZUBAT
@@ -55,8 +56,9 @@ KantoGrassWildMons:
 	dbw 10, GEODUDE
 	dbw 12, CLEFAIRY
 	dbw 12, CLEFAIRY
+	end_grass_wildmons
 
-	map_id ROCK_TUNNEL_1F
+	def_grass_wildmons ROCK_TUNNEL_1F
 	db 6 percent, 6 percent, 6 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 10, CUBONE
@@ -82,8 +84,9 @@ KantoGrassWildMons:
 	dbw 15, ZUBAT
 	dbw 15, ZUBAT
 	dbw 15, ZUBAT
+	end_grass_wildmons
 
-	map_id ROCK_TUNNEL_B1F
+	def_grass_wildmons ROCK_TUNNEL_B1F
 	db 6 percent, 6 percent, 6 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 12, CUBONE
@@ -109,8 +112,9 @@ KantoGrassWildMons:
 	dbw 15, HAUNTER
 	dbw 15, GOLBAT
 	dbw 15, GOLBAT
+	end_grass_wildmons
 
-	map_id VICTORY_ROAD
+	def_grass_wildmons VICTORY_ROAD
 	db 6 percent, 6 percent, 6 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 34, GRAVELER
@@ -136,8 +140,9 @@ KantoGrassWildMons:
 	dbw 38, GRAVELER
 	dbw 40, GRAVELER
 	dbw 40, GRAVELER
+	end_grass_wildmons
 
-	map_id TOHJO_FALLS
+	def_grass_wildmons TOHJO_FALLS
 	db 6 percent, 6 percent, 6 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 22, ZUBAT
@@ -163,8 +168,9 @@ KantoGrassWildMons:
 	dbw 20, RATTATA
 	dbw 23, SLOWPOKE
 	dbw 23, SLOWPOKE
+	end_grass_wildmons
 
-	map_id ROUTE_1
+	def_grass_wildmons ROUTE_1
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 2, PIDGEY
@@ -190,8 +196,9 @@ KantoGrassWildMons:
 	dbw 6, RATICATE
 	dbw 4, HOOTHOOT
 	dbw 4, HOOTHOOT
+	end_grass_wildmons
 
-	map_id ROUTE_2
+	def_grass_wildmons ROUTE_2
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 3, CATERPIE
@@ -217,8 +224,9 @@ KantoGrassWildMons:
 	dbw 7, ARIADOS
 	dbw 4, NOCTOWL
 	dbw 4, NOCTOWL
+	end_grass_wildmons
 
-	map_id ROUTE_3
+	def_grass_wildmons ROUTE_3
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 5, SPEAROW
@@ -244,8 +252,9 @@ KantoGrassWildMons:
 	dbw 5, RATTATA
 	dbw 6, CLEFAIRY
 	dbw 6, CLEFAIRY
+	end_grass_wildmons
 
-	map_id ROUTE_4
+	def_grass_wildmons ROUTE_4
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 5, SPEAROW
@@ -271,8 +280,9 @@ KantoGrassWildMons:
 	dbw 5, RATTATA
 	dbw 6, CLEFAIRY
 	dbw 6, CLEFAIRY
+	end_grass_wildmons
 
-	map_id ROUTE_5
+	def_grass_wildmons ROUTE_5
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 13, PIDGEY
@@ -298,8 +308,9 @@ KantoGrassWildMons:
 	dbw 14, JIGGLYPUFF
 	dbw 14, ABRA
 	dbw 14, ABRA
+	end_grass_wildmons
 
-	map_id ROUTE_6
+	def_grass_wildmons ROUTE_6
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 13, RATTATA
@@ -325,8 +336,9 @@ KantoGrassWildMons:
 	dbw 12, JIGGLYPUFF
 	dbw 15, RATICATE
 	dbw 15, RATICATE
+	end_grass_wildmons
 
-	map_id ROUTE_7
+	def_grass_wildmons ROUTE_7
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 17, RATTATA
@@ -352,8 +364,9 @@ KantoGrassWildMons:
 	dbw 18, JIGGLYPUFF
 	dbw 16, ABRA
 	dbw 16, ABRA
+	end_grass_wildmons
 
-	map_id ROUTE_8
+	def_grass_wildmons ROUTE_8
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 17, SNUBBULL
@@ -379,8 +392,9 @@ KantoGrassWildMons:
 	dbw 16, JIGGLYPUFF
 	dbw 18, KADABRA
 	dbw 18, KADABRA
+	end_grass_wildmons
 
-	map_id ROUTE_9
+	def_grass_wildmons ROUTE_9
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 15, RATTATA
@@ -406,8 +420,9 @@ KantoGrassWildMons:
 	dbw 15, ZUBAT
 	dbw 18, RATICATE
 	dbw 18, RATICATE
+	end_grass_wildmons
 
-	map_id ROUTE_10_NORTH
+	def_grass_wildmons ROUTE_10_NORTH
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 15, SPEAROW
@@ -433,8 +448,9 @@ KantoGrassWildMons:
 	dbw 15, ZUBAT
 	dbw 16, ELECTABUZZ
 	dbw 16, ELECTABUZZ
+	end_grass_wildmons
 
-	map_id ROUTE_11
+	def_grass_wildmons ROUTE_11
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 14, HOPPIP
@@ -460,8 +476,9 @@ KantoGrassWildMons:
 	dbw 16, RATICATE
 	dbw 16, HYPNO
 	dbw 16, HYPNO
+	end_grass_wildmons
 
-	map_id ROUTE_13
+	def_grass_wildmons ROUTE_13
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 23, NIDORINO
@@ -487,8 +504,9 @@ KantoGrassWildMons:
 	dbw 25, QUAGSIRE
 	dbw 25, QUAGSIRE
 	dbw 25, CHANSEY
+	end_grass_wildmons
 
-	map_id ROUTE_14
+	def_grass_wildmons ROUTE_14
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 26, NIDORINO
@@ -514,8 +532,9 @@ KantoGrassWildMons:
 	dbw 28, QUAGSIRE
 	dbw 28, QUAGSIRE
 	dbw 28, CHANSEY
+	end_grass_wildmons
 
-	map_id ROUTE_15
+	def_grass_wildmons ROUTE_15
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 23, NIDORINO
@@ -541,8 +560,9 @@ KantoGrassWildMons:
 	dbw 25, QUAGSIRE
 	dbw 25, QUAGSIRE
 	dbw 25, CHANSEY
+	end_grass_wildmons
 
-	map_id ROUTE_16
+	def_grass_wildmons ROUTE_16
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 26, GRIMER
@@ -568,8 +588,9 @@ KantoGrassWildMons:
 	dbw 29, MURKROW
 	dbw 30, MUK
 	dbw 30, MUK
+	end_grass_wildmons
 
-	map_id ROUTE_17
+	def_grass_wildmons ROUTE_17
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 30, FEAROW
@@ -595,8 +616,9 @@ KantoGrassWildMons:
 	dbw 33, GRIMER
 	dbw 33, MUK
 	dbw 33, MUK
+	end_grass_wildmons
 
-	map_id ROUTE_18
+	def_grass_wildmons ROUTE_18
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 26, GRIMER
@@ -622,8 +644,9 @@ KantoGrassWildMons:
 	dbw 29, GRIMER
 	dbw 30, MUK
 	dbw 30, MUK
+	end_grass_wildmons
 
-	map_id ROUTE_21
+	def_grass_wildmons ROUTE_21
 	db 6 percent, 6 percent, 6 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 30, TANGELA
@@ -649,8 +672,9 @@ KantoGrassWildMons:
 	dbw 30, TANGELA
 	dbw 28, TANGELA
 	dbw 28, TANGELA
+	end_grass_wildmons
 
-	map_id ROUTE_22
+	def_grass_wildmons ROUTE_22
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 3, RATTATA
@@ -676,8 +700,9 @@ KantoGrassWildMons:
 	dbw 6, RATTATA
 	dbw 7, RATTATA
 	dbw 7, RATTATA
+	end_grass_wildmons
 
-	map_id ROUTE_24
+	def_grass_wildmons ROUTE_24
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 8, CATERPIE
@@ -703,8 +728,9 @@ KantoGrassWildMons:
 	dbw 10, BELLSPROUT
 	dbw 14, GLOOM
 	dbw 14, GLOOM
+	end_grass_wildmons
 
-	map_id ROUTE_25
+	def_grass_wildmons ROUTE_25
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 10, CATERPIE
@@ -730,8 +756,9 @@ KantoGrassWildMons:
 	dbw 10, BELLSPROUT
 	dbw 14, NOCTOWL
 	dbw 14, NOCTOWL
+	end_grass_wildmons
 
-	map_id ROUTE_26
+	def_grass_wildmons ROUTE_26
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 28, DODUO
@@ -757,8 +784,9 @@ KantoGrassWildMons:
 	dbw 30, QUAGSIRE
 	dbw 30, QUAGSIRE
 	dbw 30, QUAGSIRE
+	end_grass_wildmons
 
-	map_id ROUTE_27
+	def_grass_wildmons ROUTE_27
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 28, DODUO
@@ -784,8 +812,9 @@ KantoGrassWildMons:
 	dbw 32, NOCTOWL
 	dbw 32, NOCTOWL
 	dbw 32, NOCTOWL
+	end_grass_wildmons
 
-	map_id ROUTE_28
+	def_grass_wildmons ROUTE_28
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn
 	dbw 39, TANGELA
@@ -811,5 +840,6 @@ KantoGrassWildMons:
 	dbw 42, GOLBAT
 	dbw 42, GOLBAT
 	dbw 42, GOLBAT
+	end_grass_wildmons
 
 	db -1 ; end

@@ -1,6 +1,6 @@
 ; Audio interfaces.
 
-MapSetup_Sound_Off::
+InitSound::
 	push hl
 	push de
 	push bc
@@ -8,11 +8,11 @@ MapSetup_Sound_Off::
 
 	ldh a, [hROMBank]
 	push af
-	ld a, BANK(_MapSetup_Sound_Off)
+	ld a, BANK(_InitSound)
 	ldh [hROMBank], a
 	ld [MBC3RomBank], a
 
-	call _MapSetup_Sound_Off
+	call _InitSound
 
 	pop af
 	ldh [hROMBank], a
@@ -49,7 +49,7 @@ UpdateSound::
 	ret
 
 _LoadMusicByte::
-; wCurMusicByte = [a:de]
+; [wCurMusicByte] = [a:de]
 	ldh [hROMBank], a
 	ld [MBC3RomBank], a
 
@@ -71,7 +71,7 @@ PlayMusic::
 
 	ldh a, [hROMBank]
 	push af
-	ld a, BANK(_PlayMusic) ; aka BANK(_MapSetup_Sound_Off)
+	ld a, BANK(_PlayMusic) ; aka BANK(_InitSound)
 	ldh [hROMBank], a
 	ld [MBC3RomBank], a
 
@@ -83,7 +83,7 @@ PlayMusic::
 	jr .end
 
 .nomusic
-	call _MapSetup_Sound_Off
+	call _InitSound
 
 .end
 	pop af
@@ -143,7 +143,7 @@ PlayCry::
 	ld [MBC3RomBank], a
 
 	ld hl, PokemonCries
-rept 6 ; sizeof(mon_cry)
+rept MON_CRY_LENGTH
 	add hl, de
 endr
 
@@ -276,21 +276,21 @@ MaxVolume::
 	ret
 
 LowVolume::
-	ld a, $33 ; 40%
+	ld a, $33 ; 50%
 	ld [wVolume], a
 	ret
 
-VolumeOff::
+MinVolume::
 	xor a
 	ld [wVolume], a
 	ret
 
-Unused_FadeOutMusic::
+FadeOutToMusic:: ; unreferenced
 	ld a, 4
 	ld [wMusicFade], a
 	ret
 
-FadeInMusic::
+FadeInToMusic::
 	ld a, 4 | (1 << MUSIC_FADE_IN_F)
 	ld [wMusicFade], a
 	ret
@@ -358,7 +358,8 @@ PlayMapMusic::
 	pop hl
 	ret
 
-EnterMapMusic::
+PlayMapMusicBike::
+; If the player's on a bike, play the bike music instead of the map music
 	push hl
 	push de
 	push bc
@@ -434,7 +435,7 @@ SpecialMapMusic::
 	and a
 	ret
 
-.bike
+.bike ; unreferenced
 	ld de, MUSIC_BICYCLE
 	scf
 	ret
@@ -487,7 +488,7 @@ CheckSFX::
 TerminateExpBarSound::
 	xor a
 	ld [wChannel5Flags1], a
-	ld [wSoundInput], a
+	ld [wPitchSweep], a
 	ldh [rNR10], a
 	ldh [rNR11], a
 	ldh [rNR12], a
@@ -502,7 +503,7 @@ ChannelsOff::
 	ld [wChannel2Flags1], a
 	ld [wChannel3Flags1], a
 	ld [wChannel4Flags1], a
-	ld [wSoundInput], a
+	ld [wPitchSweep], a
 	ret
 
 SFXChannelsOff::
@@ -512,5 +513,5 @@ SFXChannelsOff::
 	ld [wChannel6Flags1], a
 	ld [wChannel7Flags1], a
 	ld [wChannel8Flags1], a
-	ld [wSoundInput], a
+	ld [wPitchSweep], a
 	ret
