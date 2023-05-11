@@ -89,6 +89,7 @@ ReadTrainerPartyPieces:
 	cp $ff
 	ret z
 
+	call AdjustLevelByDifficulty
 	ld [wCurPartyLevel], a
 	call GetNextTrainerDataByte
 	push hl
@@ -293,6 +294,41 @@ GetNextTrainerDataByte:
 	ld a, [wTrainerGroupBank]
 	call GetFarByte
 	inc hl
+	ret
+
+AdjustLevelByDifficulty:
+	ld b, a
+	ld a, [wTrainerDifficulty]
+	and a
+	jr z, .IsEasy
+	cp TRAINERDIFFICULTY_HARD
+	jr z, .IsHard
+	cp TRAINERDIFFICULTY_HARDPLUS
+	jr z, .IsHardPlus
+	cp TRAINERDIFFICULTY_ODD
+	jr z, .IsOdd
+	; none of the above
+	ld a, b
+	ret
+
+.IsEasy:
+	ld a, b
+	sub 1
+	ret
+
+.IsHard:
+	ld a, b
+	add 1
+	ret
+
+.IsHardPlus:
+	ld a, b
+	add 2
+	ret
+
+.IsOdd:
+	ld a, b
+	add 3
 	ret
 
 INCLUDE "data/trainers/party_pointers.asm"

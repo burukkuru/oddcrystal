@@ -83,7 +83,7 @@ StringOptions:
 	db "        :<LF>"
 	db "SOUND<LF>"
 	db "        :<LF>"
-	db "PRINT<LF>"
+	db "BATTLE DIFFICULTY<LF>"
 	db "        :<LF>"
 	db "MENU ACCOUNT<LF>"
 	db "        :<LF>"
@@ -100,7 +100,7 @@ GetOptionPointer:
 	dw Options_BattleScene
 	dw Options_BattleStyle
 	dw Options_Sound
-	dw Options_Print
+	dw Options_Difficulty
 	dw Options_MenuAccount
 	dw Options_Frame
 	dw Options_Cancel
@@ -314,23 +314,23 @@ Options_Sound:
 .Stereo: db "STEREO@"
 
 	const_def
-	const OPT_PRINT_LIGHTEST ; 0
-	const OPT_PRINT_LIGHTER  ; 1
-	const OPT_PRINT_NORMAL   ; 2
-	const OPT_PRINT_DARKER   ; 3
-	const OPT_PRINT_DARKEST  ; 4
+	const OPT_DIFFICULTY_EASY      ; 0
+	const OPT_DIFFICULTY_NORMAL    ; 1
+	const OPT_DIFFICULTY_HARD      ; 2
+	const OPT_DIFFICULTY_HARDPLUS  ; 3
+	const OPT_DIFFICULTY_ODD       ; 4
 
-Options_Print:
-	call GetPrinterSetting
+Options_Difficulty:
+	call GetDifficultySetting
 	ldh a, [hJoyPressed]
 	bit D_LEFT_F, a
 	jr nz, .LeftPressed
 	bit D_RIGHT_F, a
 	jr z, .NonePressed
 	ld a, c
-	cp OPT_PRINT_DARKEST
+	cp OPT_DIFFICULTY_ODD
 	jr c, .Increase
-	ld c, OPT_PRINT_LIGHTEST - 1
+	ld c, OPT_DIFFICULTY_EASY - 1
 
 .Increase:
 	inc c
@@ -341,7 +341,7 @@ Options_Print:
 	ld a, c
 	and a
 	jr nz, .Decrease
-	ld c, OPT_PRINT_DARKEST + 1
+	ld c, OPT_DIFFICULTY_ODD + 1
 
 .Decrease:
 	dec c
@@ -349,7 +349,7 @@ Options_Print:
 
 .Save:
 	ld b, a
-	ld [wGBPrinterBrightness], a
+	ld [wTrainerDifficulty], a
 
 .NonePressed:
 	ld b, 0
@@ -366,53 +366,53 @@ Options_Print:
 
 .Strings:
 ; entries correspond to OPT_PRINT_* constants
-	dw .Lightest
-	dw .Lighter
+	dw .Easy
 	dw .Normal
-	dw .Darker
-	dw .Darkest
+	dw .Hard
+	dw .HardPlus
+	dw .Odd
 
-.Lightest: db "LIGHTEST@"
-.Lighter:  db "LIGHTER @"
+.Easy:     db "EASY    @"
 .Normal:   db "NORMAL  @"
-.Darker:   db "DARKER  @"
-.Darkest:  db "DARKEST @"
+.Hard:     db "HARD    @"
+.HardPlus: db "HARDPLUS@"
+.Odd:      db "ODD     @"
 
-GetPrinterSetting:
+GetDifficultySetting:
 ; converts GBPRINTER_* value in a to OPT_PRINT_* value in c,
 ; with previous/next GBPRINTER_* values in d/e
-	ld a, [wGBPrinterBrightness]
+	ld a, [wTrainerDifficulty]
 	and a
-	jr z, .IsLightest
-	cp GBPRINTER_LIGHTER
-	jr z, .IsLight
-	cp GBPRINTER_DARKER
-	jr z, .IsDark
-	cp GBPRINTER_DARKEST
-	jr z, .IsDarkest
+	jr z, .IsEasy
+	cp TRAINERDIFFICULTY_HARD
+	jr z, .IsHard
+	cp TRAINERDIFFICULTY_HARDPLUS
+	jr z, .IsHardPlus
+	cp TRAINERDIFFICULTY_ODD
+	jr z, .IsOdd
 	; none of the above
-	ld c, OPT_PRINT_NORMAL
-	lb de, GBPRINTER_LIGHTER, GBPRINTER_DARKER
+	ld c, OPT_DIFFICULTY_NORMAL
+	lb de, TRAINERDIFFICULTY_EASY, TRAINERDIFFICULTY_HARD
 	ret
 
-.IsLightest:
-	ld c, OPT_PRINT_LIGHTEST
-	lb de, GBPRINTER_DARKEST, GBPRINTER_LIGHTER
+.IsEasy:
+	ld c, OPT_DIFFICULTY_EASY
+	lb de, TRAINERDIFFICULTY_ODD, TRAINERDIFFICULTY_NORMAL
 	ret
 
-.IsLight:
-	ld c, OPT_PRINT_LIGHTER
-	lb de, GBPRINTER_LIGHTEST, GBPRINTER_NORMAL
+.IsHard:
+	ld c, OPT_DIFFICULTY_HARD
+	lb de, TRAINERDIFFICULTY_NORMAL, TRAINERDIFFICULTY_HARDPLUS
 	ret
 
-.IsDark:
-	ld c, OPT_PRINT_DARKER
-	lb de, GBPRINTER_NORMAL, GBPRINTER_DARKEST
+.IsHardPlus:
+	ld c, OPT_DIFFICULTY_HARDPLUS
+	lb de, TRAINERDIFFICULTY_HARD, TRAINERDIFFICULTY_ODD
 	ret
 
-.IsDarkest:
-	ld c, OPT_PRINT_DARKEST
-	lb de, GBPRINTER_DARKER, GBPRINTER_LIGHTEST
+.IsOdd:
+	ld c, OPT_DIFFICULTY_ODD
+	lb de, TRAINERDIFFICULTY_HARDPLUS, TRAINERDIFFICULTY_EASY
 	ret
 
 Options_MenuAccount:

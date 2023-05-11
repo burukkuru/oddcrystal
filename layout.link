@@ -62,7 +62,7 @@ ROMX $0c
 ROMX $0d
 	"Effect Commands"
 ROMX $0e
-	"Enemy Trainers"
+	; moved Enemy Trainers
 	"Enemy Trainer Parties 2"
 ROMX $0f
 	"Battle Core"
@@ -188,6 +188,7 @@ ROMX $42
 	"Credits"
 ROMX $43
 	"Title"
+	"Enemy Trainers"
 ROMX $44
 	"Mobile Adapter SDK"
 ROMX $45

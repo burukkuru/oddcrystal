@@ -9,7 +9,7 @@ Printer_StartTransmission:
 	ld [wPrinterOpcode], a
 	ld hl, wPrinterConnectionOpen
 	set 0, [hl]
-	ld a, [wGBPrinterBrightness]
+	ld a, [wTrainerDifficulty]
 	ld [wPrinterExposureTime], a
 	xor a
 	ld [wJumptableIndex], a

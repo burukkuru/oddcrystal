@@ -1797,7 +1797,7 @@ wTextboxFlags::
 ; bit 0: 1-frame text delay
 ; bit 4: no text delay
 	db
-wGBPrinterBrightness::
+wTrainerDifficulty::
 ; bit 0-6: brightness
 ;   lightest: $00
 ;   lighter:  $20
