@@ -1344,8 +1344,15 @@ BattleCommand_Stab:
 	ld a, BATTLE_VARS_MOVE_TYPE
 	call GetBattleVar
 	ld b, a
+	; inverse battles
+	ld a, [wOptions2]
+	and 1 << INVERSE
+	jr nz, .Inverse
 	ld hl, TypeMatchups
-
+	jr .TypesLoop
+.Inverse:
+	ld hl, InverseTypeMatchups
+	; fallthrough
 .TypesLoop:
 	ld a, [hli]
 
@@ -1468,7 +1475,15 @@ CheckTypeMatchup:
 	ld c, [hl]
 	ld a, EFFECTIVE
 	ld [wTypeMatchup], a
+	; inverse battles
+	ld a, [wOptions2]
+	and 1 << INVERSE
+	jr nz, .Inverse
 	ld hl, TypeMatchups
+	jr .TypesLoop
+.Inverse:
+	ld hl, InverseTypeMatchups
+	; fallthrough
 .TypesLoop:
 	ld a, [hli]
 	cp -1

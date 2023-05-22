@@ -10,7 +10,7 @@ DefaultOptions:
 ; wTrainerDifficulty: normal
 	db TRAINERDIFFICULTY_NORMAL
 ; wOptions2: menu account on
-	db 1 << MENU_ACCOUNT
+	db 0 << INVERSE
 
 	db $00
 	db $00

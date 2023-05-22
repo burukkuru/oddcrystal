@@ -4,8 +4,8 @@
 	const OPT_BATTLE_SCENE  ; 1
 	const OPT_BATTLE_STYLE  ; 2
 	const OPT_SOUND         ; 3
-	const OPT_PRINT         ; 4
-	const OPT_MENU_ACCOUNT  ; 5
+	const OPT_DIFFICULTY    ; 4
+	const OPT_INVERSE       ; 5
 	const OPT_FRAME         ; 6
 	const OPT_CANCEL        ; 7
 DEF NUM_OPTIONS EQU const_value ; 8
@@ -85,7 +85,7 @@ StringOptions:
 	db "        :<LF>"
 	db "BATTLE DIFFICULTY<LF>"
 	db "        :<LF>"
-	db "MENU ACCOUNT<LF>"
+	db "INVERSE BATTLES<LF>"
 	db "        :<LF>"
 	db "FRAME<LF>"
 	db "        :TYPE<LF>"
@@ -101,7 +101,7 @@ GetOptionPointer:
 	dw Options_BattleStyle
 	dw Options_Sound
 	dw Options_Difficulty
-	dw Options_MenuAccount
+	dw Options_Inverse
 	dw Options_Frame
 	dw Options_Cancel
 
@@ -365,7 +365,7 @@ Options_Difficulty:
 	ret
 
 .Strings:
-; entries correspond to OPT_PRINT_* constants
+; entries correspond to OPT_DIFFICULTY_* constants
 	dw .Easy
 	dw .Normal
 	dw .Hard
@@ -379,7 +379,7 @@ Options_Difficulty:
 .Odd:      db "ODD     @"
 
 GetDifficultySetting:
-; converts GBPRINTER_* value in a to OPT_PRINT_* value in c,
+; converts GBPRINTER_* value in a to OPT_DIFFICULTY_* value in c,
 ; with previous/next GBPRINTER_* values in d/e
 	ld a, [wTrainerDifficulty]
 	and a
@@ -415,33 +415,33 @@ GetDifficultySetting:
 	lb de, TRAINERDIFFICULTY_HARDPLUS, TRAINERDIFFICULTY_EASY
 	ret
 
-Options_MenuAccount:
+Options_Inverse:
 	ld hl, wOptions2
 	ldh a, [hJoyPressed]
 	bit D_LEFT_F, a
 	jr nz, .LeftPressed
 	bit D_RIGHT_F, a
 	jr z, .NonePressed
-	bit MENU_ACCOUNT, [hl]
+	bit INVERSE, [hl]
 	jr nz, .ToggleOff
 	jr .ToggleOn
 
 .LeftPressed:
-	bit MENU_ACCOUNT, [hl]
+	bit INVERSE, [hl]
 	jr z, .ToggleOn
 	jr .ToggleOff
 
 .NonePressed:
-	bit MENU_ACCOUNT, [hl]
+	bit INVERSE, [hl]
 	jr nz, .ToggleOn
 
 .ToggleOff:
-	res MENU_ACCOUNT, [hl]
+	res INVERSE, [hl]
 	ld de, .Off
 	jr .Display
 
 .ToggleOn:
-	set MENU_ACCOUNT, [hl]
+	set INVERSE, [hl]
 	ld de, .On
 
 .Display:
@@ -514,9 +514,9 @@ OptionsControl:
 	ret
 
 .CheckMenuAccount: ; I have no idea why this exists...
-	cp OPT_MENU_ACCOUNT
+	cp OPT_INVERSE
 	jr nz, .Increase
-	ld [hl], OPT_MENU_ACCOUNT
+	ld [hl], OPT_INVERSE
 
 .Increase:
 	inc [hl]
@@ -529,7 +529,7 @@ OptionsControl:
 ; Another thing where I'm not sure why it exists
 	cp OPT_FRAME
 	jr nz, .NotFrame
-	ld [hl], OPT_MENU_ACCOUNT
+	ld [hl], OPT_INVERSE
 	scf
 	ret
 

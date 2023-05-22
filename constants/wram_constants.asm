@@ -67,7 +67,7 @@ DEF TRAINERDIFFICULTY_ODD       EQU $7f
 
 ; wOptions2::
 	const_def
-	const MENU_ACCOUNT ; 0
+	const INVERSE ; 0
 
 ; wWalkingDirection::
 	const_def -1

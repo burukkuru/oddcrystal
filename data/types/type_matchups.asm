@@ -116,3 +116,15 @@ TypeMatchups:
 	db FIGHTING,     GHOST,        NO_EFFECT
 
 	db -1 ; end
+
+
+InverseTypeMatchups:
+	;  attacker,     defender,     *=
+
+	db -2 ; end (with Foresight)
+
+; Foresight removes Ghost's immunities.
+	db NORMAL,       GHOST,        SUPER_EFFECTIVE
+	db FIGHTING,     GHOST,        SUPER_EFFECTIVE
+
+	db -1 ; end
