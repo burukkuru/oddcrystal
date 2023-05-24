@@ -49,12 +49,14 @@ TypeMatchups:
 	db FIGHTING,     ROCK,         SUPER_EFFECTIVE
 	db FIGHTING,     DARK,         SUPER_EFFECTIVE
 	db FIGHTING,     STEEL,        SUPER_EFFECTIVE
+	db FIGHTING,     FAIRY,        NOT_VERY_EFFECTIVE
 	db POISON,       GRASS,        SUPER_EFFECTIVE
 	db POISON,       POISON,       NOT_VERY_EFFECTIVE
 	db POISON,       GROUND,       NOT_VERY_EFFECTIVE
 	db POISON,       ROCK,         NOT_VERY_EFFECTIVE
 	db POISON,       GHOST,        NOT_VERY_EFFECTIVE
 	db POISON,       STEEL,        NO_EFFECT
+	db POISON,       FAIRY,        SUPER_EFFECTIVE
 	db GROUND,       FIRE,         SUPER_EFFECTIVE
 	db GROUND,       ELECTRIC,     SUPER_EFFECTIVE
 	db GROUND,       GRASS,        NOT_VERY_EFFECTIVE
@@ -83,6 +85,7 @@ TypeMatchups:
 	db BUG,          GHOST,        NOT_VERY_EFFECTIVE
 	db BUG,          DARK,         SUPER_EFFECTIVE
 	db BUG,          STEEL,        NOT_VERY_EFFECTIVE
+	db BUG,          FAIRY,        NOT_VERY_EFFECTIVE
 	db ROCK,         FIRE,         SUPER_EFFECTIVE
 	db ROCK,         ICE,          SUPER_EFFECTIVE
 	db ROCK,         FIGHTING,     NOT_VERY_EFFECTIVE
@@ -97,24 +100,31 @@ TypeMatchups:
 	db GHOST,        GHOST,        SUPER_EFFECTIVE
 	db DRAGON,       DRAGON,       SUPER_EFFECTIVE
 	db DRAGON,       STEEL,        NOT_VERY_EFFECTIVE
+	db DRAGON,       FAIRY,        NO_EFFECT
 	db DARK,         FIGHTING,     NOT_VERY_EFFECTIVE
 	db DARK,         PSYCHIC_TYPE, SUPER_EFFECTIVE
 	db DARK,         GHOST,        SUPER_EFFECTIVE
 	db DARK,         DARK,         NOT_VERY_EFFECTIVE
 	db DARK,         STEEL,        NOT_VERY_EFFECTIVE
+	db DARK,         FAIRY,        NOT_VERY_EFFECTIVE
 	db STEEL,        FIRE,         NOT_VERY_EFFECTIVE
 	db STEEL,        WATER,        NOT_VERY_EFFECTIVE
 	db STEEL,        ELECTRIC,     NOT_VERY_EFFECTIVE
 	db STEEL,        ICE,          SUPER_EFFECTIVE
 	db STEEL,        ROCK,         SUPER_EFFECTIVE
 	db STEEL,        STEEL,        NOT_VERY_EFFECTIVE
-
+	db STEEL,        FAIRY,        SUPER_EFFECTIVE
+	db FAIRY,        FIRE,         NOT_VERY_EFFECTIVE
+	db FAIRY,        FIGHTING,     SUPER_EFFECTIVE
+	db FAIRY,        POISON,       NOT_VERY_EFFECTIVE
+	db FAIRY,        DRAGON,       SUPER_EFFECTIVE
+	db FAIRY,        DARK,         SUPER_EFFECTIVE
+	db FAIRY,        STEEL,        NOT_VERY_EFFECTIVE
 	db -2 ; end (with Foresight)
 
 ; Foresight removes Ghost's immunities.
 	db NORMAL,       GHOST,        NO_EFFECT
 	db FIGHTING,     GHOST,        NO_EFFECT
-
 	db -1 ; end
 
 
@@ -169,12 +179,14 @@ InverseTypeMatchups:
 	db FIGHTING,     ROCK,         NOT_VERY_EFFECTIVE
 	db FIGHTING,     DARK,         NOT_VERY_EFFECTIVE
 	db FIGHTING,     STEEL,        NOT_VERY_EFFECTIVE
+	db FIGHTING,     FAIRY,        SUPER_EFFECTIVE
 	db POISON,       GRASS,        NOT_VERY_EFFECTIVE
 	db POISON,       POISON,       SUPER_EFFECTIVE
 	db POISON,       GROUND,       SUPER_EFFECTIVE
 	db POISON,       ROCK,         SUPER_EFFECTIVE
 	db POISON,       GHOST,        SUPER_EFFECTIVE
 	db POISON,       STEEL,        SUPER_EFFECTIVE
+	db POISON,       FAIRY,        NOT_VERY_EFFECTIVE
 	db GROUND,       FIRE,         NOT_VERY_EFFECTIVE
 	db GROUND,       ELECTRIC,     NOT_VERY_EFFECTIVE
 	db GROUND,       GRASS,        SUPER_EFFECTIVE
@@ -203,6 +215,7 @@ InverseTypeMatchups:
 	db BUG,          GHOST,        SUPER_EFFECTIVE
 	db BUG,          DARK,         NOT_VERY_EFFECTIVE
 	db BUG,          STEEL,        SUPER_EFFECTIVE
+	db BUG,          FAIRY,        SUPER_EFFECTIVE
 	db ROCK,         FIRE,         NOT_VERY_EFFECTIVE
 	db ROCK,         ICE,          NOT_VERY_EFFECTIVE
 	db ROCK,         FIGHTING,     SUPER_EFFECTIVE
@@ -217,21 +230,29 @@ InverseTypeMatchups:
 	db GHOST,        GHOST,        NOT_VERY_EFFECTIVE
 	db DRAGON,       DRAGON,       NOT_VERY_EFFECTIVE
 	db DRAGON,       STEEL,        SUPER_EFFECTIVE
+	db DRAGON,       FAIRY,        SUPER_EFFECTIVE
 	db DARK,         FIGHTING,     SUPER_EFFECTIVE
 	db DARK,         PSYCHIC_TYPE, NOT_VERY_EFFECTIVE
 	db DARK,         GHOST,        NOT_VERY_EFFECTIVE
 	db DARK,         DARK,         SUPER_EFFECTIVE
 	db DARK,         STEEL,        SUPER_EFFECTIVE
+	db DARK,         FAIRY,        SUPER_EFFECTIVE
 	db STEEL,        FIRE,         SUPER_EFFECTIVE
 	db STEEL,        WATER,        SUPER_EFFECTIVE
 	db STEEL,        ELECTRIC,     SUPER_EFFECTIVE
 	db STEEL,        ICE,          NOT_VERY_EFFECTIVE
 	db STEEL,        ROCK,         NOT_VERY_EFFECTIVE
 	db STEEL,        STEEL,        SUPER_EFFECTIVE
+	db STEEL,        FAIRY,        NOT_VERY_EFFECTIVE
+	db FAIRY,        FIRE,         SUPER_EFFECTIVE
+	db FAIRY,        FIGHTING,     NOT_VERY_EFFECTIVE
+	db FAIRY,        POISON,       SUPER_EFFECTIVE
+	db FAIRY,        DRAGON,       NOT_VERY_EFFECTIVE
+	db FAIRY,        DARK,         NOT_VERY_EFFECTIVE
+	db FAIRY,        STEEL,        SUPER_EFFECTIVE
 	db -2 ; end (with Foresight)
 
 ; Foresight removes Ghost's immunities.
 	db NORMAL,       GHOST,        SUPER_EFFECTIVE
 	db FIGHTING,     GHOST,        SUPER_EFFECTIVE
-
 	db -1 ; end
