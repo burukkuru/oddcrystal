@@ -1,6 +1,6 @@
 DefaultOptions:
-; wOptions: med text speed
-	db TEXT_DELAY_MED
+; wOptions: fast text speed
+	db TEXT_DELAY_FAST | (1 << BATTLE_SHIFT) | (1 << STEREO)
 ; wSaveFileExists: no
 	db FALSE
 ; wTextboxFrame: frame 1
@@ -9,7 +9,7 @@ DefaultOptions:
 	db 1 << FAST_TEXT_DELAY_F
 ; wTrainerDifficulty: normal
 	db TRAINERDIFFICULTY_NORMAL
-; wOptions2: menu account on
+; wOptions2: inverse battles off
 	db 0 << INVERSE
 
 	db $00
