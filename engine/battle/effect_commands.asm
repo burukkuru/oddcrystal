@@ -1348,13 +1348,19 @@ BattleCommand_Stab:
 	ld a, [wOptions2]
 	and 1 << INVERSE
 	jr nz, .Inverse
+	ld a, BANK(TypeMatchups)
+	ld [wTypeMatchupBank], a
 	ld hl, TypeMatchups
 	jr .TypesLoop
 .Inverse:
+	ld a, BANK(InverseTypeMatchups)
+	ld [wTypeMatchupBank], a
 	ld hl, InverseTypeMatchups
 	; fallthrough
 .TypesLoop:
-	ld a, [hli]
+	ld a, [wTypeMatchupBank]
+	call GetFarByte
+	inc hl
 
 	cp -1
 	jr z, .end
@@ -1372,7 +1378,8 @@ BattleCommand_Stab:
 .SkipForesightCheck:
 	cp b
 	jr nz, .SkipType
-	ld a, [hl]
+	ld a, [wTypeMatchupBank]
+	call GetFarByte
 	cp d
 	jr z, .GotMatchup
 	cp e
@@ -1387,7 +1394,8 @@ BattleCommand_Stab:
 	and %10000000
 	ld b, a
 ; If the target is immune to the move, treat it as a miss and calculate the damage as 0
-	ld a, [hl]
+	ld a, [wTypeMatchupBank]
+	call GetFarByte
 	and a
 	jr nz, .NotImmune
 	inc a
@@ -1443,7 +1451,7 @@ BattleCommand_Stab:
 .SkipType:
 	inc hl
 	inc hl
-	jr .TypesLoop
+	jp .TypesLoop
 
 .end
 	call BattleCheckTypeMatchup
@@ -1479,13 +1487,19 @@ CheckTypeMatchup:
 	ld a, [wOptions2]
 	and 1 << INVERSE
 	jr nz, .Inverse
+	ld a, BANK(TypeMatchups)
+	ld [wTypeMatchupBank], a
 	ld hl, TypeMatchups
 	jr .TypesLoop
 .Inverse:
+	ld a, BANK(InverseTypeMatchups)
+	ld [wTypeMatchupBank], a
 	ld hl, InverseTypeMatchups
 	; fallthrough
 .TypesLoop:
-	ld a, [hli]
+	ld a, [wTypeMatchupBank]
+	call GetFarByte
+	inc hl
 	cp -1
 	jr z, .End
 	cp -2
@@ -1499,7 +1513,9 @@ CheckTypeMatchup:
 .Next:
 	cp d
 	jr nz, .Nope
-	ld a, [hli]
+	ld a, [wTypeMatchupBank]
+	call GetFarByte
+	inc hl
 	cp b
 	jr z, .Yup
 	cp c
@@ -1517,7 +1533,9 @@ CheckTypeMatchup:
 	ldh [hDividend + 0], a
 	ldh [hMultiplicand + 0], a
 	ldh [hMultiplicand + 1], a
-	ld a, [hli]
+	ld a, [wTypeMatchupBank]
+	call GetFarByte
+	inc hl
 	ldh [hMultiplicand + 2], a
 	ld a, [wTypeMatchup]
 	ldh [hMultiplier], a
@@ -1558,8 +1576,6 @@ BattleCommand_ResetTypeMatchup:
 	ret
 
 INCLUDE "engine/battle/ai/switch.asm"
-
-INCLUDE "data/types/type_matchups.asm"
 
 BattleCommand_DamageVariation:
 ; Modify the damage spread between 85% and 100%.

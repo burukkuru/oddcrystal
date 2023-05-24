@@ -1958,6 +1958,8 @@ wAddrOfBoxToPrint:: dw
 wBankOfBoxToPrint:: db
 wWhichBoxToPrint:: db
 
+wTypeMatchupBank:: db
+
 
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
 
