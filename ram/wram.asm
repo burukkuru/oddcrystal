@@ -136,7 +136,7 @@ wMapTimeOfDay:: db
 wPrinterConnectionOpen:: db
 wPrinterOpcode:: db
 
-	ds 1
+wTypeMatchupBank:: db
 
 wDisableTextAcceleration:: db
 wPrevLandmark:: db
@@ -1957,8 +1957,6 @@ wFinishedPrintingBox:: db
 wAddrOfBoxToPrint:: dw
 wBankOfBoxToPrint:: db
 wWhichBoxToPrint:: db
-
-wTypeMatchupBank:: db
 
 
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
