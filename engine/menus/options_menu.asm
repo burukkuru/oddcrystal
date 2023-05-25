@@ -372,11 +372,11 @@ Options_Difficulty:
 	dw .HardPlus
 	dw .Odd
 
-.Easy:     db "EASY    @"
-.Normal:   db "NORMAL  @"
-.Hard:     db "HARD    @"
-.HardPlus: db "HARDPLUS@"
-.Odd:      db "ODD     @"
+.Easy:     db "EASY  @"
+.Normal:   db "NORMAL@"
+.Hard:     db "HARD  @"
+.HardPlus: db "HARD+ @"
+.Odd:      db "ODD   @"
 
 GetDifficultySetting:
 ; converts GBPRINTER_* value in a to OPT_DIFFICULTY_* value in c,
