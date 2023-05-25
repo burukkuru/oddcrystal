@@ -96,7 +96,6 @@ TypeMatchups:
 	db GHOST,        NORMAL,       NO_EFFECT
 	db GHOST,        PSYCHIC_TYPE, SUPER_EFFECTIVE
 	db GHOST,        DARK,         NOT_VERY_EFFECTIVE
-	db GHOST,        STEEL,        NOT_VERY_EFFECTIVE
 	db GHOST,        GHOST,        SUPER_EFFECTIVE
 	db DRAGON,       DRAGON,       SUPER_EFFECTIVE
 	db DRAGON,       STEEL,        NOT_VERY_EFFECTIVE
@@ -105,7 +104,6 @@ TypeMatchups:
 	db DARK,         PSYCHIC_TYPE, SUPER_EFFECTIVE
 	db DARK,         GHOST,        SUPER_EFFECTIVE
 	db DARK,         DARK,         NOT_VERY_EFFECTIVE
-	db DARK,         STEEL,        NOT_VERY_EFFECTIVE
 	db DARK,         FAIRY,        NOT_VERY_EFFECTIVE
 	db STEEL,        FIRE,         NOT_VERY_EFFECTIVE
 	db STEEL,        WATER,        NOT_VERY_EFFECTIVE
@@ -226,7 +224,6 @@ InverseTypeMatchups:
 	db GHOST,        NORMAL,       SUPER_EFFECTIVE
 	db GHOST,        PSYCHIC_TYPE, NOT_VERY_EFFECTIVE
 	db GHOST,        DARK,         SUPER_EFFECTIVE
-	db GHOST,        STEEL,        SUPER_EFFECTIVE
 	db GHOST,        GHOST,        NOT_VERY_EFFECTIVE
 	db DRAGON,       DRAGON,       NOT_VERY_EFFECTIVE
 	db DRAGON,       STEEL,        SUPER_EFFECTIVE
@@ -235,7 +232,6 @@ InverseTypeMatchups:
 	db DARK,         PSYCHIC_TYPE, NOT_VERY_EFFECTIVE
 	db DARK,         GHOST,        NOT_VERY_EFFECTIVE
 	db DARK,         DARK,         SUPER_EFFECTIVE
-	db DARK,         STEEL,        SUPER_EFFECTIVE
 	db DARK,         FAIRY,        SUPER_EFFECTIVE
 	db STEEL,        FIRE,         SUPER_EFFECTIVE
 	db STEEL,        WATER,        SUPER_EFFECTIVE
