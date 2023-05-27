@@ -16,6 +16,7 @@ TypeMatchups:
 	db WATER,        GROUND,       SUPER_EFFECTIVE
 	db WATER,        ROCK,         SUPER_EFFECTIVE
 	db WATER,        DRAGON,       NOT_VERY_EFFECTIVE
+	db WATER,        ICE,          NOT_VERY_EFFECTIVE
 	db ELECTRIC,     WATER,        SUPER_EFFECTIVE
 	db ELECTRIC,     ELECTRIC,     NOT_VERY_EFFECTIVE
 	db ELECTRIC,     GRASS,        NOT_VERY_EFFECTIVE
@@ -85,7 +86,7 @@ TypeMatchups:
 	db BUG,          GHOST,        NOT_VERY_EFFECTIVE
 	db BUG,          DARK,         SUPER_EFFECTIVE
 	db BUG,          STEEL,        NOT_VERY_EFFECTIVE
-	db BUG,          FAIRY,        NOT_VERY_EFFECTIVE
+	db BUG,          FAIRY,        SUPER_EFFECTIVE
 	db ROCK,         FIRE,         SUPER_EFFECTIVE
 	db ROCK,         ICE,          SUPER_EFFECTIVE
 	db ROCK,         FIGHTING,     NOT_VERY_EFFECTIVE
@@ -118,6 +119,7 @@ TypeMatchups:
 	db FAIRY,        DRAGON,       SUPER_EFFECTIVE
 	db FAIRY,        DARK,         SUPER_EFFECTIVE
 	db FAIRY,        STEEL,        NOT_VERY_EFFECTIVE
+	db FAIRY,        BUG,          NOT_VERY_EFFECTIVE
 	db -2 ; end (with Foresight)
 
 ; Foresight removes Ghost's immunities.
@@ -144,6 +146,7 @@ InverseTypeMatchups:
 	db WATER,        GROUND,       NOT_VERY_EFFECTIVE
 	db WATER,        ROCK,         NOT_VERY_EFFECTIVE
 	db WATER,        DRAGON,       SUPER_EFFECTIVE
+	db WATER,        ICE,          SUPER_EFFECTIVE
 	db ELECTRIC,     WATER,        NOT_VERY_EFFECTIVE
 	db ELECTRIC,     ELECTRIC,     SUPER_EFFECTIVE
 	db ELECTRIC,     GRASS,        SUPER_EFFECTIVE
@@ -213,7 +216,7 @@ InverseTypeMatchups:
 	db BUG,          GHOST,        SUPER_EFFECTIVE
 	db BUG,          DARK,         NOT_VERY_EFFECTIVE
 	db BUG,          STEEL,        SUPER_EFFECTIVE
-	db BUG,          FAIRY,        SUPER_EFFECTIVE
+	db BUG,          FAIRY,        NOT_VERY_EFFECTIVE
 	db ROCK,         FIRE,         NOT_VERY_EFFECTIVE
 	db ROCK,         ICE,          NOT_VERY_EFFECTIVE
 	db ROCK,         FIGHTING,     SUPER_EFFECTIVE
@@ -246,6 +249,7 @@ InverseTypeMatchups:
 	db FAIRY,        DRAGON,       NOT_VERY_EFFECTIVE
 	db FAIRY,        DARK,         NOT_VERY_EFFECTIVE
 	db FAIRY,        STEEL,        SUPER_EFFECTIVE
+	db FAIRY,        BUG,          SUPER_EFFECTIVE
 	db -2 ; end (with Foresight)
 
 ; Foresight removes Ghost's immunities.
