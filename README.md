@@ -1,71 +1,47 @@
-# 16-bit index expansion for Crystal
+# Pokémon Odd Crystal
 
-This repository contains a modified Pokémon Crystal game, updated to handle 16-bit indexes. The main goal of this
-project is to create a reusable system that ROM hacks can use to bring 16-bit indexes into their games.  
-It is *not* within scope to create a new game, or to add additional features beyond 16-bit indexes.
+A custom Pokémon game built using the pokecrystal16 engine.
 
-The `master` branch of this repository is intended to perform identically to the original Pokémon Crystal, with
-minimal changes to support further development on it. Other branches will implement more features on top of it; the
-intention is that the necessary changes can be readily seen by comparing said branches to `master` (or between each
-other). Therefore, these other branches will never be merged into `master`, even though they will always be directly
-descended from it (i.e., in Git terminology, a merge would be a fast-forward).
+## Mechanics
 
-Since this repository is intended to be used as a reference, the commit history is intentionally kept clean to make
-changes clearly visible. Therefore, modifications (such as bug fixes) will often be merged into whichever commit is
-more suitable for them, with the remainder of the commit tree rebased on top of the updated commit. **Please do not
-fork this repository to build a new game on top** (unless you intend to contribute to it), as the publicly-visible
-history will be repeatedly rewritten, making merges impossible. If you do want to contribute to the repository, let
-me know in advance so I can notify you of history rewrites.
+* Physical/Special split
+* Fairy type and Gen 6 type chart (including custom rebalancing)
+* Replaced Freeze status with Frostbite ([Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Status_condition#Frostbite)) (TODO)
+* 5 Difficulty modes (TODO)
+	* Easy   0.85 level modifier
+	* Normal 1.00 level modifier
+	* Hard   1.25 level modifier
+	* Hard+  1.35 level modifier, boss trainers have reworked teams (TODO)
+	* Odd    1.45 level modifier, boss trainers have reworked teams and can select any valid move of their Pokémon's species (TODO)
+* Inverse battle mode ([Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Inverse_Battle))
 
-For further documentation, check out the [wiki].
+## Content
 
-## Branches
+* TODO
 
-* `master`: (status: **stable**, last update: **2023-03-16**) Base branch. This branch contains a slightly modified
-  version of Pokémon Crystal, with some quality-of-life improvements intended to make development easier. These
-  improvements have been taken from the documentation in the [main disassembly repository][pokecrystal]. This branch
-  contains no 16-bit features and it is only intended as a reference.
-* `base-components`: (status: **stable**, last update: **2023-03-16**) This branch defines the basic components that
-  will comprise the 16-bit index table system, on top of which the remaining branches will be built. Since it only
-  defines macros (and a handful of WRAM locations to be shared by all index tables), it should build the same ROM as
-  `master`.
-* `expand-mon-ID`: (status: **stable**, last update: **2023-03-16**) This branch implements 16-bit indexes for Pokémon
-  species, thus allowing more than 253 species to be included in a single game.
-* `expand-move-ID`: (status: **stable**, last update: **2023-03-16**) This branch implements 16-bit indexes for moves,
-  on top of the existing 16-bit support for Pokémon species from the previous branch. (Interaction between the
-  branches is kept to a minimum, though.)
-* `newbox`: (status: **experimental**, last update: **2023-03-16**) This branch ports Rangi & FIQ's "newbox" from
-  Polished Crystal. Newbox is a complete overhaul to Bill's PC, and this branch ports the functionality on
-  top of the previous branches.
-* `pokecrystal`: (status: **N/A**, last update **2023-03-16**) This branch contains pret's vanilla pokecrystal and
-  should only be used to compare with the previous branches to view pokecrystal16 changes. **DO NOT USE THIS BRANCH!**
+## Rebalancing
 
-To view the differences between any two branches (or any two commits in the repository), you can use GitHub's [tree
-comparison][compare] tool.
+### Type Chart
 
-## FAQs
+* Bug
+	* Gains a resistance to Fairy
+* Ice
+	* Gains a resistance to Water
+* Fairy
+	* Loses resistance to Bug
+	* Gains a weakness to Bug
 
-**Q1:** Will this engine include \<insert additional feature here\>?  
-**A1:** Unless the feature is specifically related to 16-bit indexing (or otherwise extending the range of possible
-index values), the answer is almost certainly "no". This repository's scope is limited to 16-bit indexes. If you
-already have a ROM hack that includes the features you like and you'd want it to have 16-bit indexes, the right course
-of action would be to port this engine to it. Otherwise, you can use this engine as a base to make your own ROM hack
-with all the features you want.
+### Pokémon
 
-**Q2:** Can I use this engine for my own ROM hack?  
-**A2:** Of course; that's what it was made for. I will try make it as easy as possible to port to existing or new ROM
-hacks; instructions to do so will be in the [wiki]. All I can ask you for is that, just like this engine was openly
-available for you to use, you make your hack's code openly available as well — quoting some of the text in
-[SQLite](https://sqlite.org)'s copyright disclaimer, "may you share freely, never taking more than you give".
+* All Pokémon stats are updated to modern generations
+* Individual changes TODO
 
-**Q3:** What's this engine's new limit on indexes?  
-**A3:** The theoretical limit is 65,534, minus a couple of "special" indexes used by the game for specific purposes
-(such as the value that indicates that a Pokémon is inside an egg). However, there are several limitations that will
-probably prevent you from ever reaching that limit. For starters, you can't fit 65,534 of _anything_ inside a ROM
-bank! The index work is done, and I'll try to remove any hurdles that would render that work useless; however, if you
-want to push the limits of the hardware and add 20,000 new Pokémon, you'll find yourself against a technical challenge
-that will go beyond indexes.
+### Moves
 
-[compare]: https://github.com/aaaaaa123456789/pokecrystal16/compare
-[pokecrystal]: https://github.com/pret/pokecrystal/
-[wiki]: https://github.com/aaaaaa123456789/pokecrystal16/wiki
+* All move power, accuracy, and pp cost are updated to modern generations
+* Individual changes TODO
+
+## Misc Tweaks
+
+* Removed the additional chance for AI to fail status moves and stat lowering moves
+* Removed badge boosts
