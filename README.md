@@ -45,3 +45,4 @@ A custom Pokémon game built using the pokecrystal16 engine.
 
 * Removed the additional chance for AI to fail status moves and stat lowering moves
 * Removed badge boosts
+* Added instant text speed option
