@@ -312,6 +312,11 @@ AdjustLevelByDifficulty:
 	ld b, 4
 	call Divide
 	ldh a, [hQuotient + 3]
+
+	; cap level at 100
+	cp 100
+	ret c
+	ld a, 100
 	ret
 
 INCLUDE "data/trainers/party_pointers.asm"
