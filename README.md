@@ -7,12 +7,12 @@ A custom Pokémon game built using the pokecrystal16 engine.
 * Physical/Special split
 * Fairy type and Gen 6 type chart (including custom rebalancing)
 * Replaced Freeze status with Frostbite ([Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Status_condition#Frostbite))
-* 5 Difficulty modes (TODO)
-	* Easy   0.85 level modifier
-	* Normal 1.00 level modifier
-	* Hard   1.25 level modifier
-	* Hard+  1.35 level modifier, boss trainers have reworked teams (TODO)
-	* Odd    1.45 level modifier, boss trainers have reworked teams and can select any valid move of their Pokémon's species (TODO)
+* 5 Difficulty modes
+	* Easy		0.9x level modifier, EXP increase (TODO)
+	* Normal	1.0x level modifier
+	* Hard		1.1x level modifier, improved AI (TODO)
+	* Hard+		1.2x level modifier, improved AI, boss trainers have reworked teams (TODO)
+	* Odd		1.3x level modifier, improved AI, boss trainers have reworked teams and can select any valid move of their Pokémon's species (TODO)
 * Inverse battle mode ([Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Inverse_Battle))
 
 ## Content

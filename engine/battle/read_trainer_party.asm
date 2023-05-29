@@ -297,38 +297,21 @@ GetNextTrainerDataByte:
 	ret
 
 AdjustLevelByDifficulty:
-	ld b, a
+	ld c, a
+	xor a
+	ldh [hMultiplicand + 0], a
+	ldh [hMultiplicand + 1], a
+	ld a, c
+	ldh [hMultiplicand + 2], a
 	ld a, [wTrainerDifficulty]
-	and a
-	jr z, .IsEasy
-	cp TRAINERDIFFICULTY_HARD
-	jr z, .IsHard
-	cp TRAINERDIFFICULTY_HARDPLUS
-	jr z, .IsHardPlus
-	cp TRAINERDIFFICULTY_ODD
-	jr z, .IsOdd
-	; none of the above
-	ld a, b
-	ret
+	ldh [hMultiplier], a
+	call Multiply
 
-.IsEasy:
-	ld a, b
-	sub 1
-	ret
-
-.IsHard:
-	ld a, b
-	add 1
-	ret
-
-.IsHardPlus:
-	ld a, b
-	add 2
-	ret
-
-.IsOdd:
-	ld a, b
-	add 3
+	ld a, 10
+	ldh [hDivisor], a
+	ld b, 4
+	call Divide
+	ldh a, [hQuotient + 3]
 	ret
 
 INCLUDE "data/trainers/party_pointers.asm"

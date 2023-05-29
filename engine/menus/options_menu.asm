@@ -392,7 +392,7 @@ GetDifficultySetting:
 ; converts GBPRINTER_* value in a to OPT_DIFFICULTY_* value in c,
 ; with previous/next GBPRINTER_* values in d/e
 	ld a, [wTrainerDifficulty]
-	and a
+	cp TRAINERDIFFICULTY_EASY
 	jr z, .IsEasy
 	cp TRAINERDIFFICULTY_HARD
 	jr z, .IsHard
