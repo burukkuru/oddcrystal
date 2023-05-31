@@ -45,4 +45,6 @@ A custom Pokémon game built using the pokecrystal16 engine.
 
 * Removed the additional chance for AI to fail status moves and stat lowering moves
 * Removed badge boosts
+* Add color and Kanto page to gym badges
 * Added instant text speed option
+* Animate tiles in pause menu
