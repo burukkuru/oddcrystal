@@ -54,3 +54,4 @@ A custom Pokémon game built using the pokecrystal16 engine.
 * Don't gain EXP at level 100
 * Gain EXP from cathing Pokémon
 * Lose money proportional to badges and level
+* Don't lose HP from poisoning in the overworld
