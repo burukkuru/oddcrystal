@@ -53,3 +53,4 @@ A custom Pokémon game built using the pokecrystal16 engine.
 * Display shiny in Pokédex
 * Don't gain EXP at level 100
 * Gain EXP from cathing Pokémon
+* Lose money proportional to badges and level
