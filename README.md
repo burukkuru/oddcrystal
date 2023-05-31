@@ -52,3 +52,4 @@ A custom Pokémon game built using the pokecrystal16 engine.
 * Restore unused rival loss text
 * Display shiny in Pokédex
 * Don't gain EXP at level 100
+* Gain EXP from cathing Pokémon
