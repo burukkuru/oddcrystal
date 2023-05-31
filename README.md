@@ -48,3 +48,4 @@ A custom Pokémon game built using the pokecrystal16 engine.
 * Add color and Kanto page to gym badges
 * Added instant text speed option
 * Animate tiles in pause menu
+* Restore unused rival loss text
