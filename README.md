@@ -43,6 +43,7 @@ A custom Pokémon game built using the pokecrystal16 engine.
 
 ## Misc Tweaks
 
+* Modified gender formula
 * Removed the additional chance for AI to fail status moves and stat lowering moves
 * Removed badge boosts
 * Add color and Kanto page to gym badges
@@ -50,3 +51,4 @@ A custom Pokémon game built using the pokecrystal16 engine.
 * Animate tiles in pause menu
 * Restore unused rival loss text
 * Display shiny in Pokédex
+* Don't gain EXP at level 100
