@@ -49,3 +49,4 @@ A custom Pokémon game built using the pokecrystal16 engine.
 * Added instant text speed option
 * Animate tiles in pause menu
 * Restore unused rival loss text
+* Display shiny in Pokédex
