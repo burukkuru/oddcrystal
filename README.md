@@ -57,3 +57,4 @@ A custom Pokémon game built using the pokecrystal16 engine.
 * Lose money proportional to badges and level
 * Don't lose HP from poisoning in the overworld
 * Automatically reuse Repel
+* Renamed berries to modern generations

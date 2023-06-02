@@ -54,32 +54,32 @@ MoomooScript:
 	promptbutton
 	writetext Route39BarnItsCryIsWeakText
 	checkevent EVENT_TALKED_TO_FARMER_ABOUT_MOOMOO
-	iftrue .GiveBerry
+	iftrue .GiveOranBerry
 	waitbutton
 	closetext
 	end
 
-.GiveBerry:
+.GiveOranBerry:
 	promptbutton
-	writetext Route39BarnAskGiveBerryText
+	writetext Route39BarnAskGiveOranBerryText
 	yesorno
 	iffalse .Refused
-	checkitem BERRY
+	checkitem ORAN_BERRY
 	iffalse .NoBerriesInBag
-	takeitem BERRY
+	takeitem ORAN_BERRY
 	readmem wMooMooBerries
 	addval 1
 	writemem wMooMooBerries
 	ifequal 3, .ThreeBerries
 	ifequal 5, .FiveBerries
 	ifequal 7, .SevenBerries
-	writetext Route39BarnGaveBerryText
+	writetext Route39BarnGaveOranBerryText
 	waitbutton
 	closetext
 	end
 
 .ThreeBerries:
-	writetext Route39BarnGaveBerryText
+	writetext Route39BarnGaveOranBerryText
 	promptbutton
 	writetext Route39BarnLittleHealthierText
 	waitbutton
@@ -87,7 +87,7 @@ MoomooScript:
 	end
 
 .FiveBerries:
-	writetext Route39BarnGaveBerryText
+	writetext Route39BarnGaveOranBerryText
 	promptbutton
 	writetext Route39BarnQuiteHealthyText
 	waitbutton
@@ -96,7 +96,7 @@ MoomooScript:
 
 .SevenBerries:
 	playmusic MUSIC_HEAL
-	writetext Route39BarnGaveBerryText
+	writetext Route39BarnGaveOranBerryText
 	pause 60
 	promptbutton
 	special RestartMapMusic
@@ -113,7 +113,7 @@ MoomooScript:
 	end
 
 .Refused:
-	writetext Route39BarnRefusedBerryText
+	writetext Route39BarnRefusedOranBerryText
 	waitbutton
 	closetext
 	end
@@ -149,14 +149,15 @@ MoomooHappyMooText:
 	text "MILTANK: Mooo!"
 	done
 
-Route39BarnAskGiveBerryText:
-	text "Give a BERRY to"
-	line "MILTANK?"
+Route39BarnAskGiveOranBerryText:
+	text "Give an ORAN"
+	line "BERRY to MILTANK?"
 	done
 
-Route39BarnGaveBerryText:
-	text "<PLAYER> gave a"
-	line "BERRY to MILTANK."
+Route39BarnGaveOranBerryText:
+	text "<PLAYER> gave an"
+	line "ORAN BERRY to"
+	cont "MILTANK."
 	done
 
 Route39BarnLittleHealthierText:
@@ -179,9 +180,10 @@ Route39BarnNoBerriesText:
 	line "BERRIES…"
 	done
 
-Route39BarnRefusedBerryText:
+Route39BarnRefusedOranBerryText:
 	text "<PLAYER> wouldn't"
-	line "give a BERRY."
+	line "give an ORAN"
+	cont "BERRY."
 
 	para "MILTANK looks sad."
 	done
