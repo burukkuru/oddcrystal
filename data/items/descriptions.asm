@@ -25,7 +25,7 @@ ItemDescriptions:
 	dw FireStoneDesc
 	dw ThunderStoneDesc
 	dw WaterStoneDesc
-	dw QuestionMarkDesc
+	dw OccaBerryDesc
 	dw HPUpDesc
 	dw ProteinDesc
 	dw IronDesc
@@ -45,12 +45,12 @@ ItemDescriptions:
 	dw SuperRepelDesc
 	dw MaxRepelDesc
 	dw DireHitDesc
-	dw QuestionMarkDesc
+	dw PasshoBerryDesc
 	dw FreshWaterDesc
 	dw SodaPopDesc
 	dw LemonadeDesc
 	dw XAttackDesc
-	dw QuestionMarkDesc
+	dw WacanBerryDesc
 	dw XDefendDesc
 	dw XSpeedDesc
 	dw XSpecialDesc
@@ -90,7 +90,7 @@ ItemDescriptions:
 	dw BigMushroomDesc
 	dw SilverPowderDesc
 	dw BluApricornDesc
-	dw QuestionMarkDesc
+	dw RindoBerryDesc
 	dw AmuletCoinDesc
 	dw YlwApricornDesc
 	dw GrnApricornDesc
@@ -100,7 +100,7 @@ ItemDescriptions:
 	dw WhtApricornDesc
 	dw BlackbeltDesc
 	dw BlkApricornDesc
-	dw QuestionMarkDesc
+	dw YacheBerryDesc
 	dw PnkApricornDesc
 	dw BlackGlassesDesc
 	dw SlowpokeTailDesc
@@ -120,7 +120,7 @@ ItemDescriptions:
 	dw MiracleSeedDesc
 	dw ThickClubDesc
 	dw FocusBandDesc
-	dw QuestionMarkDesc
+	dw ChopleBerryDesc
 	dw EnergyPowderDesc
 	dw EnergyRootDesc
 	dw HealPowderDesc
@@ -135,27 +135,27 @@ ItemDescriptions:
 	dw StarPieceDesc
 	dw BasementKeyDesc
 	dw PassDesc
-	dw QuestionMarkDesc
-	dw QuestionMarkDesc
-	dw QuestionMarkDesc
+	dw KebiaBerryDesc
+	dw ShucaBerryDesc
+	dw CobaBerryDesc
 	dw CharcoalDesc
 	dw BerryJuiceDesc
 	dw ScopeLensDesc
-	dw QuestionMarkDesc
-	dw QuestionMarkDesc
+	dw PayapaBerryDesc
+	dw TangaBerryDesc
 	dw MetalCoatDesc
 	dw DragonFangDesc
-	dw QuestionMarkDesc
+	dw ChartiBerryDesc
 	dw LeftoversDesc
-	dw QuestionMarkDesc
-	dw QuestionMarkDesc
-	dw QuestionMarkDesc
+	dw KasibBerryDesc
+	dw HabanBerryDesc
+	dw ColburBerryDesc
 	dw LeppaBerryDesc
 	dw DragonScaleDesc
 	dw BerserkGeneDesc
-	dw QuestionMarkDesc
-	dw QuestionMarkDesc
-	dw QuestionMarkDesc
+	dw BabiriBerryDesc
+	dw RoseliBerryDesc
+	dw ChilanBerryDesc
 	dw SacredAshDesc
 	dw HeavyBallDesc
 	dw FlowerMailDesc
@@ -915,3 +915,75 @@ MusicMailDesc:
 MirageMailDesc:
 	db   "MEW-print MAIL."
 	next "(HOLD)@"
+
+OccaBerryDesc:
+	db   "1/2super-effective"
+	next "FIRE. (HOLD)@"
+
+PasshoBerryDesc:
+	db   "1/2super-effective"
+	next "WATER. (HOLD)@"
+
+WacanBerryDesc:
+	db   "1/2super-effective"
+	next "ELECTRIC. (HOLD)@"
+
+RindoBerryDesc:
+	db   "1/2super-effective"
+	next "GRASS. (HOLD)@"
+
+YacheBerryDesc:
+	db   "1/2super-effective"
+	next "ICE. (HOLD)@"
+
+ChopleBerryDesc:
+	db   "1/2super-effective"
+	next "FIGHTING. (HOLD)@"
+
+KebiaBerryDesc:
+	db   "1/2super-effective"
+	next "POISON. (HOLD)@"
+
+ShucaBerryDesc:
+	db   "1/2super-effective"
+	next "GROUND. (HOLD)@"
+
+CobaBerryDesc:
+	db   "1/2super-effective"
+	next "FLYING. (HOLD)@"
+
+PayapaBerryDesc:
+	db   "1/2super-effective"
+	next "PSYCHIC. (HOLD)@"
+
+TangaBerryDesc:
+	db   "1/2super-effective"
+	next "BUG. (HOLD)@"
+
+ChartiBerryDesc:
+	db   "1/2super-effective"
+	next "ROCK. (HOLD)@"
+
+KasibBerryDesc:
+	db   "1/2super-effective"
+	next "GHOST. (HOLD)@"
+
+HabanBerryDesc:
+	db   "1/2super-effective"
+	next "DRAGON. (HOLD)@"
+
+ColburBerryDesc:
+	db   "1/2super-effective"
+	next "DARK. (HOLD)@"
+
+BabiriBerryDesc:
+	db   "1/2super-effective"
+	next "STEEL. (HOLD)@"
+
+RoseliBerryDesc:
+	db   "1/2super-effective"
+	next "FAIRY. (HOLD)@"
+
+ChilanBerryDesc:
+	db   "1/2 all NORMAL"
+	next "damage. (HOLD)@"

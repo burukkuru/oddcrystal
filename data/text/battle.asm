@@ -1102,7 +1102,11 @@ BattleText_LinkErrorBattleCanceled:
 	line "been canceled…"
 	prompt
 
-BattleText_NoTimeLeftToday: ; unreferenced
-	text "There is no time"
-	line "left today!"
-	done
+ReducedDamageUsingText:
+	text "<TARGET>"
+	line "reduced incoming"
+	cont "damage using"
+	cont "the @"
+	text_ram wStringBuffer1
+	text "!"
+	prompt

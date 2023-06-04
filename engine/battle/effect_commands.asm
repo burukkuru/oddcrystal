@@ -2570,6 +2570,67 @@ DittoMetalPowder:
 	rr c
 	ret
 
+INCLUDE "data/types/type_resist_berries.asm"
+
+; adapted from elcee's resist berry implementation
+ResistBerries:
+	call BattleCheckTypeMatchup
+	ld a, [wTypeMatchup]
+	cp SUPER_EFFECTIVE
+	ret c
+
+	push bc
+	push de
+	push hl
+	
+	call GetOpponentItem
+	ld a, b
+	and a
+	jr z, .return
+	ld hl, TypeResistBerries ; Table formatted as db HELD_TYPE_RESIST, TYPE similar to TypeBoostItems
+
+.NextBerry:
+	ld a, [hli]
+	cp -1
+	jr z, .return
+
+	cp b
+	ld a, [hli]
+	jr nz, .NextBerry
+
+	ld b, a
+	ld a, BATTLE_VARS_MOVE_TYPE
+	call GetBattleVar
+	and TYPE_MASK ; masks out category bits from physical/special split
+	cp b
+	jr nz, .return
+
+	; consume berry
+	farcall ItemRecoveryAnim
+	call RefreshBattleHuds
+	call GetOpponentItem
+	ld a, [hl]
+	ld [wNamedObjectIndex], a
+	call GetItemName
+	callfar ConsumeHeldItem
+	ld hl, ReducedDamageUsingText
+	call StdBattleTextbox
+
+	pop hl
+	pop de
+	pop bc
+
+	sla c ; double defense
+	ret nc
+	ld c, $ff
+	ret
+
+.return
+	pop hl
+	pop de
+	pop bc
+	ret
+
 BattleCommand_DamageStats:
 	ldh a, [hBattleTurn]
 	and a
@@ -2654,6 +2715,7 @@ PlayerAttackDamage:
 	ld a, [wBattleMonLevel]
 	ld e, a
 	call DittoMetalPowder
+	call ResistBerries
 
 	ld a, 1
 	and a
@@ -2906,6 +2968,7 @@ EnemyAttackDamage:
 	ld a, [wEnemyMonLevel]
 	ld e, a
 	call DittoMetalPowder
+	call ResistBerries
 
 	ld a, 1
 	and a

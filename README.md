@@ -18,7 +18,7 @@ A custom Pokémon game built using the pokecrystal16 engine.
 
 ## Content
 
-* TODO
+* Added type resist berries
 
 ## Rebalancing
 
