@@ -2606,6 +2606,8 @@ ResistBerries:
 	jr nz, .return
 
 	; consume berry
+	ld c, 20
+	call DelayFrames
 	farcall ItemRecoveryAnim
 	call RefreshBattleHuds
 	call GetOpponentItem
