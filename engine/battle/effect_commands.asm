@@ -2574,21 +2574,15 @@ INCLUDE "data/types/type_resist_berries.asm"
 
 ; adapted from elcee's resist berry implementation
 ResistBerries:
-	call BattleCheckTypeMatchup
-	ld a, [wTypeMatchup]
-	cp SUPER_EFFECTIVE
-	ret c
-
 	push bc
 	push de
 	push hl
-	
+
 	call GetOpponentItem
 	ld a, b
 	and a
 	jr z, .return
 	ld hl, TypeResistBerries ; Table formatted as db HELD_TYPE_RESIST, TYPE similar to TypeBoostItems
-
 .NextBerry:
 	ld a, [hli]
 	cp -1
@@ -2605,6 +2599,18 @@ ResistBerries:
 	cp b
 	jr nz, .return
 
+	; chilan berry exception
+	call GetOpponentItem
+	ld a, b
+	cp HELD_NORMAL_RESIST
+	jr z, .Consume
+
+	; super effective
+	call BattleCheckTypeMatchup
+	ld a, [wTypeMatchup]
+	cp SUPER_EFFECTIVE
+	jr c, .return
+.Consume
 	; consume berry
 	ld c, 20
 	call DelayFrames
