@@ -7,6 +7,7 @@
 	const ROUTE27_YOUNGSTER2
 	const ROUTE27_POKE_BALL1
 	const ROUTE27_POKE_BALL2
+	const ROUTE27_FRUIT_TREE
 	const ROUTE27_FISHER
 
 Route27_MapScripts:
@@ -299,6 +300,9 @@ TrainerCooltrainerfMegan:
 TohjoFallsSign:
 	jumptext TohjoFallsSignText
 
+Route27FruitTree:
+	fruittree FRUITTREE_ROUTE_27
+
 Route27TMSolarbeam:
 	itemball TM_SOLARBEAM
 
@@ -490,3 +494,4 @@ Route27_MapEvents:
 	object_event 60, 12, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, 0, Route27TMSolarbeam, EVENT_ROUTE_27_TM_SOLARBEAM
 	object_event 53, 12, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, 0, Route27RareCandy, EVENT_ROUTE_27_RARE_CANDY
 	object_event 21, 10, SPRITE_FISHER, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 3, Route27FisherScript, -1
+	object_event 70,  3, SPRITE_FRUIT_TREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route27FruitTree, -1

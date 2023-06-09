@@ -2,6 +2,8 @@
 	const MOUNTMOONSQUARE_FAIRY1
 	const MOUNTMOONSQUARE_FAIRY2
 	const MOUNTMOONSQUARE_ROCK
+	const MOUNTMOONSQUARE_FRUIT_TREE_1
+	const MOUNTMOONSQUARE_FRUIT_TREE_2
 
 MountMoonSquare_MapScripts:
 	def_scene_scripts
@@ -81,6 +83,12 @@ DontLitterSign:
 MtMoonSquareRock:
 	jumpstd SmashRockScript
 
+MtMoonSquareFruitTree1:
+	fruittree FRUITTREE_MT_MOON_SQUARE_1
+
+MtMoonSquareFruitTree2:
+	fruittree FRUITTREE_MT_MOON_SQUARE_2
+
 PlayerWalksUpToDancingClefairies:
 	step UP
 	step_end
@@ -149,3 +157,5 @@ MountMoonSquare_MapEvents:
 	object_event  6,  6, SPRITE_FAIRY, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_MT_MOON_SQUARE_CLEFAIRY
 	object_event  7,  6, SPRITE_FAIRY, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_MT_MOON_SQUARE_CLEFAIRY
 	object_event  7,  7, SPRITE_ROCK, SPRITEMOVEDATA_SMASHABLE_ROCK, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, MtMoonSquareRock, EVENT_MT_MOON_SQUARE_ROCK
+	object_event 25,  6, SPRITE_FRUIT_TREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, MtMoonSquareFruitTree1, -1
+	object_event 25,  7, SPRITE_FRUIT_TREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, MtMoonSquareFruitTree2, -1

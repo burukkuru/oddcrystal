@@ -1,5 +1,6 @@
 	object_const_def
 	const CINNABARISLAND_BLUE
+	const CINNABARISLAND_FRUIT_TREE
 
 CinnabarIsland_MapScripts:
 	def_scene_scripts
@@ -31,6 +32,9 @@ CinnabarIslandSign:
 
 CinnabarIslandPokecenterSign:
 	jumpstd PokecenterSignScript
+
+CinnabarIslandFruitTree:
+	fruittree FRUITTREE_CINNABAR_ISLAND
 
 CinnabarIslandHiddenRareCandy:
 	hiddenitem RARE_CANDY, EVENT_CINNABAR_ISLAND_HIDDEN_RARE_CANDY
@@ -141,3 +145,4 @@ CinnabarIsland_MapEvents:
 
 	def_object_events
 	object_event  9,  6, SPRITE_BLUE, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, CinnabarIslandBlue, EVENT_BLUE_IN_CINNABAR
+	object_event  8, 12, SPRITE_FRUIT_TREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, CinnabarIslandFruitTree, -1

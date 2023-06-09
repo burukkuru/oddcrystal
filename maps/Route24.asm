@@ -1,5 +1,6 @@
 	object_const_def
 	const ROUTE24_ROCKET
+	const ROUTE24_FRUIT_TREE
 
 Route24_MapScripts:
 	def_scene_scripts
@@ -33,6 +34,9 @@ Route24RocketScript:
 	special FadeInQuickly
 	playmapmusic
 	end
+
+Route24FruitTree:
+	fruittree FRUITTREE_ROUTE_24
 
 Route24RocketSeenText:
 	text "Hey, kid! Me am a"
@@ -127,3 +131,4 @@ Route24_MapEvents:
 
 	def_object_events
 	object_event  8,  7, SPRITE_ROCKET, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route24RocketScript, EVENT_ROUTE_24_ROCKET
+	object_event  2,  6, SPRITE_FRUIT_TREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, Route24FruitTree, -1

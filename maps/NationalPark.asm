@@ -13,6 +13,7 @@
 	const NATIONALPARK_POKE_BALL1
 	const NATIONALPARK_GAMEBOY_KID
 	const NATIONALPARK_POKE_BALL2
+	const NATIONALPARK_FRUIT_TREE
 
 NationalPark_MapScripts:
 	def_scene_scripts
@@ -296,6 +297,9 @@ NationalParkBattleNoticeSign:
 NationalParkTrainerTipsSign:
 	jumptext NationalParkTrainerTipsText
 
+NationalParkFruitTree:
+	fruittree FRUITTREE_NATIONAL_PARK	
+
 NationalParkParlyzHeal:
 	itemball PARLYZ_HEAL
 
@@ -543,3 +547,4 @@ NationalPark_MapEvents:
 	object_event 35, 12, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, 0, NationalParkParlyzHeal, EVENT_NATIONAL_PARK_PARLYZ_HEAL
 	object_event 26,  6, SPRITE_GAMEBOY_KID, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, NationalParkGameboyKidScript, -1
 	object_event  1, 43, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, 0, NationalParkTMDig, EVENT_NATIONAL_PARK_TM_DIG
+	object_event  6, 33, SPRITE_FRUIT_TREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, NationalParkFruitTree, -1

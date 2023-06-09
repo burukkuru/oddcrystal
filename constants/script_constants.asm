@@ -234,10 +234,29 @@ DEF EMOTE_LENGTH EQU 6
 	const FRUITTREE_ROUTE_11      ; 18
 	const FRUITTREE_ROUTE_2       ; 19
 	const FRUITTREE_ROUTE_1       ; 1a
-	const FRUITTREE_ROUTE_8       ; 1b
+	const FRUITTREE_ROUTE_8_1     ; 1b
 	const FRUITTREE_PEWTER_CITY_1 ; 1c
 	const FRUITTREE_PEWTER_CITY_2 ; 1d
 	const FRUITTREE_FUCHSIA_CITY  ; 1e
+	; resist berries begin here
+	const FRUITTREE_CHERRYGROVE_CITY ; 1f
+	const FRUITTREE_RUINS_OF_ALPH    ; 20
+	const FRUITTREE_ILEX_FOREST      ; 21
+	const FRUITTREE_NATIONAL_PARK    ; 22
+	const FRUITTREE_ROUTE_42_4       ; 23
+	const FRUITTREE_CIANWOOD_CITY    ; 24
+	const FRUITTREE_OLIVINE_CITY     ; 25
+	const FRUITTREE_LAKE_OF_RAGE     ; 26
+	const FRUITTREE_ROUTE_46_3       ; 27
+	const FRUITTREE_ROUTE_27         ; 28
+	const FRUITTREE_ROUTE_6          ; 29
+	const FRUITTREE_ROUTE_8_2        ; 2a
+	const FRUITTREE_CELADON_CITY     ; 2b
+	const FRUITTREE_ROUTE_24         ; 2c
+	const FRUITTREE_ROUTE_15         ; 2d
+	const FRUITTREE_CINNABAR_ISLAND  ; 2e
+	const FRUITTREE_MT_MOON_SQUARE_1 ; 2f
+	const FRUITTREE_MT_MOON_SQUARE_2 ; 30
 DEF NUM_FRUIT_TREES EQU const_value - 1
 
 ; describedecoration arguments
